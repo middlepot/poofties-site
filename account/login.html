@@ -47,15 +47,10 @@
 <meta name="google-site-verification" content="XSwoCWBrpJECWQJaaNREq2GeweamSFmo78j2dJ_F3AA" />
 
 <style>
-body{ 
-  cursor: url(./img/cursor.png), progress;}
-a:hover {cursor: url(./img/cursorhover.png), progress;
-  
-  }
- ::selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
- ::-moz-selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
-}
-}
+body{cursor: url(./img/cursor.png), progress;}
+a:hover {cursor: url(./img/cursorhover.png), progress;}
+::selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
+::-moz-selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
 </style>
 <style type="text/css">
 ::-webkit-scrollbar {
@@ -76,6 +71,8 @@ border: 1px dotted #e2d5d0;
 tooooooooltip
 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="./js/cookies.js"></script>
+<script src="./js/util.js"></script>
 
 <script>
 (function($){
@@ -381,8 +378,6 @@ z-index: 3;
 <a href="/"><img style="position: absolute; left: 515px; top: 5px; z-index: 2;"
 src="./img/logo.png"></a><br><br>
 
-
-
 <a href="/account"><img style="position: absolute; left: 225px; top: 105px; z-index: 2;"
 src="./img/account.png" onMouseOver="this.src='./img/accounthover.png'"
 onMouseOut="this.src='./img/account.png'"></a><br><br>
@@ -419,7 +414,6 @@ src="./img/series.png" onMouseOver="this.src='./img/serieshover.png'"
 onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 
-
 <div id="base">
 
 <div id="aaa">
@@ -432,9 +426,9 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 <br>
 
 <div style="position:relative; float:right; right:20px; top:-5px;">
-<a href=""><img src="./img/langbutton1.png"/></a>
-<a href=""><img src="./img/langbutton2.png"/></a>
-<a href=""><img src="./img/langbutton3.png"/></a>
+<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
 </div>
 
 <br><br><br>
@@ -452,17 +446,27 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 </style>
 
 <center>
-<input placeholder="type your email / digite seu email / メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_pt" placeholder="digite seu email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+<input id="input_email_jp" placeholder="メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
 <br><br>
-<input placeholder="type your password / digite sua senha / パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_pt" placeholder="digite sua senha" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+<input id="input_password_jp" placeholder="パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
 <br><br>
-<a href="/forgot" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0" style="font-size:8px">forgot ? esqueceu ? 忘れましたか ?</font></a><br><br>
+<a href="/forgot" id="linkbjinho" style="text-decoration: none;">
+	<font color="#c9abb0" style="font-size:8px" id="link_forgot_en">forgot ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_forgot_pt">esqueceu ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_forgot_jp">忘れましたか ?</font>
+</a><br><br>
 <input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
 </center>
 
 <br><br><br>
 
-<a href="/register"><img src="./img/register_en.png"/></a>
+<a id="link_register_en" href="/register"><img src="./img/register_en.png"/></a>
+<a id="link_register_pt" href="/register" style="display: none;"><img src="./img/register_pt.png"/></a>
+<a id="link_register_jp" href="/register" style="display: none;"><img src="./img/register_jp.png"/></a>
 
 <br><br><br>
 
@@ -470,8 +474,15 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 </div>
 </div>
 
-
 </div>
+
+<script>
+	registerTranslatable('input_email');
+	registerTranslatable('input_password');
+	registerTranslatable('link_forgot');
+	registerTranslatable('link_register');
+	autoTranslate();
+</script>
 
 </body>
 

@@ -54,8 +54,6 @@ a:hover {cursor: url(./img/cursorhover.png), progress;
   }
  ::selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
  ::-moz-selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
-}
-}
 </style>
 <style type="text/css">
 ::-webkit-scrollbar {
@@ -76,6 +74,8 @@ border: 1px dotted #e2d5d0;
 tooooooooltip
 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="./js/cookies.js"></script>
+<script src="./js/util.js"></script>
 
 <script>
 (function($){
@@ -433,9 +433,9 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 　　<a href="/logout" id="linkbjinho" style="text-decoration: none;"><font color="#cfb4b8">logout</a></font>
 
 <div style="position:relative; float:right; right:20px; top:-5px;">
-<a href=""><img src="./img/langbutton1.png"/></a>
-<a href=""><img src="./img/langbutton2.png"/></a>
-<a href=""><img src="./img/langbutton3.png"/></a>
+<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
 </div>
 
 <div style="position:absolute; left:5%; right:5%; line-height: 15px;">
@@ -443,15 +443,12 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 <sub><sub><img src="./img/account+.png"/></sub></sub> <font color="#a38f83">my account home</font>　
 <br><br>
 <font color="#b8a2a3" style="font-size:9px;">
-here you can see which games and platforms from the poofties franchise you have access to.<br>
-everything is integrated : the more products you have, the more content you get for each of them !
-<br><br>
-aqui você pode ver quais jogos e plataformas da franquia poofties você tem acesso.<br>
-tudo é integrado : quanto mais produtos você tem, mais conteúdo você ganha para cada um !
-<br><br>
-ここでは, あなたがアクセスできるpooftiesフランチャイズのどのゲームとプラットフォームを見ることができます。<br>
-すべてが統合されています : 製品が多ければ多いほど, それぞれのコンテンツが増えます !
-
+<span id="text_intro_en">here you can see which games and platforms from the poofties franchise you have access to.<br>
+everything is integrated : the more products you have, the more content you get for each of them !</span>
+<span id="text_intro_pt" style="display: none;">aqui você pode ver quais jogos e plataformas da franquia poofties você tem acesso.<br>
+tudo é integrado : quanto mais produtos você tem, mais conteúdo você ganha para cada um !</span>
+<span id="text_intro_jp" style="display: none;">ここでは, あなたがアクセスできるpooftiesフランチャイズのどのゲームとプラットフォームを見ることができます。<br>
+すべてが統合されています : 製品が多ければ多いほど, それぞれのコンテンツが増えます !</span>
 </font>
 <br><br>
 
@@ -464,7 +461,11 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; borde
 <table style="font-family: Verdana; font-size: 10px; color:#b8a0a4;">
   <tr>
     <td></td>
-    <th><img src="./img/integration_en.png"/></th>
+    <th>
+		<img id="img_integration_en" src="./img/integration_en.png"/>
+		<img id="img_integration_pt" style="display: none;" src="./img/integration_pt.png"/>
+		<img id="img_integration_jp" style="display: none;" src="./img/integration_jp.png"/>
+	</th>
     <th><img src="./img/browser.png"/></th>
     <th><img src="./img/steam.png"/></th>
     <th><img src="./img/appstore.png"/></th>
@@ -472,7 +473,11 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; borde
   </tr>
   <tr>
     <th><a href="https://shybunny.middlepot.com" target="_blank"><img src="./img/shybunnysmall.png"/></a></th>
-    <th><a href="/shybunny"><img src="./img/shybunnyfluffies_en.png"/></a></th>
+    <th><a href="/shybunny">
+		<img id="img_shybunny_fluffies_en" src="./img/shybunnyfluffies_en.png"/>
+		<img id="img_shybunny_fluffies_pt" style="display: none;" src="./img/shybunnyfluffies_pt.png"/>
+		<img id="img_shybunny_fluffies_jp" style="display: none;" src="./img/shybunnyfluffies_jp.png"/>
+	</a></th>
     <th><a href="https://shybunny.middlepot.com" target="_blank"><img src="./img/freeaccess_en.png"/></a></th>
     <th><img src="./img/notavailable_en.png"/></th>
     <th><img src="./img/notavailable_en.png"/></th>
@@ -480,7 +485,11 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; borde
   </tr>
   <tr>
     <th><a href="https://myfluffy.life" target="_blank"><img src="./img/myfluffylifesmall.png"/></a></th>
-    <th><a href="/myfluffylife"><img src="./img/myfluffylifeprofile_en.png"/></a></th>
+    <th><a href="/myfluffylife">
+		<img id="img_my_profile_en" src="./img/myfluffylifeprofile_en.png"/>
+		<img id="img_my_profile_pt" style="display: none;" src="./img/myfluffylifeprofile_pt.png"/>
+		<img id="img_my_profile_jp" style="display: none;" src="./img/myfluffylifeprofile_jp.png"/>
+	</a></th>
     <th><a href="https://myfluffy.life/play" target="_blank"><img src="./img/guestaccess_en.png"/></a></th>
     <th><a href="https://myfluffy.life/steam" target="_blank"><img src="./img/notacquired_en.png"/></a></th>
     <th><a href="https://myfluffy.life/appstore" target="_blank"><img src="./img/notacquired_en.png"/></a></th>
@@ -498,9 +507,21 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; borde
 
 <br><br>
 
-<a href="/safety"><img src="./img/accountsafety_en.png"/></a>
-<a href="/settings"><img src="./img/loginsettings_en.png"/></a>　
-<a href=""><img src="./img/pooftiesappnotifs_en.png"/></a>
+<a href="/safety">
+	<img id="img_safety_en" src="./img/accountsafety_en.png"/>
+	<img id="img_safety_pt" style="display: none;" src="./img/accountsafety_pt.png"/>
+	<img id="img_safety_jp" style="display: none;" src="./img/accountsafety_jp.png"/>
+</a>
+<a href="/settings">
+	<img id="img_login_settings_en" src="./img/loginsettings_en.png"/>
+	<img id="img_login_settings_pt" style="display: none;" src="./img/loginsettings_pt.png"/>
+	<img id="img_login_settings_jp" style="display: none;" src="./img/loginsettings_jp.png"/>
+</a>
+<a href="">
+	<img id="img_notifications_en" src="./img/pooftiesappnotifs_en.png"/>
+	<img id="img_notifications_pt" style="display: none;" src="./img/pooftiesappnotifs_pt.png"/>
+	<img id="img_notifications_jp" style="display: none;" src="./img/pooftiesappnotifs_jp.png"/>
+</a>
 
 <br><br><br>
 
@@ -508,8 +529,18 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; borde
 </div>
 </div>
 
-
 </div>
+
+<script>
+	registerTranslatable('text_intro');
+	registerTranslatable('img_integration');
+	registerTranslatable('img_shybunny_fluffies');
+	registerTranslatable('img_my_profile');
+	registerTranslatable('img_safety');
+	registerTranslatable('img_login_settings');
+	registerTranslatable('img_notifications');
+	autoTranslate();
+</script>
 
 </body>
 
