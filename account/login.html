@@ -434,7 +434,9 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 <br><br><br>
 <div style="position:absolute; left:5%; right:5%; line-height: 10px;">
 <center>
-<img src="./img/login_en.png"/>
+<img id="img_login_en" src="./img/login_en.png"/>
+<img id="img_login_pt" style="display: none;" src="./img/login_pt.png"/>
+<img id="img_login_jp" style="display: none;" src="./img/login_jp.png"/>
 <br><br><br><br>
 
 <style>
@@ -477,6 +479,7 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 </div>
 
 <script>
+	registerTranslatable('img_login');
 	registerTranslatable('input_email');
 	registerTranslatable('input_password');
 	registerTranslatable('link_forgot');

@@ -434,28 +434,36 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <div style="position:absolute; left:5%; right:5%; line-height: 10px;">
 <center>
-<img src="./img/loginsettings_en.png"/>
+<img id="img_login_settings_en" src="./img/loginsettings_en.png"/>
+<img id="img_login_settings_pt" style="display: none;" src="./img/loginsettings_pt.png"/>
+<img id="img_login_settings_jp" style="display: none;" src="./img/loginsettings_jp.png"/>
 <br><br><br>
 
 <div style="line-height: 15px;">
 <font color="#b8a2a3" style="font-size:10px;">
-add a secondary email :
-<br><br>
-adicionar um email secundário :
-<br><br>
-2次メールを追加します :
+<span id="text_add_secondary_email_en">add a secondary email :</span>
+<span id="text_add_secondary_email_pt" style="display: none;">adicionar um email secundário :</span>
+<span id="text_add_secondary_email_jp" style="display: none;">2次メールを追加します :</span>
 <br>
 </div>
 <br><br>
 
 <center>
-<input placeholder="type your email / digite seu email / メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<input placeholder="type secondary email / digite email secundário / 2次メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_secondary_en" placeholder="type secondary email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_secondary_pt" placeholder="digite email secundário" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_secondary_jp" placeholder="2次メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<input placeholder="type secondary email again / digite email secundário de novo / 2次メールをもう一度入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_secondary_confirm_en" placeholder="type your email again" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_secondary_confirm_pt" placeholder="digite seu email de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_secondary_confirm_jp" placeholder="メールをもう一度入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<input placeholder="type your password / digite sua senha / パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_secondary_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_secondary_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_secondary_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
 <input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
 </center>
@@ -465,11 +473,9 @@ adicionar um email secundário :
 <br><br><br>
 <div style="line-height: 15px;">
 <font color="#b8a2a3" style="font-size:10px;">
-change my login email :
-<br><br>
-mudar meu email de login :
-<br><br>
-ログインメールを変更する :
+<span id="text_change_email_en">change my login email :</span>
+<span id="text_change_email_pt" style="display: none;">mudar meu email de login :</span>
+<span id="text_change_email_jp" style="display: none;">ログインメールを変更する :</span>
 <br>
 </div>
 <br>
@@ -483,67 +489,27 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 </style>
 
 <center>
-<input placeholder="type current email / digite email atual / 現在のメールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_current_email_en" placeholder="type current email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_current_email_pt" placeholder="digite email atual" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_current_email_jp" placeholder="現在のメールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<a href="/forgot" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0" style="font-size:8px">forgot ? esqueceu ? 忘れましたか ?</font></a><br><br>
-<input placeholder="type new email / digite novo email / 新しいのメールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<a href="/forgot" id="linkbjinho" style="text-decoration: none;">
+	<font color="#c9abb0" style="font-size:8px" id="link_forgot_en">forgot ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_forgot_pt">esqueceu ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_forgot_jp">忘れましたか ?</font>
+</a>
 <br><br>
-<input placeholder="type new email again / digite novo email de novo / 新しいメールをもう一度入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_en" placeholder="type new email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_pt" placeholder="digite novo email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_jp" placeholder="新しいのメールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<input placeholder="type your password / digite sua senha / パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_confirm_en" placeholder="type new email again" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_confirm_pt" placeholder="digite novo email de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_confirm_jp" placeholder="新しいメールをもう一度入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
-</center>
-
-
-<div style="position:absolute; left:5%; right:5%; line-height: 10px;">
-<br><br><br>
-<div style="line-height: 15px;">
-<font color="#b8a2a3" style="font-size:10px;">
-change my password :
-<br><br>
-mudar minha senha :
-<br><br>
-パスワードを変更する :
-<br>
-</div>
-<br><br>
-
-<center>
-<input placeholder="type your email / digite seu email / メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<br><br>
-<input placeholder="type current password / digite senha atual / 現在のパスワードを入力します" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<br><br>
-<a href="/forgot" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0" style="font-size:8px">forgot ? esqueceu ? 忘れましたか ?</font></a><br><br>
-<input placeholder="type new password / digite nova senha / 新しいパスワードを入力します" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<br><br>
-<input placeholder="type new password again / digite nova senha de novo / 新しいパスワードをもう一度入力します" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<br><br>
-<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
-</center>
-
-<div style="position:absolute; left:5%; right:5%; line-height: 10px;">
-<br><br><br>
-<div style="line-height: 15px;">
-<font color="#b8a2a3" style="font-size:10px;">
-change my secondary email :
-<br><br>
-mudar meu email secundário :
-<br><br>
-2次メールを変更する :
-<br>
-</div>
-<br><br>
-
-<center>
-<input placeholder="type secondary email / digite email secundário / 2次メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<br><br>
-<a href="/forgot" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0" style="font-size:8px">forgot ? esqueceu ? 忘れましたか ?</font></a><br><br>
-<input placeholder="type new email / digite novo email / 新しいメールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<br><br>
-<input placeholder="type new email again / digite novo email de novo / 新しいメールをもう一度入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<br><br>
-<input placeholder="type your password / digite sua senha / パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_new_email_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_new_email_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_password_new_email_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
 <input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
 </center>
@@ -553,21 +519,103 @@ mudar meu email secundário :
 <br><br><br>
 <div style="line-height: 15px;">
 <font color="#b8a2a3" style="font-size:10px;">
-deactivate two-factor authentication :
-<br><br>
-desativar autenticação de dois fatores :
-<br><br>
-2要素認証を無効にします :
+<span id="text_change_password_en">change my password :</span>
+<span id="text_change_password_pt" style="display: none;">mudar minha senha :</span>
+<span id="text_change_password_jp" style="display: none;">パスワードを変更する :</span>
 <br>
 </div>
 <br><br>
 
 <center>
-<input placeholder="type your email / digite seu email / メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<input placeholder="type your password / digite sua senha / パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_current_en" placeholder="type current password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_current_pt" placeholder="digite senha atual" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_current_jp" placeholder="現在のパスワードを入力します" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<a href="/forgot" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0" style="font-size:8px">forgot ? esqueceu ? 忘れましたか ?</font></a><br><br>
+<a href="/forgot" id="linkbjinho" style="text-decoration: none;">
+	<font color="#c9abb0" style="font-size:8px" id="link_change_password_forgot_en">forgot ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_change_password_forgot_pt">esqueceu ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_change_password_forgot_jp">忘れましたか ?</font>
+</a>
+<br><br>
+<input id="input_change_password_new_en" placeholder="type new password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_new_pt" placeholder="digite nova senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_new_jp" placeholder="新しいパスワードを入力します" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<input id="input_change_password_new_confirm_en" placeholder="type new password again" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_new_confirm_pt" placeholder="digite nova senha de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_password_new_confirm_jp" placeholder="新しいパスワードをもう一度入力します" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
+</center>
+
+<div style="position:absolute; left:5%; right:5%; line-height: 10px;">
+<br><br><br>
+<div style="line-height: 15px;">
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_change_email_secondary_en">change my secondary email :</span>
+<span id="text_change_email_secondary_pt" style="display: none;">mudar meu email secundário :</span>
+<span id="text_change_email_secondary_jp" style="display: none;">2次メールを変更する :</span>
+<br>
+</div>
+<br><br>
+
+<center>
+<input id="input_change_email_secondary_en" placeholder="type secondary email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_secondary_pt" placeholder="digite email secundário" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_secondary_jp" placeholder="2次メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<a href="/forgot" id="linkbjinho" style="text-decoration: none;">
+	<font color="#c9abb0" style="font-size:8px" id="link_change_email_forgot_en">forgot ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_change_email_forgot_pt">esqueceu ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_change_email_forgot_jp">忘れましたか ?</font>
+</a>
+<br><br>
+<input id="input_change_email_new_en" placeholder="type new email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_new_pt" placeholder="digite novo email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_new_jp" placeholder="新しいメールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<input id="input_change_email_new_confirm_en" placeholder="type new email again" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_new_confirm_pt" placeholder="digite novo email de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_new_confirm_jp" placeholder="新しいメールをもう一度入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<input id="input_change_email_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_change_email_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
+</center>
+
+
+<div style="position:absolute; left:5%; right:5%; line-height: 10px;">
+<br><br><br>
+<div style="line-height: 15px;">
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_deactivate_2fa_en">deactivate two-factor authentication :</span>
+<span id="text_deactivate_2fa_pt" style="display: none;">desativar autenticação de dois fatores :</span>
+<span id="text_deactivate_2fa_jp" style="display: none;">2要素認証を無効にします :</span>
+<br>
+</div>
+<br><br>
+
+<center>
+<input id="input_deactivate_2fa_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_deactivate_2fa_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_deactivate_2fa_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<input id="input_deactivate_2fa_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_deactivate_2fa_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_deactivate_2fa_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<br><br>
+<a href="/forgot" id="linkbjinho" style="text-decoration: none;">
+	<font color="#c9abb0" style="font-size:8px" id="link_deactivate_2fa_forgot_en">forgot ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_deactivate_2fa_forgot_pt">esqueceu ?</font>
+	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_deactivate_2fa_forgot_jp">忘れましたか ?</font>
+</a>
+<br><br>
 <input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
 </center>
 
@@ -577,8 +625,45 @@ desativar autenticação de dois fatores :
 </div>
 </div>
 
-
 </div>
+
+<div style="display: none; position:relative; float:right; right:20px; top:-5px;">
+<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
+</div>
+
+<script>
+	registerTranslatable('img_login_settings');
+	registerTranslatable('text_add_secondary_email');
+	registerTranslatable('input_email');
+	registerTranslatable('input_email_secondary');
+	registerTranslatable('input_email_secondary_confirm');
+	registerTranslatable('input_password_secondary');
+	registerTranslatable('text_change_email');
+	registerTranslatable('input_current_email');
+	registerTranslatable('link_forgot');
+	registerTranslatable('input_new_email');
+	registerTranslatable('input_new_email_confirm');
+	registerTranslatable('input_password_new_email');
+	registerTranslatable('text_change_password');
+	registerTranslatable('input_change_password_email');
+	registerTranslatable('input_change_password_current');
+	registerTranslatable('link_change_password_forgot');
+	registerTranslatable('link_change_email_forgot');
+	registerTranslatable('input_change_password_new');
+	registerTranslatable('input_change_password_new_confirm');
+	registerTranslatable('text_change_email_secondary');
+	registerTranslatable('input_change_email_secondary');
+	registerTranslatable('input_change_email_new');
+	registerTranslatable('input_change_email_new_confirm');
+	registerTranslatable('input_change_email_password');
+	registerTranslatable('text_deactivate_2fa');
+	registerTranslatable('input_deactivate_2fa_email');
+	registerTranslatable('input_deactivate_2fa_password');
+	registerTranslatable('link_deactivate_2fa_forgot');
+	autoTranslate();
+</script>
 
 </body>
 

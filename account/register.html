@@ -505,8 +505,17 @@ label {
 <input id="input_password_confirm_pt" placeholder="digite sua senha de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <input id="input_password_confirm_jp" placeholder="パスワードをもう一度入力します" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br><br>
-<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="agree" type="checkbox" id="checkbox-1-1" class="regular-checkbox" /><label for="checkbox-1-1"></label></sub></sub><font color="#c9abb0" style="font-size:8px">　i've read and agree to the<br><br><br><br><br>
-　　<a href="/terms" id="linkbjinho" style="text-decoration: none;" target="_blank">privacy policy and terms and conditions</a></font></a></div><br><br>
+<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="agree" type="checkbox" id="checkbox-1-1" class="regular-checkbox" /><label for="checkbox-1-1"></label></sub></sub>
+	<font color="#c9abb0" style="font-size:8px">
+		<span id="text_terms_read_en">i've read and agree to the</span>
+		<span id="text_terms_read_pt" style="display: none;">eu li e concordo com a</span>
+		<span id="text_terms_read_jp" style="display: none;">私は読んで同意します :</span>
+	<br><br><br><br><br>
+　　<a href="/terms" id="linkbjinho" style="text-decoration: none;" target="_blank">
+		<span id="text_terms_terms_en">privacy policy and terms and conditions</span>
+		<span id="text_terms_terms_pt" style="display: none;">política de privacidade e termos e condições</span>
+		<span id="text_terms_terms_jp" style="display: none;">プライバシーポリシーと利用規約</span>
+	</a></font></a></div><br><br>
 <input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
 </center>
 
@@ -527,6 +536,8 @@ label {
 	registerTranslatable('input_email_confirm');
 	registerTranslatable('input_password');
 	registerTranslatable('input_password_confirm');
+	registerTranslatable('text_terms_terms');
+	registerTranslatable('text_terms_read');
 	autoTranslate();
 </script>
 
