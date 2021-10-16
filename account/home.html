@@ -590,7 +590,7 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; borde
 	async function getProductsInfo(){
 		var lang = getCurrentLanguage();
 		try{
-			var req = await fetch(api_path+'/account/products', {method: 'GET'});
+			var req = await fetch(api_path+'/account/products', {method: 'GET'},{credentials: 'include'});
 			if(!req.status || req.status !== 200)
 				throw new Error('something went wrong');
 

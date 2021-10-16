@@ -463,6 +463,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('input_credentials_secondary_error_invalid_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/settings/email-secondary/change',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
@@ -544,6 +545,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('input_credentials_change_email_error_invalid_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/settings/email/change',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
@@ -633,6 +635,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		try{
 			var res = await fetch(api_path+'/settings/password/change',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
@@ -684,6 +687,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			//submit to validation
 			var req = await fetch(tfa_path+'/verify', {
 				method: 'POST',
+				credentials: 'include',
 				headers:{
 					'content-type': 'application/json'
 				},
@@ -740,6 +744,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('text_deactivate_2fa_wentwrong_'+lang).style.display = 'none';
 			var res = await fetch(tfa_path+'/deactivate',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
@@ -785,6 +790,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		showLoadingOverlay();
 		await fetch(tfa_path+'/resend', {
 			method: 'POST',
+			credentials: 'include',
 			headers:{
 				'content-type': 'application/json'
 			},

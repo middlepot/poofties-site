@@ -467,6 +467,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('input_credentials_error_invalid_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/forgot/email-secondary/change?token='+token,{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},

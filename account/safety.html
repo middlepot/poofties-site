@@ -477,6 +477,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		try{
 			var res = await fetch(api_path+'/safety/tfa/enable',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
