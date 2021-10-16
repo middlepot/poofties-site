@@ -111,7 +111,7 @@ async function checkAuthentication(){
 				}
 			});
 			if(!res.status || res.status !== 200){
-				//window.location = '/account/login.html';
+				window.location = '/account/login.html';
 				return;
 			}
 			//all ok
