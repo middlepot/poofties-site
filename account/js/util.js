@@ -104,14 +104,14 @@ async function checkAuthentication(){
 			console.log(authCookie); */
 			var res = await fetch(api_path+'/auth', {
 				'method': 'GET',
-				credentials: 'same-origin',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json',
 					/* 'Authorization': 'Bearer '+authCookie */
 				}
 			});
 			if(!res.status || res.status !== 200){
-				window.location = '/account/login.html';
+				//window.location = '/account/login.html';
 				return;
 			}
 			//all ok
