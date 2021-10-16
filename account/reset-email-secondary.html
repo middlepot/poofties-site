@@ -425,7 +425,82 @@ onMouseOut="this.src='./img/bot.png'"></a><br><br>
 src="./img/series.png" onMouseOver="this.src='./img/serieshover.png'"
 onMouseOut="this.src='./img/series.png'"></a><br><br>
 
+<script>
+	async function changeSecondaryEmail(){
+		var lang = getCurrentLanguage();
+		var email = document.getElementById('input_new_email_'+lang).value;
+		var email_confirm = document.getElementById('input_new_email_confirm_'+lang).value;
+		var password = document.getElementById('input_password_new_email_'+lang).value;
+		//get reset token
+		var urlParams = new URLSearchParams(window.location.search);
+		var token = urlParams.get('token');
+		if(!token || token.length !== 72){
+			document.getElementById('text_wentwrong_'+lang).style.display = 'block';
+			return;
+		}
 
+		if(email){
+			document.getElementById('input_email_error_invalid_'+lang).style.display = 'none';
+			document.getElementById('input_email_error_mismatch_'+lang).style.display = 'none';
+			if(!validateEmail(email)){
+				document.getElementById('input_email_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			if(email !== email_confirm){
+				document.getElementById('input_email_error_mismatch_'+lang).style.display = 'block';
+				return;
+			}
+		}
+		else return;
+
+		if(!password || password.length < 8 || password.length > 32){
+			document.getElementById('input_credentials_error_invalid_'+lang).style.display = 'block';
+			return;
+		}
+
+		//shows overlay
+		showLoadingOverlay();
+
+		//tries to login
+		try{
+			document.getElementById('text_wentwrong_'+lang).style.display = 'none';
+			document.getElementById('input_credentials_error_invalid_'+lang).style.display = 'none';
+			var res = await fetch(api_path+'/forgot/email-secondary/change?token='+token,{
+				'method': 'POST',
+				headers:{
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					new_email: email,
+					password: password
+				})
+			})
+			//wrong credentials
+			document.getElementById('input_credentials_error_invalid_'+lang).style.display = 'none';
+			if(!res.status || res.status >= 500){
+				throw new Error('something went wrong');
+			}
+			else if(res.status === 401 || res.status === 400){
+				hideLoadingOverlay();
+				document.getElementById('input_credentials_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			else if(res.status === 409){
+				hideLoadingOverlay();
+				return;
+			}
+			else if(res.status < 200 || res.status >= 300){
+				throw new Error('something went wrong');
+			}
+			//all ok, redirect
+			window.location = '/account/login.html';
+		}
+		catch(err){
+			hideLoadingOverlay();
+			document.getElementById('text_wentwrong_'+lang).style.display = 'block';
+		}
+	}
+</script>
 
 <div id="base">
 
@@ -437,125 +512,62 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <div id="stuff">
 <br>
-　　<a href="/logout" id="linkbjinho" style="text-decoration: none;"><font color="#cfb4b8">logout</a></font>
+　　<a href="/home" id="linkbjinho" style="text-decoration: none;"><font color="#cfb4b8">home</a></font>
 
-<div style="position:relative; float:right; right:20px; top:-5px;">
-<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
-<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
-<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
-</div>
-
-<div style="position:absolute; left:5%; right:5%; line-height: 15px;">
+<div style="position:absolute; left:5%; right:5%; line-height: 10px;">
 <center>
-<sub><sub><img src="./img/account+.png"/></sub></sub> <font color="#a38f83">my account home</font>　
-<br><br>
-<font color="#b8a2a3" style="font-size:9px;">
-<span id="text_intro_en">here you can see which games and platforms from the poofties franchise you have access to.<br>
-everything is integrated : the more products you have, the more content you get for each of them !</span>
-<span id="text_intro_pt" style="display: none;">aqui você pode ver quais jogos e plataformas da franquia poofties você tem acesso.<br>
-tudo é integrado : quanto mais produtos você tem, mais conteúdo você ganha para cada um !</span>
-<span id="text_intro_jp" style="display: none;">ここでは, あなたがアクセスできるpooftiesフランチャイズのどのゲームとプラットフォームを見ることができます。<br>
-すべてが統合されています : 製品が多ければ多いほど, それぞれのコンテンツが増えます !</span>
-</font>
-<br><br>
+<img id="img_login_settings_en" src="./img/loginsettings_en.png"/>
+<img id="img_login_settings_pt" style="display: none;" src="./img/loginsettings_pt.png"/>
+<img id="img_login_settings_jp" style="display: none;" src="./img/loginsettings_jp.png"/>
+<br><br><br>
+
+<div style="position:absolute; left:5%; right:5%; line-height: 10px;">
+<br><br><br>
+<div style="line-height: 15px;">
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_change_email_en">change my login email :</span>
+<span id="text_change_email_pt" style="display: none;">mudar meu email de login :</span>
+<span id="text_change_email_jp" style="display: none;">ログインメールを変更する :</span>
+<br>
+</div>
+<br>
 
 <style>
 tr { padding: 3px; text-align:center; }
-td { padding: 3px; text-align:center; max-width:200px; }
-th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; border-style: solid; border-width: 10px; border-color: rgba(255, 255, 255, 0.01); border-image: url(https://i.imgur.com/sYxacdk.png) 20 round; }
+td { padding: 0px; text-align:center; max-width:200px; }
+th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; padding:10px; }
+::placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
+::-ms-input-placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
 </style>
 
-<p class="error-message" id="text_general_wentwrong_en">something went wrong !</p>
-<p class="error-message" id="text_general_wentwrong_pt">algo deu errado !</p>
-<p class="error-message" id="text_general_wentwrong_jp">何かがうまくいかなかった !</p>
-<table style="font-family: Verdana; font-size: 10px; color:#b8a0a4;">
-  <tr>
-    <td></td>
-    <th>
-		<img id="img_integration_en" src="./img/integration_en.png"/>
-		<img id="img_integration_pt" style="display: none;" src="./img/integration_pt.png"/>
-		<img id="img_integration_jp" style="display: none;" src="./img/integration_jp.png"/>
-	</th>
-    <th><img src="./img/browser.png"/></th>
-    <th><img src="./img/steam.png"/></th>
-    <th><img src="./img/appstore.png"/></th>
-    <th><img src="./img/playstore.png"/></th>
-  </tr>
-  <tr>
-    <th><a href="https://shybunny.middlepot.com" target="_blank"><img src="./img/shybunnysmall.png"/></a></th>
-    <th><a href="/shybunny">
-		<img id="img_shybunny_fluffies_en" src="./img/shybunnyfluffies_en.png"/>
-		<img id="img_shybunny_fluffies_pt" style="display: none;" src="./img/shybunnyfluffies_pt.png"/>
-		<img id="img_shybunny_fluffies_jp" style="display: none;" src="./img/shybunnyfluffies_jp.png"/>
-	</a></th>
-    <th><a href="https://shybunny.middlepot.com" target="_blank">
-		<img id="img_shybunny_web_en" src="./img/freeaccess_en.png"/>
-		<img id="img_shybunny_web_pt" style="display: none;" src="./img/freeaccess_pt.png"/>
-		<img id="img_shybunny_web_jp" style="display: none;" src="./img/freeaccess_jp.png"/>
-	</a></th>
-    <th>
-		<img id="img_shybunny_steam_en" src="./img/notavailable_en.png"/>
-		<img id="img_shybunny_steam_pt" style="display: none;" src="./img/notavailable_pt.png"/>
-		<img id="img_shybunny_steam_jp" style="display: none;" src="./img/notavailable_jp.png"/>
-	</th>
-    <th>
-		<img id="img_shybunny_ios_en" src="./img/notavailable_en.png"/>
-		<img id="img_shybunny_ios_pt" style="display: none;" src="./img/notavailable_pt.png"/>
-		<img id="img_shybunny_ios_jp" style="display: none;" src="./img/notavailable_jp.png"/>
-	</th>
-    <th>
-		<img id="img_shybunny_android_en" src="./img/notavailable_en.png"/>
-		<img id="img_shybunny_android_pt" style="display: none;" src="./img/notavailable_pt.png"/>
-		<img id="img_shybunny_android_jp" style="display: none;" src="./img/notavailable_jp.png"/>
-	</th>
-  </tr>
-  <tr>
-    <th><a href="https://myfluffy.life" target="_blank"><img src="./img/myfluffylifesmall.png"/></a></th>
-    <th><a href="/myfluffylife">
-		<img id="img_my_profile_en" src="./img/myfluffylifeprofile_en.png"/>
-		<img id="img_my_profile_pt" style="display: none;" src="./img/myfluffylifeprofile_pt.png"/>
-		<img id="img_my_profile_jp" style="display: none;" src="./img/myfluffylifeprofile_jp.png"/>
-	</a></th>
-    <th>
-		<img id="img_myfluffylife_web_en" src="./img/notavailable_en.png"/>
-		<img id="img_myfluffylife_web_pt" style="display: none;" src="./img/notavailable_pt.png"/>
-		<img id="img_myfluffylife_web_jp" style="display: none;" src="./img/notavailable_jp.png"/>
-	</th>
-    <th><a href="https://myfluffy.life/steam" target="_blank">
-		<img id="img_myfluffylife_steam_en" src="./img/notacquired_en.png"/>
-		<img id="img_myfluffylife_steam_pt" style="display: none;" src="./img/notacquired_pt.png"/>
-		<img id="img_myfluffylife_steam_jp" style="display: none;" src="./img/notacquired_jp.png"/>
-	</a></th>
-    <th>
-		<img id="img_myfluffylife_ios_en" src="./img/notavailable_en.png"/>
-		<img id="img_myfluffylife_ios_pt" style="display: none;" src="./img/notavailable_pt.png"/>
-		<img id="img_myfluffylife_ios_jp" style="display: none;" src="./img/notavailable_jp.png"/>
-	</th>
-    <th>
-		<img id="img_myfluffylife_android_en" src="./img/notavailable_en.png"/>
-		<img id="img_myfluffylife_android_pt" style="display: none;" src="./img/notavailable_pt.png"/>
-		<img id="img_myfluffylife_android_jp" style="display: none;" src="./img/notavailable_jp.png"/>
-	</th>
-  </tr>
-</table>
-
+<center>
+<input id="input_new_email_en" placeholder="type new secondary email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_pt" placeholder="digite novo email secundário" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_jp" placeholder="新しいセカンダリメールを入力します" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_email_error_invalid_en">invalid email !</p>
+	<p class="error-message" id="input_email_error_invalid_pt">email inválido !</p>
+	<p class="error-message" id="input_email_error_invalid_jp">無効なメール !</p>
 <br><br>
-
-<a href="/safety" style="text-decoration: none;">
-	<img id="img_safety_en" src="./img/accountsafety_en.png"/>
-	<img id="img_safety_pt" style="display: none;" src="./img/accountsafety_pt.png"/>
-	<img id="img_safety_jp" style="display: none;" src="./img/accountsafety_jp.png"/>
-</a>
-<a href="/settings" style="text-decoration: none;">
-	<img id="img_login_settings_en" src="./img/loginsettings_en.png"/>
-	<img id="img_login_settings_pt" style="display: none;" src="./img/loginsettings_pt.png"/>
-	<img id="img_login_settings_jp" style="display: none;" src="./img/loginsettings_jp.png"/>
-</a>
-<a style="text-decoration: none;">
-	<img id="img_notifications_en" src="./img/pooftiesappnotifs_en.png"/>
-	<img id="img_notifications_pt" style="display: none;" src="./img/pooftiesappnotifs_pt.png"/>
-	<img id="img_notifications_jp" style="display: none;" src="./img/pooftiesappnotifs_jp.png"/>
-</a>
+<input id="input_new_email_confirm_en" placeholder="type new email again" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_confirm_pt" placeholder="digite novo email de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_new_email_confirm_jp" placeholder="新しいメールをもう一度入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_email_error_mismatch_en">emails don't match !</p>
+	<p class="error-message" id="input_email_error_mismatch_pt">emails não são iguais !</p>
+	<p class="error-message" id="input_email_error_mismatch_jp">メールが一致しません !</p>
+<br><br>
+<input type="password" id="input_password_new_email_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_new_email_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_new_email_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_credentials_error_invalid_en">wrong email or password !</p>
+	<p class="error-message" id="input_credentials_error_invalid_pt">email ou senha errados !</p>
+	<p class="error-message" id="input_credentials_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
+<br><br>
+<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="changeSecondaryEmail();"/>
+	<p class="error-message" id="text_wentwrong_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_jp">何かがうまくいかなかった !</p>
+</center>
+</center>
 
 <br><br><br>
 
@@ -565,72 +577,19 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; borde
 
 </div>
 
+<div style="display: none; position:relative; float:right; right:20px; top:-5px;">
+<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
+</div>
+
 <script>
-	registerTranslatable('text_intro');
-	registerTranslatable('img_integration');
-	registerTranslatable('img_shybunny_fluffies');
-	registerTranslatable('img_shybunny_web');
-	registerTranslatable('img_shybunny_steam');
-	registerTranslatable('img_shybunny_ios');
-	registerTranslatable('img_shybunny_android');
-	registerTranslatable('img_myfluffylife_web');
-	registerTranslatable('img_myfluffylife_steam');
-	registerTranslatable('img_myfluffylife_ios');
-	registerTranslatable('img_myfluffylife_android');
-	registerTranslatable('img_my_profile');
-	registerTranslatable('img_safety');
 	registerTranslatable('img_login_settings');
-	registerTranslatable('img_notifications');
+	registerTranslatable('text_change_email');
+	registerTranslatable('input_new_email');
+	registerTranslatable('input_new_email_confirm');
+	registerTranslatable('input_password_new_email');
 	autoTranslate();
-</script>
-
-<script>
-	//mark page as requiring authentication
-	pooftiesPageRequiresAuthentication = true;
-	async function getProductsInfo(){
-		var lang = getCurrentLanguage();
-		try{
-			var req = await fetch(api_path+'/account/products', {method: 'GET'});
-			if(!req.status || req.status !== 200)
-				throw new Error('something went wrong');
-
-			var body = await req.json();
-			if(!body || !body.products)
-				throw new Error('something went wrong');
-			var mfl = body.products.myfluffylife;
-
-			//images
-			var acquired = './img/acquired';
-			var notacquired = './img/notacquired';
-			var active = './img/activesubscription';
-			var unavailable = './img/notavailable';
-			var paused = './img/pausedsubscription';
-			/* if(mfl.web){
-				document.getElementById('img_myfluffylife_web_en').src = acquired+'_en.png';
-				document.getElementById('img_myfluffylife_web_pt').src = acquired+'_pt.png';
-				document.getElementById('img_myfluffylife_web_jp').src = acquired+'_jp.png';
-			} */
-			if(mfl.steam){
-				document.getElementById('img_myfluffylife_steam_en').src = acquired+'_en.png';
-				document.getElementById('img_myfluffylife_steam_pt').src = acquired+'_pt.png';
-				document.getElementById('img_myfluffylife_steam_jp').src = acquired+'_jp.png';
-			}
-			/* if(mfl.ios){
-				document.getElementById('img_myfluffylife_ios_en').src = acquired+'_en.png';
-				document.getElementById('img_myfluffylife_ios_pt').src = acquired+'_pt.png';
-				document.getElementById('img_myfluffylife_ios_jp').src = acquired+'_jp.png';
-			}
-			if(mfl.android){
-				document.getElementById('img_myfluffylife_android_en').src = acquired+'_en.png';
-				document.getElementById('img_myfluffylife_android_pt').src = acquired+'_pt.png';
-				document.getElementById('img_myfluffylife_android_jp').src = acquired+'_jp.png';
-			} */
-		}
-		catch(err){
-			document.getElementById('text_general_wentwrong_'+lang).style.display = 'block';
-		}
-	}
-	getProductsInfo();
 </script>
 
 </body>

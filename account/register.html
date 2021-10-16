@@ -54,8 +54,6 @@ a:hover {cursor: url(./img/cursorhover.png), progress;
   }
  ::selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
  ::-moz-selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
-}
-}
 </style>
 <style type="text/css">
 ::-webkit-scrollbar {
@@ -76,6 +74,8 @@ border: 1px dotted #e2d5d0;
 tooooooooltip
 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="./js/cookies.js"></script>
+<script src="./js/util.js"></script>
 
 <script>
 (function($){
@@ -374,14 +374,19 @@ z-index: 3;
 #everything { position: absolute; zoom: 80%; left:-50px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
 }
+.error-message {
+	color: #aa9194;
+	font-size: 9px;
+	padding-top:8px;
+	letter-spacing: 1px;
+	display: none;
+}
 </style>
 
 <div id="everything">
 
 <a href="/"><img style="position: absolute; left: 515px; top: 5px; z-index: 2;"
 src="./img/logo.png"></a><br><br>
-
-
 
 <a href="/account"><img style="position: absolute; left: 225px; top: 105px; z-index: 2;"
 src="./img/account.png" onMouseOver="this.src='./img/accounthover.png'"
@@ -418,7 +423,81 @@ onMouseOut="this.src='./img/bot.png'"></a><br><br>
 src="./img/series.png" onMouseOver="this.src='./img/serieshover.png'"
 onMouseOut="this.src='./img/series.png'"></a><br><br>
 
+<script>
+	async function sendForm(){
+		var lang = getCurrentLanguage();
+		var email = document.getElementById('input_email_'+lang).value;
+		var email_confirm = document.getElementById('input_email_confirm_'+lang).value;
+		var password = document.getElementById('input_password_'+lang).value;
+		var password_confirm = document.getElementById('input_password_confirm_'+lang).value;
+		var agreed = document.getElementById('agree').checked;
+		if(email){
+			document.getElementById('input_email_error_invalid_'+lang).style.display = 'none';
+			document.getElementById('input_email_error_mismatch_'+lang).style.display = 'none';
+			if(!validateEmail(email)){
+				document.getElementById('input_email_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			if(email !== email_confirm){
+				document.getElementById('input_email_error_mismatch_'+lang).style.display = 'block';
+				return;
+			}
+		}
+		else return;
 
+		if(password){
+			document.getElementById('input_password_error_length_'+lang).style.display = 'none';
+			document.getElementById('input_password_error_mismatch_'+lang).style.display = 'none';
+			document.getElementById('text_wentwrong_'+lang).style.display = 'none';
+			if(password.length < 8 || password.length > 32){
+				document.getElementById('input_password_error_length_'+lang).style.display = 'block';
+				return;
+			}
+			if(password !== password_confirm){
+				document.getElementById('input_password_error_mismatch_'+lang).style.display = 'block';
+				return;
+			}
+		}
+		else return;
+
+		//if agreed to terms
+		if(agreed){
+			//shows overlay
+			showLoadingOverlay();
+
+			//tries to register
+			try{
+				var res = await fetch(api_path+'/auth/signup',{
+					'method': 'POST',
+					headers:{
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						email: email,
+						password: password
+					})
+				})
+				//status not 2xx
+				if(!res.status || res.status >= 500){
+					throw new Error('something went wrong');
+				}
+				//validation errors
+				else if(res.status >= 300 && res.status < 500){
+					hideLoadingOverlay();
+					document.getElementById('input_email_error_invalid_'+lang).style.display = 'block';
+					return;
+				}
+				//all ok, redirect
+				window.location = '/account/login.html';
+			}
+			catch(err){
+				hideLoadingOverlay();
+				document.getElementById('text_wentwrong_'+lang).style.display = 'block';
+			}
+		}
+		else return;
+	}
+</script>
 
 <div id="base">
 
@@ -432,15 +511,17 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 <br>
 
 <div style="position:relative; float:right; right:20px; top:-5px;">
-<a href=""><img src="./img/langbutton1.png"/></a>
-<a href=""><img src="./img/langbutton2.png"/></a>
-<a href=""><img src="./img/langbutton3.png"/></a>
+<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
 </div>
 
 <br><br>
 <div style="position:absolute; left:5%; right:5%; line-height: 10px;">
 <center>
-<img src="./img/register_en.png"/>
+<img id="img_register_en" src="./img/register_en.png"/>
+<img id="img_register_pt" style="display: none;" src="./img/register_pt.png"/>
+<img id="img_register_jp" style="display: none;" src="./img/register_jp.png"/>
 <br><br><br>
 
 <style>
@@ -487,17 +568,52 @@ label {
 </style>
 
 <center>
-<input placeholder="type your email / digite seu email / メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_email_error_invalid_en">invalid email !</p>
+	<p class="error-message" id="input_email_error_invalid_pt">email inválido !</p>
+	<p class="error-message" id="input_email_error_invalid_jp">無効なメール !</p>
 <br><br>
-<input placeholder="type your email again / digite seu email de novo / メールをもう一度入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_confirm_en" placeholder="type your email again" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_confirm_pt" placeholder="digite seu email de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input id="input_email_confirm_jp" placeholder="メールをもう一度入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_email_error_mismatch_en">emails don't match !</p>
+	<p class="error-message" id="input_email_error_mismatch_pt">emails não são iguais !</p>
+	<p class="error-message" id="input_email_error_mismatch_jp">メールが一致しません !</p>
+	<p class="error-message" id="input_email_error_used_en">email already in use !</p>
+	<p class="error-message" id="input_email_error_used_pt">email já está em uso !</p>
+	<p class="error-message" id="input_email_error_used_jp">この電子メールは既に利用されています !</p>
 <br><br>
-<input placeholder="type your password / digite sua senha / パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_en" placeholder="type your password" maxlength="32" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_pt" placeholder="digite sua senha" maxlength="32" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_jp" placeholder="パスワードを入力" maxlength="32" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_password_error_length_en">the password must have between 8 and 32 characters !</p>
+	<p class="error-message" id="input_password_error_length_pt">a senha deve ter entre 8 e 32 caracteres !</p>
+	<p class="error-message" id="input_password_error_length_jp">パスワードは8~32もじであるひつようがあります。</p>
 <br><br>
-<input placeholder="type your password again / digite sua senha de novo / パスワードをもう一度入力します" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_confirm_en" placeholder="type your password again" maxlength="32" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_confirm_pt" placeholder="digite sua senha de novo" maxlength="32" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_confirm_jp" placeholder="パスワードをもう一度入力します" maxlength="32" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_password_error_mismatch_en">passwords don't match !</p>
+	<p class="error-message" id="input_password_error_mismatch_pt">senhas não são iguais !</p>
+	<p class="error-message" id="input_password_error_mismatch_jp">パスワードが一致しません !</p>
 <br><br><br>
-<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="agree" type="checkbox" id="checkbox-1-1" class="regular-checkbox" /><label for="checkbox-1-1"></label></sub></sub><font color="#c9abb0" style="font-size:8px">　i've read and agree to the<br><br><br><br><br>
-　　<a href="/terms" id="linkbjinho" style="text-decoration: none;" target="_blank">privacy policy and terms and conditions</a></font></a></div><br><br>
-<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
+<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="agree" type="checkbox" id="checkbox-1-1" class="regular-checkbox" /><label for="checkbox-1-1"></label></sub></sub>
+	<font color="#c9abb0" style="font-size:8px">
+		<span id="text_terms_read_en">i've read and agree to the</span>
+		<span id="text_terms_read_pt" style="display: none;">eu li e concordo com a</span>
+		<span id="text_terms_read_jp" style="display: none;">私は読んで同意します :</span>
+	<br><br><br><br><br>
+　　<a href="/terms" id="linkbjinho" style="text-decoration: none;" target="_blank">
+		<span id="text_terms_terms_en">privacy policy and terms and conditions</span>
+		<span id="text_terms_terms_pt" style="display: none;">política de privacidade e termos e condições</span>
+		<span id="text_terms_terms_jp" style="display: none;">プライバシーポリシーと利用規約</span>
+	</a></font></a></div><br><br>
+<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="sendForm();"/>
+	<p class="error-message" id="text_wentwrong_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_jp">何かがうまくいかなかった !</p>
 </center>
 
 <br><br>
@@ -510,6 +626,17 @@ label {
 
 
 </div>
+
+<script>
+	registerTranslatable('img_register');
+	registerTranslatable('input_email');
+	registerTranslatable('input_email_confirm');
+	registerTranslatable('input_password');
+	registerTranslatable('input_password_confirm');
+	registerTranslatable('text_terms_terms');
+	registerTranslatable('text_terms_read');
+	autoTranslate();
+</script>
 
 </body>
 

@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <script src="./js/cookies.js"></script>
+        <script src="./js/util.js"></script>
+        <script>
+            fetch(api_path+'/auth/logout', {
+                method: 'POST'
+            })
+            .then(() =>{
+                window.location = '/account/login';
+            });
+        </script>
+    </head>
+    <body></body>
+</html>

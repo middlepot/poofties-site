@@ -54,8 +54,6 @@ a:hover {cursor: url(./img/cursorhover.png), progress;
   }
  ::selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
  ::-moz-selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
-}
-}
 </style>
 <style type="text/css">
 ::-webkit-scrollbar {
@@ -76,6 +74,8 @@ border: 1px dotted #e2d5d0;
 tooooooooltip
 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="./js/cookies.js"></script>
+<script src="./js/util.js"></script>
 
 <script>
 (function($){
@@ -430,13 +430,13 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <div id="stuff">
 <br>
-<div style="position:relative; float:right; right:20px; top:-5px;">
-<a href=""><img src="./img/langbutton1.png"/></a>
-<a href=""><img src="./img/langbutton2.png"/></a>
-<a href=""><img src="./img/langbutton3.png"/></a>
+<div style="position:relative; float:right; right:20px; top:-10px;">
+<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
 </div>
 
-<div style="position:absolute; left:5%; right:5%; line-height: 15px;">
+<div style="position:absolute; left:5%; right:5%; top: 30px; line-height: 15px;">
 <br>
 
 <style>
@@ -447,9 +447,11 @@ h2 { font-size:12px; }
 h3 { font-size:10px; }
 </style>
 <center>
-<img src="./img/privacy_en.png"/>
+<img id="img_privacy_en" src="./img/privacy_en.png"/>
+<img id="img_privacy_pt" style="display: none;" src="./img/privacy_pt.png"/>
+<img id="img_privacy_jp" style="display: none;" src="./img/privacy_jp.png"/>
 <br><br>
-<div class="box" id="privacyen" style="display: block; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
+<div class="box" id="text_privacy_en" style="display: block; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
 <div style="padding:10px;">
 <p>Last updated: September 20, 2021</p>
 <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
@@ -630,7 +632,7 @@ You agree that the original English text shall prevail in the case of a dispute.
 </div>
 </div>
 
-<div class="box" id="privacypt" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
+<div class="box" id="text_privacy_pt" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
 <div style="padding:10px;">
 <p> Última atualização: 20 de setembro de 2021 </p>
 <p> Esta Política de Privacidade descreve nossas políticas e procedimentos sobre a coleta, uso e divulgação de Suas informações quando Você usa o Serviço e informa sobre Seus direitos de privacidade e como a lei o protege. </p>
@@ -812,7 +814,7 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 </div>
 </div>
 
-<div class="box" id="privacyjp" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
+<div class="box" id="text_privacy_jp" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
 <div style="padding:10px;">
 <p>最終更新日：2021年9月20日</p>
 <p>このプライバシーポリシーは、お客様がサービスを使用する際のお客様の情報の収集、使用、開示に関する当社のポリシーと手順を説明し、お客様のプライバシー権と法律がお客様を保護する方法について説明します。</p>
@@ -996,9 +998,11 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 
 <br><br>
 
-<img src="./img/terms_en.png"/>
+<img id="img_terms_en" src="./img/terms_en.png"/>
+<img id="img_terms_pt" style="display: none;" src="./img/terms_pt.png"/>
+<img id="img_terms_jp" style="display: none;" src="./img/terms_jp.png"/>
 <br><br>
-<div class="box" id="termsen" style="display: block; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
+<div class="box" id="text_terms_en" style="display: block; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
 <div style="padding:10px;">
 <p>Last updated: September 20, 2021</p>
 <p>Please read these terms and conditions carefully before using Our Service.</p>
@@ -1013,6 +1017,9 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 </li>
 <li>
 <p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to the poofties franchise.</p>
+</li>
+<li>
+<p><strong>Country</strong> refers to Brazil.</p>
 </li>
 <li>
 <p><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.</p>
@@ -1077,8 +1084,6 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 <p>If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.</p>
 <h1>For European Union (EU) Users</h1>
 <p>If You are a European Union consumer, you will benefit from any mandatory provisions of the law of the country in which you are resident in.</p>
-<h1>United States Legal Compliance</h1>
-<p>You represent and warrant that (i) You are not located in a country that is subject to the United States government embargo, or that has been designated by the United States government as a &quot;terrorist supporting&quot; country, and (ii) You are not listed on any United States government list of prohibited or restricted parties.</p>
 <h1>Severability and Waiver</h1>
 <h2>Severability</h2>
 <p>If any provision of these Terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect.</p>
@@ -1104,7 +1109,7 @@ You agree that the original English text shall prevail in the case of a dispute.
 </div>
 </div>
 
-<div class="box" id="termspt" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
+<div class="box" id="text_terms_pt" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
 <div style="padding:10px;">
 <p> Última atualização: 20 de setembro de 2021 </p>
 <p> Por favor, leia estes termos e condições cuidadosamente antes de usar nosso serviço. </p>
@@ -1119,6 +1124,9 @@ You agree that the original English text shall prevail in the case of a dispute.
 </li>
 <li>
 <p> <strong> Empresa </strong> (referida como &quot; a Empresa &quot;, &quot; Nós &quot;, &quot; Nós &quot; ou &quot; Nossos &quot; neste Contrato) refere-se a franquia poofties. </p>
+</li>
+<li>
+<p><strong>País</strong> refere-se ao Brasil.</p>
 </li>
 <li>
 <p> <strong> Dispositivo </strong> significa qualquer dispositivo que pode acessar o Serviço, como um computador, um telefone celular ou um tablet digital. </p>
@@ -1183,8 +1191,6 @@ You agree that the original English text shall prevail in the case of a dispute.
 <p> Se você tiver qualquer dúvida ou dúvida sobre o Serviço, concorda em primeiro tentar resolver a disputa informalmente entrando em contato com a Empresa. </p>
 <h1> Para usuários da União Europeia (UE) </h1>
 <p> Se você é um consumidor da União Europeia, se beneficia de todas as disposições obrigatórias da lei do país em que reside. </p>
-<h1> Conformidade Legal dos Estados Unidos </h1>
-<p> Você declara e garante que (i) não está localizado em um país sujeito ao embargo do governo dos Estados Unidos ou que tenha sido designado pelo governo dos Estados Unidos como &quot; terrorista apoiador &quot; país e (ii) você não está listado em nenhuma lista do governo dos Estados Unidos de partes proibidas ou restritas. </p>
 <h1> Divisibilidade e renúncia </h1>
 <h2> Divisibilidade </h2>
 <p> Se qualquer disposição destes Termos for considerada inexequível ou inválida, tal disposição será alterada e interpretada para cumprir os objetivos de tal disposição na maior medida possível sob a lei aplicável e as disposições restantes continuarão em pleno vigor e efeito . </p>
@@ -1210,7 +1216,7 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 </div>
 </div>
 
-<div class="box" id="termsjp" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
+<div class="box" id="text_terms_jp" style="display: none; text-align:left; font-family: Verdana; font-size: 10px; color: #9e8e8e; overflow: auto; overflow: scroll; width:400px; height:300px; resize: none; outline:none; line-height:18px;">
 <div style="padding:10px;">
 <p>最終更新日：2021年9月20日</p>
 <p>当社のサービスを使用する前に、これらの利用規約を注意深くお読みください。</p>
@@ -1225,6 +1231,9 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 </li>
 <li>
 <p> <strong>会社</strong>（本契約では「会社」、「私たち」、「私たち」、「私たち」のいずれかと呼ばれます）は、pooftiesフランチャイズを製品します。</p>
+</li>
+<li>
+<p><strong>国</strong>はブラジルを指します。</p>
 </li>
 <li>
 <p> <strong>デバイス</strong>とは、コンピューター、携帯電話、デジタルタブレットなど、サービスにアクセスできるすべてのデバイスを意味します。</p>
@@ -1289,8 +1298,6 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 <p>本サービスについて懸念または紛争がある場合は、まず会社に連絡して非公式に紛争を解決することに同意するものとします。</p> 
 <h1>欧州連合（EU）ユーザー向け</h1>
 <p>あなたが欧州連合の消費者である場合、あなたはあなたが居住している国の法律の義務的な規定から利益を得るでしょう。</p>
-<h1>米国の法令遵守</h1>
-<p>お客様は、（i）米国政府の禁輸措置の対象となる国、または米国政府によって「テロ支援」として指定されている国に居住していないことを表明および保証します。国、および（ii）米国政府の禁止または制限された当事者のリストに記載されていない。</p>
 <h1>可分性と権利放棄</h1>
 <h2>可分性</h2>
 <p>本規約のいずれかの条項が執行不能または無効であると判断された場合、そのような条項は、適用法の下で可能な限りそのような条項の目的を達成するために変更および解釈され、残りの条項は引き続き完全に効力を有します。 。</p>
@@ -1325,6 +1332,14 @@ Você concorda que o texto original em inglês prevalecerá em caso de disputa. 
 
 
 </div>
+
+<script>
+	registerTranslatable('img_privacy');
+	registerTranslatable('text_privacy');
+	registerTranslatable('img_terms');
+	registerTranslatable('text_terms');
+	autoTranslate();
+</script>
 
 </body>
 

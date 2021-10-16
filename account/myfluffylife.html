@@ -49,13 +49,9 @@
 <style>
 body{ 
   cursor: url(./img/cursor.png), progress;}
-a:hover {cursor: url(./img/cursorhover.png), progress;
-  
-  }
- ::selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
- ::-moz-selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
-}
-}
+a:hover {cursor: url(./img/cursorhover.png), progress;}
+::selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
+::-moz-selection {text-shadow: 0 0 2px #cec1bb;color:#cec1bb}
 </style>
 <style type="text/css">
 ::-webkit-scrollbar {
@@ -76,6 +72,8 @@ border: 1px dotted #e2d5d0;
 tooooooooltip
 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="./js/cookies.js"></script>
+<script src="./js/util.js"></script>
 
 <script>
 (function($){
@@ -374,14 +372,19 @@ z-index: 3;
 #everything { position: absolute; zoom: 80%; left:-50px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
 }
+.error-message {
+	color: #aa9194;
+	font-size: 9px;
+	padding-top:8px;
+	letter-spacing: 1px;
+	display: none;
+}
 </style>
 
 <div id="everything">
 
 <a href="/"><img style="position: absolute; left: 515px; top: 5px; z-index: 2;"
 src="./img/logo.png"></a><br><br>
-
-
 
 <a href="/account"><img style="position: absolute; left: 225px; top: 105px; z-index: 2;"
 src="./img/account.png" onMouseOver="this.src='./img/accounthover.png'"
@@ -430,38 +433,52 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <div id="stuff">
 <br>
-　　<a href="/home" id="linkbjinho" style="text-decoration: none;"><font color="#cfb4b8">home</a></font>
+<a href="/home" id="linkbjinho" style="text-decoration: none;"><font color="#cfb4b8">home</a></font>
 
 <div style="position:absolute; left:5%; right:5%; line-height: 10px;">
 <center>
-<img src="./img/myfluffylifeprofile_en.png"/>
+<img id="img_my_profile_en" src="./img/myfluffylifeprofile_en.png"/>
+<img id="img_my_profile_pt" style="display: none;" src="./img/myfluffylifeprofile_pt.png"/>
+<img id="img_my_profile_jp" style="display: none;" src="./img/myfluffylifeprofile_jp.png"/>
+
 <br><br><br>
 <div style="line-height: 15px;">
 <font color="#b8a2a3" style="font-size:10px;">
-this is your current my fluffy life profile :
-<br><br>
-este é o seu perfil my fluffy life no momento :
-<br><br>
-これはあなたの現在のmy fluffy lifeプロフィールです : 
+<span id="text_current_profile_en">this is your current my fluffy life profile :</span>
+<span id="text_current_profile_pt" style="display: none;">este é o seu perfil my fluffy life no momento :</span>
+<span id="text_current_profile_jp" style="display: none;">これはあなたの現在のmy fluffy lifeプロフィールです : </span>
 </div>
 <br><br><br>
 
+<img id="img_current_profile" style="display: none; width: 400px;">
 
-perfil
-
-
+<span id="text_no_profile_en" style="display: none;"><a id="linkbjinho" target="_blank" rel="noopener noreferrer" href="https://myfluffy.life">my fluffy life</a> profile not found!</span>
+<span id="text_no_profile_pt" style="display: none;"><a id="linkbjinho" target="_blank" rel="noopener noreferrer" href="https://myfluffy.life">my fluffy life</a> profile not found!</span>
+<span id="text_no_profile_jp" style="display: none;"><a id="linkbjinho" target="_blank" rel="noopener noreferrer" href="https://myfluffy.life">my fluffy life</a> profile not found!</span>
 
 <br><br><br><br>
 
 <div style="line-height: 10px;">
 <font color="#a89495" style="font-size:10px;">
-my fluffy life profile and inventory are integrated with :<br><br>
-perfil my fluffy life e inventário são integrados com :<br><br>
-my fluffy lifeプロファイルと在庫は以下と統合されています :<br><br>
-<br>
-<sub><sub><sub><img src="./img/store+.png"/></sub></sub></sub> ‌ <a href="https://shybunny.middlepot.com" target="_blank" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0">shy bunny store stationery ꒰ soon ꒱</font></a>　　<br><br>
-　<sub><sub><sub><img src="./img/cafe+.png"/></sub></sub></sub> ‌ <a href="/" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0">puf cafe inventory ꒰ soon ꒱</font></a>　　　　<br><br>
-　　<sub><sub><sub><img src="./img/bot+.png"/></sub></sub></sub> ‌<a href="/" id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0">puf bot profile & inventory ꒰ soon ꒱</font></a>　　　　
+<span id="text_inventory_en">my fluffy life profile and inventory are integrated with :</span>
+<span id="text_inventory_pt" style="display: none;">perfil my fluffy life e inventário são integrados com :</span>
+<span id="text_inventory_jp" style="display: none;">my fluffy lifeプロファイルと在庫は以下と統合されています :</span>
+<br><br>
+<sub><sub><sub><img src="./img/store+.png"/></sub></sub></sub> ‌ <a href="https://shybunny.middlepot.com" target="_blank" id="linkbjinho" style="text-decoration: none;">
+	<font id="link_shybunny_stationery_en" color="#c9abb0">shy bunny store stationery ꒰ soon ꒱</font>
+	<font id="link_shybunny_stationery_pt" style="display: none;" color="#c9abb0">papelaria shy bunny store ꒰ em breve ꒱</font>
+	<font id="link_shybunny_stationery_jp" style="display: none;" color="#c9abb0">shy bunny store 文房具 ꒰ 近日 ꒱</font>
+</a>　　<br><br>
+<sub><sub><sub><img src="./img/cafe+.png"/></sub></sub></sub> ‌ <a href="/" id="linkbjinho" style="text-decoration: none;">
+<font id="link_pufcafe_inventory_en" color="#c9abb0">puf cafe game & inventory ꒰ soon ꒱</font>
+<font id="link_pufcafe_inventory_pt" style="display: none;" color="#c9abb0">puf cafe jogo & inventário ꒰ em breve ꒱</font>
+<font id="link_pufcafe_inventory_jp" style="display: none;" color="#c9abb0">puf cafe ゲームと在庫 ꒰ 近日 ꒱</font>
+</a>　　　　<br><br>
+　<sub><sub><sub><img src="./img/bot+.png"/></sub></sub></sub> ‌<a href="/" id="linkbjinho" style="text-decoration: none;">
+<font id="link_pufbot_profile_en" color="#c9abb0">puf bot profile & inventory ꒰ soon ꒱</font>
+<font id="link_pufbot_profile_pt" style="display: none;" color="#c9abb0">puf bot perfil & inventário ꒰ em breve ꒱</font>
+<font id="link_pufbot_profile_jp" style="display: none;" color="#c9abb0">puf bot プロファイルと在庫 ꒰ 近日 ꒱</font>
+</a>　　　　
 
 <br><br><br><br>
 </div>
@@ -473,6 +490,46 @@ my fluffy lifeプロファイルと在庫は以下と統合されています :<
 
 
 </div>
+
+<div style="display: none; position:relative; float:right; right:20px; top:-5px;">
+<a><img src="./img/langbutton1.png" id="en" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton2.png" id="pt" onclick="changeTranslation(this);"/></a>
+<a><img src="./img/langbutton3.png" id="jp" onclick="changeTranslation(this);"/></a>
+</div>
+
+<script>
+	registerTranslatable('img_my_profile');
+	registerTranslatable('text_current_profile');
+	registerTranslatable('text_inventory');
+	registerTranslatable('link_shybunny_stationery');
+	registerTranslatable('link_pufcafe_inventory');
+	registerTranslatable('link_pufbot_profile');
+	autoTranslate();
+</script>
+
+<script>
+	//check authentication
+	pooftiesPageRequiresAuthentication = true;
+	//get profile
+	async function getProfile(){
+		var lang = getCurrentLanguage();
+		var res = await fetch(api_path+'/myfluffylife/profile?lang='+lang);
+		if(res.status === 200){
+			var body = await res.json();
+			if(body.profile){
+				var ime = document.getElementById('img_current_profile');
+				ime.src = body.profile;
+				ime.style.display = 'block';
+			}
+		}
+		//if user don't has a my fluffy life account
+		else if(res.status < 200 || res.status >= 300){
+			document.getElementById('text_no_profile_'+lang).style.display = 'block';
+			return;
+		}
+	}
+	getProfile();
+</script>
 
 </body>
 
