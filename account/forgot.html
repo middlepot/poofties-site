@@ -374,6 +374,13 @@ z-index: 3;
 #everything { position: absolute; zoom: 80%; left:-50px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
 }
+.error-message {
+	color: #aa9194;
+	font-size: 9px;
+	padding-top:8px;
+	letter-spacing: 1px;
+	display: none;
+}
 </style>
 
 <div id="everything">
@@ -418,7 +425,185 @@ onMouseOut="this.src='./img/bot.png'"></a><br><br>
 src="./img/series.png" onMouseOver="this.src='./img/serieshover.png'"
 onMouseOut="this.src='./img/series.png'"></a><br><br>
 
+<script>
+	async function changePrimaryEmail(){
+		var lang = getCurrentLanguage();
+		var secondary_email = document.getElementById('input_secondary_email_'+lang).value;
+		var password = document.getElementById('input_password_'+lang).value;
+		if(secondary_email){
+			document.getElementById('input_secondary_email_error_invalid_'+lang).style.display = 'none';
+			if(!validateEmail(secondary_email)){
+				document.getElementById('input_secondary_email_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+		}
+		else return;
 
+		if(!password){
+			return;
+		}
+
+		//shows overlay
+		showLoadingOverlay();
+
+		//check credentials
+		try{
+			document.getElementById('text_wentwrong_change_email_'+lang).style.display = 'none';
+			var res = await fetch(api_path+'/forgot/email',{
+				'method': 'POST',
+				headers:{
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					secondary_email: secondary_email,
+					password: password
+				})
+			});
+			//wrong credentials
+			document.getElementById('input_change_email_error_invalid_'+lang).style.display = 'none';
+			if(!res.status || res.status >= 500){
+				throw new Error('something went wrong');
+			}
+			else if(res.status < 200 || res.status >= 300){
+				hideLoadingOverlay();
+				document.getElementById('input_change_email_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			//all ok, show message
+			hideLoadingOverlay();
+			document.getElementById('img_loginsettings_'+lang).remove();
+			document.getElementById('text_forgot_password_'+lang).remove();
+			document.getElementById('input_secondary_email_'+lang).remove();
+			document.getElementById('input_password_'+lang).remove();
+			document.getElementById('input_email_'+lang).remove();
+			document.getElementById('text_forgot_secondary_email_'+lang).remove();
+			document.getElementById('input_email_2_'+lang).remove();
+			document.getElementById('input_password_2_'+lang).remove();
+			document.getElementById('input_secondary_email_send').remove();
+			document.getElementById('input_email_send').remove();
+			document.getElementById('input_email_2_send').remove();
+			//set message
+			document.getElementById('text_forgot_email_en').innerHTML = 'please, check your email !<br>make sure to check all the inbox labels, including the "promotions" tab and the spam folder.<br>you can also search for "poofties" on your email app !';
+			document.getElementById('text_forgot_email_pt').innerHTML = 'por favor, cheque seu email !<br>tenha certeza de checar todas as guias de inbox, incluindo a de "promoções" e a pasta de spam.<br>você também pode buscar por "poofties" em seu aplicativo de email !';
+			document.getElementById('text_forgot_email_jp').innerHTML = 'メールを確認してください !<br>[プロモーション]タブやスパムフォルダを含む, すべての受信トレイのラベルを必ず確認してください。<br>メールアプリで「poofties」を検索することもできます !';
+		}
+		catch(err){
+			hideLoadingOverlay();
+			document.getElementById('text_wentwrong_change_email_'+lang).style.display = 'block';
+		}
+	}
+
+	async function changePassword(){
+		var lang = getCurrentLanguage();
+		var email = document.getElementById('input_email_'+lang).value;
+		if(email){
+			document.getElementById('input_change_password_email_error_invalid_'+lang).style.display = 'none';
+			if(!validateEmail(email)){
+				document.getElementById('input_change_password_email_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+		}
+		else return;
+
+		//shows overlay
+		showLoadingOverlay();
+
+		//check credentials
+		try{
+			document.getElementById('text_wentwrong_change_password_'+lang).style.display = 'none';
+			var res = await fetch(api_path+'/forgot/password',{
+				'method': 'POST',
+				headers:{
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					email: email
+				})
+			});
+			//wrong credentials
+			document.getElementById('input_change_password_email_error_invalid_'+lang).style.display = 'none';
+			if(!res.status || res.status >= 500){
+				throw new Error('something went wrong');
+			}
+			else if(res.status < 200 || res.status >= 300){
+				hideLoadingOverlay();
+				document.getElementById('input_change_password_email_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			//all ok, show message
+			hideLoadingOverlay();
+			document.getElementById('img_loginsettings_'+lang).remove();
+			document.getElementById('text_forgot_password_'+lang).remove();
+			document.getElementById('input_secondary_email_'+lang).remove();
+			document.getElementById('input_password_'+lang).remove();
+			document.getElementById('input_email_'+lang).remove();
+			document.getElementById('text_forgot_secondary_email_'+lang).remove();
+			document.getElementById('input_email_2_'+lang).remove();
+			document.getElementById('input_password_2_'+lang).remove();
+			document.getElementById('input_secondary_email_send').remove();
+			document.getElementById('input_email_send').remove();
+			document.getElementById('input_email_2_send').remove();
+			//set message
+			document.getElementById('text_forgot_email_en').innerHTML = 'please, check your email !<br>make sure to check all the inbox labels, including the "promotions" tab and the spam folder.<br>you can also search for "poofties" on your email app !';
+			document.getElementById('text_forgot_email_pt').innerHTML = 'por favor, cheque seu email !<br>tenha certeza de checar todas as guias de inbox, incluindo a de "promoções" e a pasta de spam.<br>você também pode buscar por "poofties" em seu aplicativo de email !';
+			document.getElementById('text_forgot_email_jp').innerHTML = 'メールを確認してください !<br>[プロモーション]タブやスパムフォルダを含む, すべての受信トレイのラベルを必ず確認してください。<br>メールアプリで「poofties」を検索することもできます !';
+		}
+		catch(err){
+			hideLoadingOverlay();
+			document.getElementById('text_wentwrong_change_password_'+lang).style.display = 'block';
+		}
+	}
+
+	async function changeSecondaryEmail(){
+		var lang = getCurrentLanguage();
+		var email = document.getElementById('input_email_2_'+lang).value;
+		var password = document.getElementById('input_password_2_'+lang).value;
+		document.getElementById('input_change_email_2_error_invalid_'+lang).style.display = 'none';
+		if(!email || !validateEmail(email) || !password || password.length < 8 || password.length > 32){
+			document.getElementById('input_change_email_2_error_invalid_'+lang).style.display = 'block';
+			return;
+		}
+
+		//shows overlay
+		showLoadingOverlay();
+
+		//check credentials
+		try{
+			document.getElementById('text_wentwrong_change_email_2_'+lang).style.display = 'none';
+			var res = await fetch(api_path+'/forgot/email-secondary',{
+				'method': 'POST',
+				headers:{
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					email: email,
+					password: password
+				})
+			});
+			//wrong credentials
+			document.getElementById('input_change_email_2_error_invalid_'+lang).style.display = 'none';
+			if(!res.status || res.status >= 500){
+				throw new Error('something went wrong');
+			}
+			else if(res.status < 200 || res.status >= 300){
+				hideLoadingOverlay();
+				document.getElementById('input_change_email_2_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			//if location came
+			var body = await res.json();
+			if(!body.location){
+				throw new Error('something went wrong');
+			}
+			//all ok, redirect to email change page
+			window.location = body.location;
+		}
+		catch(err){
+			hideLoadingOverlay();
+			document.getElementById('text_wentwrong_change_email_2_'+lang).style.display = 'block';
+		}
+	}
+</script>
 
 <div id="base">
 
@@ -459,12 +644,21 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 <input id="input_secondary_email_en" placeholder="type secondary email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <input id="input_secondary_email_pt" placeholder="digite email secundário" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <input id="input_secondary_email_jp" placeholder="2次メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_secondary_email_error_invalid_en">invalid email !</p>
+	<p class="error-message" id="input_secondary_email_error_invalid_pt">email inválido !</p>
+	<p class="error-message" id="input_secondary_email_error_invalid_jp">無効なメール !</p>
 <br><br>
-<input id="input_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<input id="input_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<input id="input_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_change_email_error_invalid_en">wrong email or password !</p>
+	<p class="error-message" id="input_change_email_error_invalid_pt">email ou senha errados !</p>
+	<p class="error-message" id="input_change_email_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
 <br><br>
-<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
+	<p class="error-message" id="text_wentwrong_change_email_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_change_email_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_change_email_jp">何かがうまくいかなかった !</p>
+<input id="input_secondary_email_send" style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="changePrimaryEmail();"/>
 </center>
 
 
@@ -483,8 +677,14 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 <input id="input_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <input id="input_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <input id="input_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_change_password_email_error_invalid_en">invalid email !</p>
+	<p class="error-message" id="input_change_password_email_error_invalid_pt">email inválido !</p>
+	<p class="error-message" id="input_change_password_email_error_invalid_jp">無効なメール !</p>
 <br><br>
-<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
+	<p class="error-message" id="text_wentwrong_change_password_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_change_password_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_change_password_jp">何かがうまくいかなかった !</p>
+<input id="input_email_send" style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="changePassword();"/>
 </center>
 
 <div style="position:absolute; left:5%; right:5%; line-height: 10px;">
@@ -503,11 +703,17 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 <input id="input_email_2_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <input id="input_email_2_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <br><br>
-<input id="input_password_2_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<input id="input_password_2_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<input id="input_password_2_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_2_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_2_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_2_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<p class="error-message" id="input_change_email_2_error_invalid_en">wrong email or password !</p>
+	<p class="error-message" id="input_change_email_2_error_invalid_pt">email ou senha errados !</p>
+	<p class="error-message" id="input_change_email_2_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
 <br><br>
-<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
+	<p class="error-message" id="text_wentwrong_change_email_2_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_change_email_2_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_change_email_2_jp">何かがうまくいかなかった !</p>
+<input id="input_email_2_send" style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="changeSecondaryEmail();"/>
 </center>
 
 <br><br><br>

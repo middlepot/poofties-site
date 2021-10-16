@@ -372,14 +372,19 @@ z-index: 3;
 #everything { position: absolute; zoom: 80%; left:-50px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
 }
+.error-message {
+	color: #aa9194;
+	font-size: 9px;
+	padding-top:8px;
+	letter-spacing: 1px;
+	display: none;
+}
 </style>
 
 <div id="everything">
 
 <a href="/"><img style="position: absolute; left: 515px; top: 5px; z-index: 2;"
 src="./img/logo.png"></a><br><br>
-
-
 
 <a href="/account"><img style="position: absolute; left: 225px; top: 105px; z-index: 2;"
 src="./img/account.png" onMouseOver="this.src='./img/accounthover.png'"
@@ -445,10 +450,11 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 </div>
 <br><br><br>
 
+<img id="img_current_profile" style="display: none; width: 400px;">
 
-perfil
-
-
+<span id="text_no_profile_en" style="display: none;"><a id="linkbjinho" target="_blank" rel="noopener noreferrer" href="https://myfluffy.life">my fluffy life</a> profile not found!</span>
+<span id="text_no_profile_pt" style="display: none;"><a id="linkbjinho" target="_blank" rel="noopener noreferrer" href="https://myfluffy.life">my fluffy life</a> profile not found!</span>
+<span id="text_no_profile_jp" style="display: none;"><a id="linkbjinho" target="_blank" rel="noopener noreferrer" href="https://myfluffy.life">my fluffy life</a> profile not found!</span>
 
 <br><br><br><br>
 
@@ -457,7 +463,7 @@ perfil
 <span id="text_inventory_en">my fluffy life profile and inventory are integrated with :</span>
 <span id="text_inventory_pt" style="display: none;">perfil my fluffy life e inventário são integrados com :</span>
 <span id="text_inventory_jp" style="display: none;">my fluffy lifeプロファイルと在庫は以下と統合されています :</span>
-<br>
+<br><br>
 <sub><sub><sub><img src="./img/store+.png"/></sub></sub></sub> ‌ <a href="https://shybunny.middlepot.com" target="_blank" id="linkbjinho" style="text-decoration: none;">
 	<font id="link_shybunny_stationery_en" color="#c9abb0">shy bunny store stationery ꒰ soon ꒱</font>
 	<font id="link_shybunny_stationery_pt" style="display: none;" color="#c9abb0">papelaria shy bunny store ꒰ em breve ꒱</font>
@@ -470,7 +476,7 @@ perfil
 </a>　　　　<br><br>
 　<sub><sub><sub><img src="./img/bot+.png"/></sub></sub></sub> ‌<a href="/" id="linkbjinho" style="text-decoration: none;">
 <font id="link_pufbot_profile_en" color="#c9abb0">puf bot profile & inventory ꒰ soon ꒱</font>
-<font id="link_pufbot_profile_pt" style="display: none;" color="#c9abb0">puf bot perfil & inventário ꒰ soon ꒱</font>
+<font id="link_pufbot_profile_pt" style="display: none;" color="#c9abb0">puf bot perfil & inventário ꒰ em breve ꒱</font>
 <font id="link_pufbot_profile_jp" style="display: none;" color="#c9abb0">puf bot プロファイルと在庫 ꒰ 近日 ꒱</font>
 </a>　　　　
 
@@ -499,6 +505,30 @@ perfil
 	registerTranslatable('link_pufcafe_inventory');
 	registerTranslatable('link_pufbot_profile');
 	autoTranslate();
+</script>
+
+<script>
+	//check authentication
+	pooftiesPageRequiresAuthentication = true;
+	//get profile
+	async function getProfile(){
+		var lang = getCurrentLanguage();
+		var res = await fetch(api_path+'/myfluffylife/profile?lang='+lang);
+		if(res.status === 200){
+			var body = await res.json();
+			if(body.profile){
+				var ime = document.getElementById('img_current_profile');
+				ime.src = body.profile;
+				ime.style.display = 'block';
+			}
+		}
+		//if user don't has a my fluffy life account
+		else if(res.status < 200 || res.status >= 300){
+			document.getElementById('text_no_profile_'+lang).style.display = 'block';
+			return;
+		}
+	}
+	getProfile();
 </script>
 
 </body>

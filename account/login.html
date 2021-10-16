@@ -371,6 +371,13 @@ z-index: 3;
 #everything { position: absolute; zoom: 80%; left:-50px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
 }
+.error-message {
+	color: #aa9194;
+	font-size: 9px;
+	padding-top:8px;
+	letter-spacing: 1px;
+	display: none;
+}
 </style>
 
 <div id="everything">
@@ -395,7 +402,6 @@ onMouseOut="this.src='./img/notes.png'"></a><br><br>
 src="./img/thoughts.png" onMouseOver="this.src='./img/thoughtshover.png'"
 onMouseOut="this.src='./img/thoughts.png'"></a><br><br>
 
-
 <a href="/games"><img style="position: absolute; left: 995px; top: 90px; z-index: 2;"
 src="./img/games.png" onMouseOver="this.src='./img/gameshover.png'"
 onMouseOut="this.src='./img/games.png'"></a><br><br>
@@ -412,6 +418,142 @@ onMouseOut="this.src='./img/bot.png'"></a><br><br>
 <img style="position: absolute; left: 1010px; top: 490px; z-index: 2;"
 src="./img/series.png" onMouseOver="this.src='./img/serieshover.png'"
 onMouseOut="this.src='./img/series.png'"></a><br><br>
+
+<script>
+	var submitedEmail, submitedPassword;
+	async function submitTFA(){
+		var lang = getCurrentLanguage();
+		var code = document.getElementById('input_2fa_code_'+lang).value;
+		if(code){
+			if(code.length !== 6){
+				//invalid code
+				document.getElementById('input_2fa_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			//show loading overlay
+			showLoadingOverlay();
+
+			//submit to validation
+			var req = await fetch(tfa_path+'/verify', {
+				method: 'POST',
+				headers:{
+					'content-type': 'application/json'
+				},
+				body: JSON.stringify({
+					code: code,
+					email: submitedEmail
+				})
+			});
+			//hides overlay
+			hideLoadingOverlay();
+
+			//code is correct
+			if(req.status === 200){
+				//remake request with provided arguments
+				await sendForm(submitedEmail, submitedPassword);
+			}
+			else{
+				//invalid code
+				document.getElementById('input_2fa_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+		}
+	}
+
+	async function sendForm(email, password){
+		var lang = getCurrentLanguage();
+		if(!email)
+			email = document.getElementById('input_email_'+lang).value;
+		if(!password)
+			password = document.getElementById('input_password_'+lang).value;
+		
+		if(email){
+			document.getElementById('input_email_error_invalid_'+lang).style.display = 'none';
+			if(!validateEmail(email)){
+				document.getElementById('input_email_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+		}
+		else return;
+
+		if(!password){
+			return;
+		}
+
+		//shows overlay
+		showLoadingOverlay();
+
+		//tries to login
+		try{
+			//saves last sent credentials
+			submitedEmail = email;
+			submitedPassword = password;
+
+			document.getElementById('text_wentwrong_'+lang).style.display = 'none';
+			var res = await fetch(api_path+'/auth/login',{
+				'method': 'POST',
+				headers:{
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					email: email,
+					password: password
+				})
+			})
+			//wrong credentials
+			document.getElementById('input_credentials_error_invalid_'+lang).style.display = 'none';
+			if(!res.status || res.status >= 500){
+				throw new Error('something went wrong');
+			}
+			else if(res.status < 200 || res.status >= 300){
+				hideLoadingOverlay();
+				document.getElementById('input_credentials_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			//if server requested TFA
+			if(res.status === 202){
+				hideLoadingOverlay();
+				//hides every other field
+				document.getElementById('input_email_en').style.display = 'none';
+				document.getElementById('input_email_pt').style.display = 'none';
+				document.getElementById('input_email_jp').style.display = 'none';
+				document.getElementById('input_password_en').style.display = 'none';
+				document.getElementById('input_password_pt').style.display = 'none';
+				document.getElementById('input_password_jp').style.display = 'none';
+				document.getElementById('linkbjinho').style.display = 'none';
+				document.getElementById('input_submit').style.display = 'none';
+				document.getElementById('link_register_en').style.display = 'none';
+				document.getElementById('link_register_pt').style.display = 'none';
+				document.getElementById('link_register_jp').style.display = 'none';
+				document.getElementById('div_2fa').style.display = 'block';
+				return;
+			}
+			//all ok, redirect
+			else{
+				window.location = '/account/home.html';
+			}
+		}
+		catch(err){
+			hideLoadingOverlay();
+			document.getElementById('text_wentwrong_'+lang).style.display = 'block';
+		}
+	}
+
+	async function resendCode(to_primary){
+		showLoadingOverlay();
+		await fetch(tfa_path+'/resend', {
+			method: 'POST',
+			headers:{
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				email: submitedEmail,
+				to_primary: to_primary
+			})
+		})
+		hideLoadingOverlay();
+	}
+</script>
 
 
 <div id="base">
@@ -451,17 +593,56 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 <input id="input_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 <input id="input_email_pt" placeholder="digite seu email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
 <input id="input_email_jp" placeholder="メールを入力してください" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+	<p class="error-message" id="input_email_error_invalid_en">invalid email !</p>
+	<p class="error-message" id="input_email_error_invalid_pt">email inválido !</p>
+	<p class="error-message" id="input_email_error_invalid_jp">無効なメール !</p>
 <br><br>
-<input id="input_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-<input id="input_password_pt" placeholder="digite sua senha" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
-<input id="input_password_jp" placeholder="パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+<input type="password" id="input_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+<input type="password" id="input_password_pt" placeholder="digite sua senha" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+<input type="password" id="input_password_jp" placeholder="パスワードを入力" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+	<p class="error-message" id="input_credentials_error_invalid_en">wrong email or password !</p>
+	<p class="error-message" id="input_credentials_error_invalid_pt">email ou senha errados !</p>
+	<p class="error-message" id="input_credentials_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
 <br><br>
 <a href="/forgot" id="linkbjinho" style="text-decoration: none;">
 	<font color="#c9abb0" style="font-size:8px" id="link_forgot_en">forgot ?</font>
 	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_forgot_pt">esqueceu ?</font>
 	<font color="#c9abb0" style="font-size:8px; display: none;" id="link_forgot_jp">忘れましたか ?</font>
 </a><br><br>
-<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" />
+<input id="input_submit" style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="sendForm();" />
+	<p class="error-message" id="text_wentwrong_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_jp">何かがうまくいかなかった !</p>
+</center>
+<center>
+<div id="div_2fa" style="display: none;">
+	<font color="#b8a2a3" style="font-size:10px;">
+	<span id="text_2fa_sent_en">a 2fa code has been sent to your email !</span>
+	<span id="text_2fa_sent_pt" style="display: none;">um código 2fa foi enviado para seu email !</span>
+	<span id="text_2fa_sent_jp" style="display: none;">2faコードがあなたのメールアドレスに送信されました !</span>
+	<br><br>
+	<input id="input_2fa_code_en" oninput="this.value = this.value.toUpperCase();" placeholder="type your code" maxlength="6" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+	<input id="input_2fa_code_pt" oninput="this.value = this.value.toUpperCase();" placeholder="digite seu código" maxlength="6" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+	<input id="input_2fa_code_jp" oninput="this.value = this.value.toUpperCase();" placeholder="コードを入力してください" maxlength="6" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
+	<br><br>
+	<style>.tfa_link{display: inline-block; text-decoration: none; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;}</style>
+	<a id="link_resend_en" class="tfa_link" onclick="resendCode(true);">send again</a>
+	<a id="link_resend_pt" style="display: none;" class="tfa_link" onclick="resendCode(true);">mandar novamente</a>
+	<a id="link_resend_jp" style="display: none;" class="tfa_link" onclick="resendCode(true);">もう一度送信</a>
+	|
+	<a id="link_send_second_en" class="tfa_link" onclick="resendCode(false);">send to second email</a>
+	<a id="link_send_second_pt" style="display: none;" class="tfa_link" onclick="resendCode(false);">enviar para o segundo email</a>
+	<a id="link_send_second_jp" style="display: none;" class="tfa_link" onclick="resendCode(false);">2番目のメールに送信</a>
+	|
+	<a id="link_disable_2fa_en" class="tfa_link" onclick="window.location = '/account/disable-tfa'">disable 2fa</a>
+	<a id="link_disable_2fa_pt" style="display: none;" class="tfa_link" onclick="window.location = '/account/disable-tfa'">desabilitar 2fa</a>
+	<a id="link_disable_2fa_jp" style="display: none;" class="tfa_link" onclick="window.location = '/account/disable-tfa'">2faを無効にする</a>
+	<br><br>
+	<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="submitTFA();" />
+		<p class="error-message" id="input_2fa_error_invalid_en">invalid code !</p>
+		<p class="error-message" id="input_2fa_error_invalid_pt">código inválido !</p>
+		<p class="error-message" id="input_2fa_error_invalid_jp">無効なコード !</p>
+</div>
 </center>
 
 <br><br><br>
@@ -484,6 +665,11 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 	registerTranslatable('input_password');
 	registerTranslatable('link_forgot');
 	registerTranslatable('link_register');
+	registerTranslatable('text_2fa_sent');
+	registerTranslatable('input_2fa_code');
+	registerTranslatable('link_resend');
+	registerTranslatable('link_send_second');
+	registerTranslatable('link_disable_2fa');
 	autoTranslate();
 </script>
 
