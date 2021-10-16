@@ -82,7 +82,7 @@ var pooftiesAuthenticated = false;
 var pooftiesPageRequiresAuthentication = false;
 var pooftiesAwaitingAuthentication = false;
 async function checkAuthentication(){
-	function getCookie(cname) {
+	/* function getCookie(cname) {
 		let name = cname + "=";
 		let ca = document.cookie.split(';');
 		for (let i = 0; i < ca.length; i++) {
@@ -95,17 +95,19 @@ async function checkAuthentication(){
 			}
 		}
 		return "";
-	}
+	} */
 
 	if(pooftiesPageRequiresAuthentication && !pooftiesAwaitingAuthentication){
 		if(!pooftiesAuthenticated){
 			pooftiesAwaitingAuthentication = true;
-			var authCookie = getCookie('poofties_site_jwt_token');
+			/* var authCookie = getCookie('poofties_site_jwt_token');
+			console.log(authCookie); */
 			var res = await fetch(api_path+'/auth', {
 				'method': 'GET',
+				credentials: true,
 				headers:{
 					'Content-Type': 'application/json',
-					'Authorization': 'Bearer '+authCookie
+					/* 'Authorization': 'Bearer '+authCookie */
 				}
 			});
 			if(!res.status || res.status !== 200){
