@@ -479,7 +479,7 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 
 <table id="table_fluffies" style="margin-left:-100px;"></table>
 
-<br><br><br>
+<br><br>
 
 <div style="line-height: 10px;">
 <font color="#a89495" style="font-size:10px;">
@@ -601,21 +601,21 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 				var fluffy = fluffies[i];
 				var fluffyData = `<div style="width:300px; height:152px;">
         <img src=${fluffy.img} style="width: 300px; position:absolute; left: 110px; z-index: 9;">
-				<input id=${fluffy.fid+'_name'} maxlength="13" style="position:relative; top:40px; left:55px;
+				<input id=${fluffy.fid+'_name'} maxlength="13" style="position:relative; top:35px; left:60px;
 				overflow: hidden; z-index: 10; width:135px; height:20px;
 				resize: none; padding:5px; outline:none;background: transparent;
 				border: 0px; cursor: url(https://i.imgur.com/4oHqWDj.png), progress; color: #9e8e8e;
 				font-family: verdana; font-size: 10px; letter-spacing:1px; line-height:15px;" value="${fluffy.name}"
 				onblur="updateFluffy('${fluffy.fid}')"></input><br>
 				
-				<input id=${fluffy.fid+'_traits'} maxlength="13" style="position:relative; top:50px; left:55px;
+				<input id=${fluffy.fid+'_traits'} maxlength="13" style="position:relative; top:45px; left:60px;
 				overflow: hidden; z-index: 10; width:135px; height:20px;
 				resize: none; padding:5px; outline:none;background: transparent;
 				border: 0px; cursor: url(https://i.imgur.com/4oHqWDj.png), progress; color: #9e8e8e;
 				font-family: verdana; font-size: 10px; letter-spacing:1px; line-height:15px;" value="${fluffy.traits}"
 				onblur="updateFluffy('${fluffy.fid}')"></input><br>
 				
-				<input id=${fluffy.fid+'_hobby'} maxlength="13" style="position:relative; top:60px; left:55px;
+				<input id=${fluffy.fid+'_hobby'} maxlength="13" style="position:relative; top:55px; left:60px;
 				overflow: hidden; z-index: 10; width:135px; height:20px;
 				resize: none; padding:5px; outline:none;background: transparent;
 				border: 0px; cursor: url(https://i.imgur.com/4oHqWDj.png), progress; color: #9e8e8e;
