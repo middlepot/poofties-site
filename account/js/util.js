@@ -104,7 +104,7 @@ async function checkAuthentication(){
 			console.log(authCookie); */
 			var res = await fetch(api_path+'/auth', {
 				'method': 'GET',
-				credentials: true,
+				credentials: 'same-origin',
 				headers:{
 					'Content-Type': 'application/json',
 					/* 'Authorization': 'Bearer '+authCookie */
