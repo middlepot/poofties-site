@@ -589,7 +589,7 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 		var fluffies_table = document.getElementById('table_fluffies');
 		fluffies_table.innerHTML = '';
 		try{
-			var req = await fetch(api_path+'/shybunny/fluffy', {method: 'GET'}, {credentials: 'include'});
+			var req = await fetch(api_path+'/shybunny/fluffy', {method: 'GET', credentials: 'include'});
 			var body = await req.json();
 			if(!req.status || req.status !== 200 || !body || !body.fluffies){
 				showFluffyError();
