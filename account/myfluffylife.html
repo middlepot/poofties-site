@@ -513,7 +513,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	//get profile
 	async function getProfile(){
 		var lang = getCurrentLanguage();
-		var res = await fetch(api_path+'/myfluffylife/profile?lang='+lang);
+		var res = await fetch(api_path+'/myfluffylife/profile?lang='+lang, {credentials: 'include'});
 		if(res.status === 200){
 			var body = await res.json();
 			if(body.profile){

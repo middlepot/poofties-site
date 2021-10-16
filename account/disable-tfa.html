@@ -446,6 +446,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('text_wentwrong_'+lang).style.display = 'none';
 			var res = await fetch(tfa_path+'/deactivate/force',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
