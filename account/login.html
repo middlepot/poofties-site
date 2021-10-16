@@ -436,6 +436,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			//submit to validation
 			var req = await fetch(tfa_path+'/verify', {
 				method: 'POST',
+				credentials: 'include',
 				headers:{
 					'content-type': 'application/json'
 				},
@@ -544,6 +545,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		showLoadingOverlay();
 		await fetch(tfa_path+'/resend', {
 			method: 'POST',
+			credentials: 'include',
 			headers:{
 				'content-type': 'application/json'
 			},

@@ -5,6 +5,7 @@
         <script>
             fetch(api_path+'/auth', {
 				'method': 'GET',
+                credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				}

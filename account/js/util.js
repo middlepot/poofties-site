@@ -82,32 +82,15 @@ var pooftiesAuthenticated = false;
 var pooftiesPageRequiresAuthentication = false;
 var pooftiesAwaitingAuthentication = false;
 async function checkAuthentication(){
-	/* function getCookie(cname) {
-		let name = cname + "=";
-		let ca = document.cookie.split(';');
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-				return c.substring(name.length, c.length);
-			}
-		}
-		return "";
-	} */
-
+	
 	if(pooftiesPageRequiresAuthentication && !pooftiesAwaitingAuthentication){
 		if(!pooftiesAuthenticated){
 			pooftiesAwaitingAuthentication = true;
-			/* var authCookie = getCookie('poofties_site_jwt_token');
-			console.log(authCookie); */
 			var res = await fetch(api_path+'/auth', {
 				'method': 'GET',
 				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json',
-					/* 'Authorization': 'Bearer '+authCookie */
 				}
 			});
 			if(!res.status || res.status !== 200){

@@ -468,6 +468,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('input_email_error_used_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/forgot/email/change?token='+token,{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},

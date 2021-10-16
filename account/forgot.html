@@ -451,6 +451,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('text_wentwrong_change_email_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/forgot/email',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
@@ -513,6 +514,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('text_wentwrong_change_password_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/forgot/password',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
@@ -572,6 +574,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('text_wentwrong_change_email_2_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/forgot/email-secondary',{
 				'method': 'POST',
+				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
