@@ -492,7 +492,6 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			document.getElementById('text_wentwrong_'+lang).style.display = 'none';
 			var res = await fetch(api_path+'/auth/login',{
 				'method': 'POST',
-				credentials: 'include',
 				headers:{
 					'Content-Type': 'application/json'
 				},
