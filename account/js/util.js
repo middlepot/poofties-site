@@ -1,5 +1,5 @@
-var api_path = 'https://api.poofties.middlepot.com/v1/poofties-site';
-var tfa_path = 'https://api.poofties.middlepot.com/v1/tfa';
+var api_path = 'https://api.poofties.club/v1/poofties-site';
+var tfa_path = 'https://api.poofties.club/v1/tfa';
 
 //email validation
 function validateEmail(email) {
