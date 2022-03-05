@@ -452,60 +452,59 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <div style="position:absolute; left:5%; right:5%; line-height: 10px;">
 <center>
-<img id="img_my_profile_en" src="./img/myfluffylifeprofile_en.png"/>
-<img id="img_my_profile_pt" style="display: none;" src="./img/myfluffylifeprofile_pt.png"/>
-<img id="img_my_profile_jp" style="display: none;" src="./img/myfluffylifeprofile_jp.png"/>
 
-<br><br><br>
-<div style="line-height: 15px;">
+<br><br><br><br><br>
+<div style="line-height: 15px; margin-right:10%; margin-left:10%;">
 <font color="#b8a2a3" style="font-size:10px;">
-<span id="text_current_profile_en">this is your current my fluffy life profile :</span>
-<span id="text_current_profile_pt" style="display: none;">este é o seu perfil my fluffy life no momento :</span>
-<span id="text_current_profile_jp" style="display: none;">これはあなたの現在のmy fluffy lifeプロフィールです : </span>
+<span id="text_screenshot1_en">upload your my fluffy life disclosure screenshots below ( 1 image file per post ) :</span>
+<span id="text_screenshot1_pt" style="display: none;">faça o upload dos seus prints de divulgação do my fluffy life abaixo ( 1 imagem por post ) :</span>
+<span id="text_screenshot1_jp" style="display: none;">以下のmy fluffy life開示スクリーンショットをアップロードしてください ( 投稿ごとに1つのイメージファイル ) :</span>
 </div>
 <br><br>
 
-<img id="img_current_profile" style="display: none; width: 400px;">
-
-<span id="text_no_profile_en" style="display: none;">profile not found !</span>
-<span id="text_no_profile_pt" style="display: none;">perfil não encontrado !</span>
-<span id="text_no_profile_jp" style="display: none;">プロファイルが見つかりません !</span>
-
-<br><br><br>
-
-<div style="line-height: 10px;">
-<font color="#a89495" style="font-size:10px;">
-<span id="text_inventory_en">my fluffy life profile is integrated with :</span>
-<span id="text_inventory_pt" style="display: none;">perfil my fluffy life é integrados com :</span>
-<span id="text_inventory_jp" style="display: none;">my fluffy lifeプロファイルは以下と統合されています :</span>
-<br><br><br>
-<sub><sub><sub><img src="./img/games+.png"/></sub></sub></sub>
-<a href="https://myfluffy.life" target="_blank" id="linkbjinho" style="text-decoration: none;">
-	<font id="link_myfluffylife_inventory_en" color="#c9abb0">my fluffy life game & inventory</font>
-	<font id="link_myfluffylife_inventory_pt" style="display: none;" color="#c9abb0">my fluffy life jogo & inventário</font>
-	<font id="link_myfluffylife_inventory_jp" style="display: none;" color="#c9abb0">my fluffy life ゲームと在庫</font>
-</a><br><br>
-<sub><sub><sub><img src="./img/store+.png"/></sub></sub></sub>
-<a href="https://shybunny.store" target="_blank" id="linkbjinho" style="text-decoration: none;">
-	<font id="link_shybunny_stationery_en" color="#c9abb0">shy bunny store stationery ꒰ soon ꒱</font>
-	<font id="link_shybunny_stationery_pt" style="display: none;" color="#c9abb0">papelaria shy bunny store ꒰ em breve ꒱</font>
-	<font id="link_shybunny_stationery_jp" style="display: none;" color="#c9abb0">shy bunny store 文房具 ꒰ 近日 ꒱</font>
-</a><br><br>
-　<sub><sub><sub><img src="./img/cafe+.png"/></sub></sub></sub>
-<a href="" id="linkbjinho" style="text-decoration: none;">
-	<font id="link_pufcafe_inventory_en" color="#c9abb0">puf cafe game & inventory ꒰ soon ꒱</font>
-	<font id="link_pufcafe_inventory_pt" style="display: none;" color="#c9abb0">puf cafe jogo & inventário ꒰ em breve ꒱</font>
-	<font id="link_pufcafe_inventory_jp" style="display: none;" color="#c9abb0">puf cafe ゲームと在庫 ꒰ 近日 ꒱</font>
-</a><br><br>
-　　<sub><sub><sub><img src="./img/bot+.png"/></sub></sub></sub>
-<a href="" id="linkbjinho" style="text-decoration: none;">
-	<font id="link_pufbot_inventory_en" color="#c9abb0">puf bot game & inventory ꒰ soon ꒱</font>
-	<font id="link_pufbot_inventory_pt" style="display: none;" color="#c9abb0">puf bot jogo & inventário ꒰ em breve ꒱</font>
-	<font id="link_pufbot_inventory_jp" style="display: none;" color="#c9abb0">puf bot ゲームと在庫 ꒰ 近日 ꒱</font>
-</a>　　　　
-<br><br><br><br>
+<style>
+tr { padding: 3px; text-align:center; }
+td { padding: 0px; text-align:center; max-width:200px; }
+th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; padding:10px; }
+#img { color:#bda4a4; opacity: 1; font-size: 10px; }
+::placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
+::-ms-input-placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
+label {
+	display: inline;
+}
+</style>
+<table>
+<tr>
+<td>
+<button id="input_image_en" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" onclick="document.getElementById('img').click()">click to choose</button>
+<button id="input_image_pt" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" onclick="document.getElementById('img').click()">clique para escolher</button>
+<button id="input_image_jp" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" onclick="document.getElementById('img').click()">クリックして選択</button>
+<input style="display:none;" type="file" id="img" accept="image/*">
+</td>
+<td><input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="sendForm();"/></td>
+</tr>
+</table><br>
+<div style="line-height: 15px;">
+<span id="text_imagesent_en">image files successfully sent !</span>
+<span id="text_imagesent_pt" style="display: none;">imagens enviadas com sucesso !</span>
+<span id="text_imagesent_jp" style="display: none;">イメージファイルが正常に送信されました !</span>
 </div>
-</font>
+
+<center>
+	<p class="error-message" id="text_wentwrong_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_jp">何かがうまくいかなかった !</p>
+</center>
+
+<br><br>
+
+
+<div style="line-height: 15px; margin-right:15%; margin-left:15%;">
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_screenshot_en">an admin manually check the screenshots for then releasing the teddycoins on your my fluffy life laptop. please keep the respective posts up for at least 3 days to ensure you get approved. thank you for helping this little game grow and reach more people !</span>
+<span id="text_screenshot_pt" style="display: none;">um admin manualmente checa os screenshots para então liberar os teddycoins em seu notebook do my fluffy life. por favor mantenha os respectivos posts vivos por pelo menos 3 dias para garantir que será aprovado. obrigada por ajudar este joguinho a crescer e alcançar mais pessoas !</span>
+<span id="text_screenshot_jp" style="display: none;">adminはスクリーンショットを手動でチェックして, my fluffy lifeラップトップでteddycoinをリリースします。 承認されるように, それぞれの投稿を少なくとも3日間維持してください。 この小さなゲームが成長し, より多くの人々にリーチするのを手伝ってくれてありがとう !</span>
+</div>
 
 </div>
 </div>
@@ -521,38 +520,11 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 </div>
 
 <script>
-	registerTranslatable('img_my_profile');
-	registerTranslatable('text_current_profile');
-	registerTranslatable('text_inventory');
-	registerTranslatable('link_myfluffylife_inventory');
-	registerTranslatable('link_shybunny_stationery');
-	registerTranslatable('link_pufcafe_inventory');
-	registerTranslatable('link_pufbot_inventory');
+	registerTranslatable('text_screenshot1');
+	registerTranslatable('text_screenshot');
+	registerTranslatable('text_imagesent');
+	registerTranslatable('input_image');
 	autoTranslate();
-</script>
-
-<script>
-	//check authentication
-	pooftiesPageRequiresAuthentication = true;
-	//get profile
-	async function getProfile(){
-		var lang = getCurrentLanguage();
-		var res = await fetch(api_path+'/myfluffylife/profile?lang='+lang, {credentials: 'include'});
-		if(res.status === 200){
-			var body = await res.json();
-			if(body.profile){
-				var ime = document.getElementById('img_current_profile');
-				ime.src = body.profile;
-				ime.style.display = 'block';
-			}
-		}
-		//if user don't has a my fluffy life account
-		else if(res.status < 200 || res.status >= 300){
-			document.getElementById('text_no_profile_'+lang).style.display = 'block';
-			return;
-		}
-	}
-	getProfile();
 </script>
 
 </body>
