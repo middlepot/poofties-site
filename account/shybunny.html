@@ -590,12 +590,12 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 	async function getFluffies(){
 		var lang = getCurrentLanguage();
 		function showFluffyError(){
-			var err = '<p class="error-message" style="display: block; margin-left: 100px;">could not retrieve fluffies !</p>';
+			var err = '<p class="error-message" style="display: block; margin-left: 100px;">the server couldn't find any fluffy !</p>';
 			if(lang === 'pt'){
-				err = '<p class="error-message" style="display: block; margin-left: 100px;">não consegui encontrar os fluffies !</p>';
+				err = '<p class="error-message" style="display: block; margin-left: 100px;">o servidor não conseguiu encontrar nenhum fluffy !</p>';
 			}
 			else if(lang === 'jp'){
-				err = '<p class="error-message" style="display: block; margin-left: 100px;">fluffiesを取得できませんでした !</p>';
+				err = '<p class="error-message" style="display: block; margin-left: 100px;">サーバーはfluffyを見つけることができませんでした !</p>';
 			}
 			fluffies_table.innerHTML = '';
 			appendDataToTable(fluffies_table, err);
