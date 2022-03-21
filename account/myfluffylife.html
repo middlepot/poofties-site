@@ -457,19 +457,148 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 <img id="img_my_profile_jp" style="display: none;" src="./img/myfluffylifeprofile_jp.png"/>
 
 <br><br><br>
-<div style="line-height: 15px;">
+<div style="line-height: 15px; margin-right:20%; margin-left:20%;">
 <font color="#b8a2a3" style="font-size:10px;">
+<span id="text_current_profile1_en">add your profile or character widget code to your site / blog for getting teddycoins per view !</span>
+<span id="text_current_profile1_pt" style="display: none;">adicione o código do widget do seu perfil ou personagem em seu site / blog para ganhar teddycoins por visualização !</span>
+<span id="text_current_profile1_jp" style="display: none;">ビューごとにteddycoinを取得するには, プロファイルまたはキャラクターウィジェットコードをサイト/ブログに追加してください !</span>
+<br><br></div>
+<div style="line-height: 15px;">
 <span id="text_current_profile_en">this is your current my fluffy life profile :</span>
 <span id="text_current_profile_pt" style="display: none;">este é o seu perfil my fluffy life no momento :</span>
 <span id="text_current_profile_jp" style="display: none;">これはあなたの現在のmy fluffy lifeプロフィールです : </span>
 </div>
 <br><br>
 
-<img id="img_current_profile" style="display: none; width: 400px;">
+<img id="img_current_profile" style="display: none; width: 320px; height: auto;">
+
+<script>
+function copyTextFromArea(areaId){
+	var area = document.getElementById(areaId);
+	area.focus();
+	area.select();
+	area.setSelectionRange(0, 99999);
+	document.execCommand("copy");
+}
+</script><br><br>
+<center><div style="height:42px; width:165px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none;
+background-color: transparent; overflow: auto; overflow: scroll; 
+background-image:url(./img/code.png);
+font-size:6px; font-family:Verdana; COLOR: #a58282;">
+<textarea id="widget-profile-text" style="height:35px; width:160px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none; padding:10px;
+background-color: transparent; overflow: auto; overflow: scroll;
+font-size:6px; font-family:Verdana; COLOR: #a58282;">
+</textarea>
+<!-- populate widget text -->
+<script>
+	async function getProfileWidgetText(){
+		var req = await fetch(api_path+'/myfluffylife/widget/profile', {credentials: 'include'});
+		var res = await req.json();
+		if(res.widget){
+			var area = document.getElementById('widget-profile-text');
+			area.value = res.widget;
+		}
+	}
+	getProfileWidgetText();
+</script>
+</div>
+<input onclick="copyTextFromArea('widget-profile-text');"
+style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
+background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
+</center>
 
 <span id="text_no_profile_en" style="display: none;">profile not found !</span>
 <span id="text_no_profile_pt" style="display: none;">perfil não encontrado !</span>
 <span id="text_no_profile_jp" style="display: none;">プロファイルが見つかりません !</span>
+
+<br><br>
+
+<div style="line-height: 15px;">
+<span id="text_current_character_en">this is your current my fluffy life character :</span>
+<span id="text_current_character_pt" style="display: none;">este é o seu personagem my fluffy life no momento :</span>
+<span id="text_current_character_jp" style="display: none;">これはあなたの現在のmy fluffy lifeキャラクターです : </span>
+</div>
+<br><br>
+
+<img id="img_current_profile_front" style="display: none; height: 150px; width: auto;" onclick="toggleProfileBody();">
+<img id="img_current_profile_back" style="display: none; height: 150px; width: auto;" onclick="toggleProfileBody();">
+
+<br><br>
+<center><div style="height:42px; width:165px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none;
+background-color: transparent; overflow: auto; overflow: scroll; 
+background-image:url(./img/code.png);
+font-size:6px; font-family:Verdana; COLOR: #a58282;">
+<textarea id="widget-profile-text-body" style="height:35px; width:160px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none; padding:10px;
+background-color: transparent; overflow: auto; overflow: scroll;
+font-size:6px; font-family:Verdana; COLOR: #a58282;"></textarea></div>
+<!-- populate widget text -->
+<script>
+	async function getProfileBodyWidgetText(){
+		var req = await fetch(api_path+'/myfluffylife/widget/profile/body', {credentials: 'include'});
+		var res = await req.json();
+		if(res.widget){
+			var area = document.getElementById('widget-profile-text-body');
+			area.value = res.widget;
+		}
+	}
+	getProfileBodyWidgetText();
+</script>
+<input onclick="copyTextFromArea('widget-profile-text-body');"
+style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
+background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
+</center>
+
+<span id="text_no_character_en" style="display: none;">character not found !</span>
+<span id="text_no_character_pt" style="display: none;">personagem não encontrado !</span>
+<span id="text_no_character_jp" style="display: none;">キャラクターが見つかりません !</span>
+
+<br><br>
+
+
+<div style="line-height: 15px;">
+<span id="text_current_teddycoins1_en">teddycoins available for withdrawal :</span>
+<span id="text_current_teddycoins1_pt" style="display: none;">teddycoins disponíveis para retirada :</span>
+<span id="text_current_teddycoins1_jp" style="display: none;">引き出し可能なteddycoin : </span>
+</div>
+<br>
+
+<center>
+<style>
+::placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
+::-ms-input-placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
+label {
+	display: inline;
+}
+tr { padding: 3px; text-align:center; }
+td { padding: 0px; text-align:center; max-width:200px; }
+th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; padding:10px; }
+</style>
+
+<table>
+<tr>
+<td><input id="teddycoins" readonly="readonly" placeholder="0" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursor.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+</td>
+<td><input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="claimTeddycoins();"/></td>
+</tr>
+</table><br>
+<div style="line-height: 15px;">
+<span id="text_current_teddycoins_en" style="display: none;">coupon code generated :</span>
+<span id="text_current_teddycoins_pt" style="display: none;">código do cupom gerado :</span>
+<span id="text_current_teddycoins_jp" style="display: none;">生成されたクーポンコード :</span>
+<span id="text_teddycoins_coupon" style="display: none;"></span>
+</div>
+	<p class="error-message" id="text_wentwrong_en">something went wrong !</p>
+	<p class="error-message" id="text_wentwrong_pt">algo deu errado !</p>
+	<p class="error-message" id="text_wentwrong_jp">何かがうまくいかなかった !</p>
+</center>
 
 <br><br><br>
 
@@ -522,7 +651,10 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <script>
 	registerTranslatable('img_my_profile');
+	registerTranslatable('text_current_profile1');
 	registerTranslatable('text_current_profile');
+	registerTranslatable('text_current_character');
+	registerTranslatable('text_current_teddycoins1');
 	registerTranslatable('text_inventory');
 	registerTranslatable('link_myfluffylife_inventory');
 	registerTranslatable('link_shybunny_stationery');
@@ -536,8 +668,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	pooftiesPageRequiresAuthentication = true;
 	//get profile
 	async function getProfile(){
-		var lang = getCurrentLanguage();
-		var res = await fetch(api_path+'/myfluffylife/profile?lang='+lang, {credentials: 'include'});
+		var res = await fetch(api_path+'/myfluffylife/profile', {credentials: 'include'});
 		if(res.status === 200){
 			var body = await res.json();
 			if(body.profile){
@@ -548,11 +679,92 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		}
 		//if user don't has a my fluffy life account
 		else if(res.status < 200 || res.status >= 300){
+			var lang = getCurrentLanguage();
 			document.getElementById('text_no_profile_'+lang).style.display = 'block';
+			document.getElementById('text_no_character_'+lang).style.display = 'block';
 			return;
 		}
 	}
 	getProfile();
+
+	//get player body
+	async function getProfileBody(){
+		var res = await fetch(api_path+'/myfluffylife/profile/body', {credentials: 'include'});
+		if(res.status === 200){
+			var body = await res.json();
+			if(body.profile){
+				var front = document.getElementById('img_current_profile_front');
+				front.src = body.profile.image_front;
+				front.style.display = 'block';
+				var back = document.getElementById('img_current_profile_back');
+				back.src = body.profile.image_back;
+			}
+		}
+		//if user don't has a my fluffy life account
+		else if(res.status < 200 || res.status >= 300){
+			var lang = getCurrentLanguage();
+			document.getElementById('text_no_profile_'+lang).style.display = 'block';
+			document.getElementById('text_no_character_'+lang).style.display = 'block';
+			return;
+		}
+	}
+	function toggleProfileBody(){
+		var front = document.getElementById('img_current_profile_front');
+		var back = document.getElementById('img_current_profile_back');
+		if(front.style.display === 'block'){
+			front.style.display = 'none';
+			back.style.display = 'block';
+		}
+		else if(front.style.display === 'none'){
+			front.style.display = 'block';
+			back.style.display = 'none';
+		}
+	}
+	getProfileBody();
+
+	//get total coins
+	async function getWidgetCoins(){
+		var res = await fetch(api_path+'/myfluffylife/widget/prize', {credentials: 'include'});
+		if(res.status === 200){
+			var body = await res.json();
+			if(body.prize >= 0){
+				var total = document.getElementById('teddycoins');
+				total.value = body.prize;
+			}
+			if(body.coupon_last){
+				var coupon = document.getElementById('text_teddycoins_coupon');
+				coupon.innerHTML = '<b>'+body.coupon_last+'</b>';
+				coupon.style.display = 'block';
+				var lang = getCurrentLanguage();
+				document.getElementById('text_current_teddycoins_'+lang).style.display = 'block';
+			}
+		}
+	}
+	getWidgetCoins();
+
+	async function claimTeddycoins(){
+		var totalCoins = document.getElementById('teddycoins');
+		if(totalCoins.value){
+			showLoadingOverlay();
+			var res = await fetch(api_path+'/myfluffylife/widget/prize/claim', {
+				method: 'POST',
+				credentials: 'include'
+			});
+			var lang = getCurrentLanguage();
+			if(res.status === 200){
+				var body = await res.json();
+				var coupon = document.getElementById('text_teddycoins_coupon');
+				coupon.innerHTML = '<b>'+body.coupon+'</b>';
+				coupon.style.display = 'block';
+				document.getElementById('text_current_teddycoins_'+lang).style.display = 'block';
+				document.getElementById('teddycoins').value = 0;
+			}
+			else if(res.status >= 300){
+				document.getElementById('text_wentwrong_'+lang).style.display = 'block';
+			}
+			hideLoadingOverlay();
+		}
+	}
 </script>
 
 </body>
