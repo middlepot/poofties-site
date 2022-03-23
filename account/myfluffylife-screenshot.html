@@ -89,7 +89,7 @@ tooooooooltip
 			if($("#s-m-t-tooltip").length===0){
 				$("body").append("<div id='s-m-t-tooltip'><div></div></div>");
 			}
-			var smtTooltip=$("#s-m-t-tooltip"); 
+			var smtTooltip=$("#s-m-t-tooltip");
 			smtTooltip.css({"position":"absolute","display":"none"}).data("smt-z-index",smtTooltip.css("z-index")).children("div").css({"width":"100%","height":"100%"});
 			function smtGetCursorCoords(event){
 				var smtCursorCoordsX=event.pageX,
@@ -479,14 +479,14 @@ label {
 <button id="input_image_en" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" onclick="document.getElementById('img').click()">click to choose</button>
 <button id="input_image_pt" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" onclick="document.getElementById('img').click()">clique para escolher</button>
 <button id="input_image_jp" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" onclick="document.getElementById('img').click()">クリックして選択</button>
-<input style="display:none;" type="file" id="img" accept="image/*">
+<input style="display:none;" type="file" id="img" accept=".png, .jpg, .jpeg" onchange="showFilename(event);">
 </td>
-<td><input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="sendForm();"/></td>
+<td><input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="submitImage();"/></td>
 </tr>
 </table><br>
 <div style="line-height: 15px;">
-<span id="text_imagesent_en">image files successfully sent !</span>
-<span id="text_imagesent_pt" style="display: none;">imagens enviadas com sucesso !</span>
+<span id="text_imagesent_en" style="display: none;">image successfully sent !</span>
+<span id="text_imagesent_pt" style="display: none;">imagem enviada com sucesso !</span>
 <span id="text_imagesent_jp" style="display: none;">イメージファイルが正常に送信されました !</span>
 </div>
 
@@ -522,9 +522,70 @@ label {
 <script>
 	registerTranslatable('text_screenshot1');
 	registerTranslatable('text_screenshot');
-	registerTranslatable('text_imagesent');
 	registerTranslatable('input_image');
 	autoTranslate();
+</script>
+
+<script>
+	function showFilename(event){
+		if (!event || !event.target || !event.target.files || event.target.files.length === 0) {
+			return;
+		}
+		var name = event.target.files[0].name;
+		if(name.length >= 15){
+			name = name.substring(0, 14);
+			name += '...';
+		}
+		var btnEn = document.getElementById('input_image_en');
+		var btnPt = document.getElementById('input_image_pt');
+		var btnJp = document.getElementById('input_image_jp');
+		btnEn.innerHTML = name;
+		btnPt.innerHTML = name;
+		btnJp.innerHTML = name;
+	}
+
+	function resetFilenameButtonText(){
+		var btnEn = document.getElementById('input_image_en');
+		var btnPt = document.getElementById('input_image_pt');
+		var btnJp = document.getElementById('input_image_jp');
+		btnEn.innerHTML = 'click to choose';
+		btnPt.innerHTML = 'clique para escolher';
+		btnJp.innerHTML = 'クリックして選択';
+	}
+
+	async function submitImage(){
+		var lang = getCurrentLanguage();
+		try{
+			var image_form = new FormData();
+			//thumbnail, if any
+			var imgEl = document.getElementById('img');
+			if(!imgEl.files.length){
+				return;
+			}
+			showLoadingOverlay();
+			image_form.append('screenshot', imgEl.files[0]);
+			var img_resp = await fetch(api_path+'/myfluffylife/public-marketing/screenshot/upload', {
+				method: 'POST',
+				body: image_form
+			});
+			hideLoadingOverlay();
+			if(img_resp.status === 200){ //all ok
+				document.getElementById('text_imagesent_'+lang).style.display = 'block';
+				document.getElementById('text_wentwrong_'+lang).style.display = 'none';
+				resetFilenameButtonText(); //reset submit text
+				return true;
+			}
+			document.getElementById('text_wentwrong_'+lang).style.display = 'block';
+			document.getElementById('text_imagesent_'+lang).style.display = 'none';
+			return false;
+		}
+		catch(err){
+			hideLoadingOverlay();
+			document.getElementById('text_wentwrong_'+lang).style.display = 'block';
+			document.getElementById('text_imagesent_'+lang).style.display = 'none';
+			return false;
+		}
+	}
 </script>
 
 </body>
