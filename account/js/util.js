@@ -94,7 +94,8 @@ async function checkAuthentication(){
 				}
 			});
 			if(!res.status || res.status !== 200){
-				window.location = '/account/login.html';
+				//set return cookie
+				window.location = '/account/login.html?url_ret='+encodeURI(window.location.href);
 				return;
 			}
 			//all ok
