@@ -527,6 +527,8 @@ label {
 </script>
 
 <script>
+	//mark page as requiring authentication
+	pooftiesPageRequiresAuthentication = true;
 	function showFilename(event){
 		if (!event || !event.target || !event.target.files || event.target.files.length === 0) {
 			return;
