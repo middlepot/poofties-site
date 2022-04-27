@@ -70,261 +70,9 @@ border: 1px dotted #e2d5d0;
 #linkzinho { padding-bottom: 2px; border-bottom:1px dotted #c6a799; }
 #linkzinhoo { padding-bottom: 2px; border-bottom:1px dotted #e8c1c5; }</style>
 
-<!--
-tooooooooltip
--->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 <script src="./js/cookies.js"></script>
 <script src="./js/util.js"></script>
-
-<script>
-(function($){
-	var methods={
-		init:function(options){
-			var defaults={ 
-				tip_follows_cursor:false, //tooltip follows cursor: boolean
-				tip_delay_time:700, //tooltip delay before displaying: milliseconds
-				tip_fade_speed:300, //tooltip fade in/out speed: milliseconds
-				attribute:"title" //tooltip text come from this attribute
-			},
-			options=$.extend(defaults,options);
-			if($("#s-m-t-tooltip").length===0){
-				$("body").append("<div id='s-m-t-tooltip'><div></div></div>");
-			}
-			var smtTooltip=$("#s-m-t-tooltip"); 
-			smtTooltip.css({"position":"absolute","display":"none"}).data("smt-z-index",smtTooltip.css("z-index")).children("div").css({"width":"100%","height":"100%"});
-			function smtGetCursorCoords(event){
-				var smtCursorCoordsX=event.pageX,
-					smtCursorCoordsY=event.pageY;
-				smtTooltip.style_my_tooltips("position",{
-					smtCursorCoordsX:smtCursorCoordsX,
-					smtCursorCoordsY:smtCursorCoordsY
-				});
-			}
-			$(".smt-current-element").live("mouseout mousedown click",function(){
-				var $this=$(this);
-				clearTimeout(smtTooltip_delay);
-				smtTooltip.style_my_tooltips("hide",{
-					speed:$this.data("smt-fade-speed")
-				});
-				$(document).unbind("mousemove");
-				$this.removeClass("smt-current-element");
-				if($this.attr(options.attribute)===""){
-					$this.attr(options.attribute,$this.data("smt-title"));
-				}
-			});
-			return this["live"]("mouseover",function(event){
-				var $this=$(this),
-					title=$this.attr(options.attribute);
-				$this.addClass("smt-current-element").data({"smt-title":title,"smt-fade-speed":options.tip_fade_speed}).attr(options.attribute,"");
-				smtTooltip.style_my_tooltips("update",{
-					title:title,
-					speed:options.tip_fade_speed,
-					delay:options.tip_delay_time,
-					tip_follows_cursor:options.tip_follows_cursor
-				});
-				$(document).bind("mousemove", function(event){
-					smtGetCursorCoords(event); 
-				});
-			});
-		},
-		update:function(options){
-			var $this=$(this);
-			$this.stop().css({"display":"none","z-index":$this.data("smt-z-index")}).children("div").text(options.title);
-			smtTooltip_delay=setTimeout(function(){
-				$this.style_my_tooltips("show",{
-					speed:options.speed,
-					tip_follows_cursor:options.tip_follows_cursor
-				})
-			}, options.delay);
-		},
-		show:function(options){
-			var $this=$(this);
-			$this.stop().fadeTo(options.speed,1);
-			if(!options.tip_follows_cursor){
-				$(document).unbind("mousemove");
-			}
-		},
-		hide:function(options){
-			var $this=$(this);
-			$this.stop().fadeTo(options.speed,0,function(){
-				$this.css({"z-index":"-1"});
-			});
-		},
-		position:function(options){
-			var $this=$(this),
-				winScrollX=$(window).scrollLeft(),
-				winScrollY=$(window).scrollTop(),
-				tipWidth=$this.outerWidth(true),
-				tipHeight=$this.outerHeight(true),
-				leftOffset=(options.smtCursorCoordsX+tipWidth)-winScrollX,
-				topOffset=(options.smtCursorCoordsY+tipHeight)-winScrollY;
-			if(leftOffset<=$(window).width() && leftOffset<=$(document).width()){
-				$this.css("left",options.smtCursorCoordsX);
-			}else{
-				var thePosX=options.smtCursorCoordsX-tipWidth;
-				if(thePosX>=winScrollX){
-					$this.css("left",thePosX);
-				}else{
-					$this.css("left",winScrollX);
-				}
-			}
-			if(topOffset<=$(window).height() && topOffset<=$(document).height()){
-				$this.css("top",options.smtCursorCoordsY);
-			}else{
-				var thePosY=options.smtCursorCoordsY-tipHeight;
-				if(thePosY>=winScrollY){
-					$this.css("top",thePosY);
-				}else{
-					$this.css("top",winScrollY);
-				}
-			}
-		}
-	}
-	$.fn.style_my_tooltips=function(method){
-		if(methods[method]){
-			return methods[method].apply(this,Array.prototype.slice.call(arguments,1));
-		}else if(typeof method==="object" || !method){
-			return methods.init.apply(this,arguments);
-		}else{
-			$.error("Method "+method+" does not exist");
-		}
-	};
-})(jQuery);  
-</script>
-<script>
-
-(function($){
-
-$(document).ready(function(){
-
-$("a[title]").style_my_tooltips({
-
-tip_follows_cursor:true,
-
-tip_delay_time:90,
-
-tip_fade_speed:600,
-
-attribute:"title"
-
-});
-
-});
-
-})(jQuery);
-
-</script>
-<!--tooltip!-->
-<style>
-.tooltip{
-    display: inline;
-    position: relative;
-}
-#s-m-t-tooltip {
-max-width:300px; /*how big the tooltip can be at most*/
-border-radius: 0px; /*change your border radius*/
-padding:3px 4px 5px 4px; /*padding inside tooltip*/
-margin:10px 7px -2px 10px; /*distance from word*/
-background-color:#fcf6f2; /*background color*/ 
-  border:1px dotted #CEB6B6; /*border info*/
-  font-family:tahoma; /*tooltip font*/
-font-size:7px; /*tooltip font size*/
-letter-spacing:2px; /*tooltip letter spacing*/
-color:#CEB6B6; /*tooltip font color*/
-z-index:9999;
-}
-</style>
-
-<!--
-menuuuuuuuuuuuuuuu
--->
-<html xmlns="https://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style type="text/css">
-			* {
-				margin: 0;
-				padding: 0;
-				font-family: Verdana;
-			}
-			
-			ul {
-				list-style: none
-			}
-			
-			#context_menu {
-				background: #fcf6f2;
-				-moz-border-radius: 1px 1px;
-				border: 1px dotted #baada3;
-				letter-spacing:1px; 
-				width: 72px;
-				font-size: 8px;
-				position: absolute;
-				display: none;
-				z-index:999;
-			}
-			
-			#context_menu ul li {
-				padding: 4px 4px;
-				-moz-border-radius: 10px 10px;
-				cursor: url(https://i.imgur.com/IJhQJq5.png), progress;
-			}
-			
-			#context_menu ul li:hover {
-				background: #fcf6f2;
-				color: #baada3;
-			}
-		</style>
-		<script type="text/javascript" language="JavaScript">
-			function click(e){
-				document.getElementById("teste").innerHTML = "";
-				var menu = document.getElementById("context_menu");
-				var mouseEvent = e || event;
-				if (mouseEvent.button == 2 || mouseEvent.button == 3) {
-					mostrar(mouseEvent);
-					menu.onmouseout = function(e){
-						var mouseEvent = e || event;
-						var element = mouseEvent.relatedTarget || mouseEvent.toElement; 
-						if (element.nodeName != "LI") {
-							mouseEvent.toElement;
-						}
-					};
-				}
-				if (mouseEvent.button == 0 || mouseEvent.button == 1) {
-					esconder();
-				}
-			}
-			
-			document.onmousedown = click;
-			document.oncontextmenu = function(){
-				return false
-			};
-			function mostrar(e){
-				var menu = document.getElementById("context_menu");
-				menu.style.display = "block";
-				menu.style.top = e.pageY + 5 + "px";
-				menu.style.left = e.pageX + 5 + "px";
-			}
-			
-			function esconder(){
-				setTimeout(function(){
-					var menu = document.getElementById("context_menu");
-					menu.style.display = "none"
-				}, 100);
-			}
-			
-		</script>
-	</head>
-		<div id="teste"></div>
-		<div id="context_menu">
-			<ul>
-				<li><font color="#baada3"> ‌ take care ♡</font></li>
-			</ul>
-		</div>
-<!--
-menuuuuuuuuuuuuuuu
--->
 
 </head>
 
@@ -472,6 +220,8 @@ para adicionar um item na sua coleção virtual :</span>
 tr { padding: 3px; text-align:center; }
 td { padding: 0px; text-align:center; max-width:200px; }
 th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; padding:10px; }
+::placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
+::-ms-input-placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
 </style>
 
 <table>
@@ -490,11 +240,127 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 	<p class="error-message" id="text_add_fluffy_error_code_used_pt">código já utilizado !</p>
 	<p class="error-message" id="text_add_fluffy_error_code_used_jp">すでに使用されているコード !</p>
 
+<br><br><br>
+
+<div style="line-height: 15px; margin-right:25%; margin-left:25%;">
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_fluffy1_en">add a collection carousel widget code to your site / blog for getting ribbons per view !</span>
+<span id="text_fluffy1_pt" style="display: none;">adicione um código de widget do seu carrossel de coleção em seu site / blog para ganhar ribbons por visualização !</span>
+<span id="text_fluffy1_jp" style="display: none;">コレクションカルーセルウィジェットコードをサイト / ブログに追加して、ビューごとにribbonを取得します !</span>
+<br><br></div>
+
+<div style="line-height: 15px;">
+<span id="text_current_fluffy1_en">this is your current felted fluffy cards collection :</span>
+<span id="text_current_fluffy1_pt" style="display: none;">esta é a sua coleção de carteirinhas felted fluffy no momento :</span>
+<span id="text_current_fluffy1_jp" style="display: none;">これはあなたの現在のfelted fluffyカードコレクションです :</span>
+</div>
 <br><br>
 
 <table id="table_fluffies" style="margin-left:-100px;"></table>
 
+<script>
+function copyTextFromArea(areaId){
+	var area = document.getElementById(areaId);
+	area.focus();
+	area.select();
+	area.setSelectionRange(0, 99999);
+	document.execCommand("copy");
+}
+</script><br><br>
+<center><div style="height:42px; width:165px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none;
+background-color: transparent; overflow: auto; overflow: scroll; 
+background-image:url(./img/code.png);
+font-size:7px; font-family:Verdana; COLOR: #a58282;">
+<textarea id="widget-carousel1-text" style="height:35px; width:160px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none; padding:8px; resize: none;
+background-color: transparent; overflow: auto; overflow: scroll;
+font-size:7px; font-family:Verdana; COLOR: #a58282;">
+</textarea>
+<!-- populate widget text -->
+<script>
+	async function getProfileWidgetText(){
+		var req = await fetch(api_path+'/myfluffylife/widget/profile', {credentials: 'include'});
+		var res = await req.json();
+		if(res.widget){
+			var area = document.getElementById('widget-carousel1-text');
+			area.value = res.widget;
+		}
+	}
+	getProfileWidgetText();
+</script>
+</div>
+<input onclick="copyTextFromArea('widget-carousel1-text');"
+style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
+background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
+</center>
+
+<br><br><br>
+
+<div style="line-height: 15px;">
+<span id="text_current_fluffy2_en">this is your current felted fluffy stuffie collection :</span>
+<span id="text_current_fluffy2_pt" style="display: none;">esta é a sua coleção de pelúcias felted fluffies no momento :</span>
+<span id="text_current_fluffy2_jp" style="display: none;">これはあなたの現在のfelted fluffyぬいぐるみコレクションです :</span>
+</div>
 <br><br>
+
+<table id="table_fluffies2" style="margin-left:-100px;"></table>
+
+<br><br>
+<center><div style="height:42px; width:165px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none;
+background-color: transparent; overflow: auto; overflow: scroll; 
+background-image:url(./img/code.png);
+font-size:7px; font-family:Verdana; COLOR: #a58282;">
+<textarea id="widget-carousel2-text" style="height:35px; width:160px; border: 0px solid #baaeab;
+ cursor: url(./img/cursorwrite.png), progress;
+ outline:none; padding:8px; resize: none;
+background-color: transparent; overflow: auto; overflow: scroll;
+font-size:7px; font-family:Verdana; COLOR: #a58282;">
+</textarea>
+<!-- populate widget text -->
+<script>
+	async function getProfileWidgetText(){
+		var req = await fetch(api_path+'/myfluffylife/widget/profile', {credentials: 'include'});
+		var res = await req.json();
+		if(res.widget){
+			var area = document.getElementById('widget-carousel2-text');
+			area.value = res.widget;
+		}
+	}
+	getProfileWidgetText();
+</script>
+</div>
+<input onclick="copyTextFromArea('widget-carousel2-text');"
+style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
+background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
+</center>
+
+<br><br><br><br>
+
+<a href="https://shybunny.store/share" target="_blank"><button id="ribbonscheck_en" style="height:31px; width:210px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 9px; letter-spacing:1px; color:#c4a1a1; text-align:center;"><sub><img src="./img/ribbonicon.png"></sub> check your ribbons here <sub><img src="./img/ribbonicon.png"></sub></button></a>
+<a href="https://shybunny.store/share" target="_blank"><button id="ribbonscheck_pt" style="display: none; height:31px; width:210px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 9px; letter-spacing:1px; color:#c4a1a1; text-align:center;"><sub><img src="./img/ribbonicon.png"></sub> cheque seus ribbons aqui <sub><img src="./img/ribbonicon.png"></sub></button></a>
+<a href="https://shybunny.store/share" target="_blank"><button id="ribbonscheck_jp" style="display: none; height:31px; width:210px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorhover.png), progress; font-family: Verdana; font-size: 9px; letter-spacing:1px; color:#c4a1a1; text-align:center;"><sub><img src="./img/ribbonicon.png"></sub> ここでribbonをチェックして <sub><img src="./img/ribbonicon.png"></sub></button></a>
+
+<br><br><br><br>
+
+<div style="line-height: 15px; margin-right:15%; margin-left:15%;">
+<a id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0" style="font-size:9px">
+<span id="text_display1_en">would you like to only display one card or stuffie at a time ? click here !</span>
+<span id="text_display1_pt" style="display: none;">você gostaria de exibir apenas uma carteirinha ou pelúcia por vez ? clique aqui !</span>
+<span id="text_display1_jp" style="display: none;">一度に1枚のカードまたはぬいぐるみだけを表示しますか ? ここをクリック !</span>
+</font></a>
+
+<br><br>
+<span id="text_display2_en">now the widget codes above will only display one card or stuffie at a time, and that way you can add multiples to your site / blog. click the arrows to select which specific one you'd like to display.</span>
+<span id="text_display2_pt" style="display: none;">agora os códigos dos widgets acima exibirão apenas uma carteirinha ou pelúcia por vez, e dessa forma você poderá adicionar vários em seu site / blog. clique nas setas para selecionar qual específico gostaria de exibir.</span>
+<span id="text_display2_jp" style="display: none;">これで, 上記のウィジェットコードは,  一度に1枚のカードまたはぬいぐるみのみを表示します。 これにより, サイト / ブログに複数を追加できます。 矢印をクリックして, 表示する特定の矢印を選択します。</span>
+</div>
+
+<br><br><br>
 
 <div style="line-height: 10px;">
 <font color="#a89495" style="font-size:10px;">
@@ -548,6 +414,12 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 	registerTranslatable('img_banner');
 	registerTranslatable('text_add_fluffy');
 	registerTranslatable('text_integrations');
+	registerTranslatable('text_fluffy1');
+	registerTranslatable('text_current_fluffy1');
+	registerTranslatable('text_current_fluffy2');
+	registerTranslatable('ribbonscheck1');
+	registerTranslatable('text_display1');
+	registerTranslatable('text_display2');
 	registerTranslatable('link_myfluffylife_inventory');
 	registerTranslatable('link_shybunny_stationery');
 	registerTranslatable('link_pufcafe_inventory');
