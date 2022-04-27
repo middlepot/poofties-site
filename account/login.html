@@ -295,7 +295,14 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			}
 			//all ok, redirect
 			else{
-				window.location = '/account/home.html';
+				//check if there is a URL return pending
+				var dest = '/account/home.html';
+				var urlParams = new URLSearchParams(window.location.search);
+				var ret = urlParams.get('url_ret');
+				if(ret){
+					dest = decodeURI(ret);
+				}
+				window.location = dest;
 			}
 		}
 		catch(err){

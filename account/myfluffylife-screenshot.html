@@ -275,6 +275,8 @@ label {
 </script>
 
 <script>
+	//mark page as requiring authentication
+	pooftiesPageRequiresAuthentication = true;
 	function showFilename(event){
 		if (!event || !event.target || !event.target.files || event.target.files.length === 0) {
 			return;
@@ -314,7 +316,8 @@ label {
 			image_form.append('screenshot', imgEl.files[0]);
 			var img_resp = await fetch(api_path+'/myfluffylife/public-marketing/screenshot/upload', {
 				method: 'POST',
-				body: image_form
+				body: image_form,
+				credentials: 'include'
 			});
 			hideLoadingOverlay();
 			if(img_resp.status === 200){ //all ok
