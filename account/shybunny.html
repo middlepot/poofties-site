@@ -70,7 +70,7 @@ border: 1px dotted #e2d5d0;
 #linkzinho { padding-bottom: 2px; border-bottom:1px dotted #c6a799; }
 #linkzinhoo { padding-bottom: 2px; border-bottom:1px dotted #e8c1c5; }</style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="./js/jquery-3.6.0.slim.min.js"></script>
 <script src="./js/cookies.js"></script>
 <script src="./js/util.js"></script>
 
@@ -256,7 +256,12 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 </div>
 <br><br>
 
-<table id="table_fluffies" style="margin-left:-100px;"></table>
+<div id="carousel_card_full" style="margin-left:-100px; display: none;">
+	<a id="carousel_card_prev"><img src="./img/arrowprev.png" style="position: relative; left: -130px; top: 90px;" onclick="cardCarouselPrev();"></a>
+	<div id="carousel_card"></div>
+	<a id="carousel_card_next"><img src="./img/arrownext.png" style="position: relative; left: 220px; top: -95px;" onclick="cardCarouselNext();"></a>
+</div>
+<p id="carousel_card_error" class="error-message" style="display: none;"></p>
 
 <script>
 function copyTextFromArea(areaId){
@@ -273,7 +278,7 @@ function copyTextFromArea(areaId){
 background-color: transparent; overflow: auto; overflow: scroll; 
 background-image:url(./img/code.png);
 font-size:7px; font-family:Verdana; COLOR: #a58282;">
-<textarea id="widget-carousel1-text" style="height:35px; width:160px; border: 0px solid #baaeab;
+<textarea id="widget_carousel_card" style="height:35px; width:160px; border: 0px solid #baaeab;
  cursor: url(./img/cursorwrite.png), progress;
  outline:none; padding:8px; resize: none;
 background-color: transparent; overflow: auto; overflow: scroll;
@@ -281,18 +286,60 @@ font-size:7px; font-family:Verdana; COLOR: #a58282;">
 </textarea>
 <!-- populate widget text -->
 <script>
-	async function getProfileWidgetText(){
-		var req = await fetch(api_path+'/myfluffylife/widget/profile', {credentials: 'include'});
-		var res = await req.json();
-		if(res.widget){
-			var area = document.getElementById('widget-carousel1-text');
-			area.value = res.widget;
+	var cardWidgetHeader = '';
+	var cardWidgetLink = '';
+	var cardWidgetFooter = '';
+	var cardWidgetUrl = '';
+	function updateCardWidgetText(fid){
+		var area = document.getElementById('widget_carousel_card');
+		//get link and add query params if needed
+		var link = cardWidgetLink;
+		var full = $.parseHTML(link, document, true);
+		var div = $(full).get(0);
+		var scrip = $(full).get(1);
+		$(div).css({
+			'width': 400,
+			'height': 'auto',
+			'display': 'flex',
+			'align-items': 'center'
+		});
+		if(fid){
+			//change div id and width
+			var origId = $(div).attr('id');
+			var origIdPos = origId.lastIndexOf('_')+1; //find end of uid
+			var newId = origId.substring(0, origIdPos)+fid;
+			$(div).attr('id', newId);
+			$(div).css({
+				'width': 300,
+				'height': 'auto'
+			});
+			//change script src
+			var url = new URL(cardWidgetUrl);
+			var query = url.searchParams;
+			query.delete('uid');
+			query.set('fid', fid);
+			url.search = query.toString();
+			var src = url.toString();
+			$(scrip).attr('src', src);
+		}
+		link = $(div).prop('outerHTML')+$(scrip).prop('outerHTML');
+		area.value = cardWidgetHeader+link+cardWidgetFooter;
+	}
+	async function getCardWidgetText(){
+		var req = await fetch(api_path+'/shybunny/widget/fluffy/card', {credentials: 'include'});
+		if(req.status === 200){
+			var res = await req.json();
+			cardWidgetHeader = res.header;
+			cardWidgetLink = res.link;
+			cardWidgetFooter = res.footer;
+			cardWidgetUrl = res.url;
+			updateCardWidgetText();
 		}
 	}
-	getProfileWidgetText();
+	getCardWidgetText();
 </script>
 </div>
-<input onclick="copyTextFromArea('widget-carousel1-text');"
+<input onclick="copyTextFromArea('widget_carousel_card');"
 style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
 background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
 </center>
@@ -305,8 +352,14 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 <span id="text_current_fluffy2_jp" style="display: none;">これはあなたの現在のfelted fluffyぬいぐるみコレクションです :</span>
 </div>
 <br><br>
-
-<table id="table_fluffies2" style="margin-left:-100px;"></table>
+<!-- style="position: relative; left: -100px; top: 90px;" -->
+<!-- style="position: relative; left: 100px; top: -95px;" -->
+<div id="carousel_body_full" style="display: none; flex-direction: row; justify-content: center; align-items: center;">
+	<a id="carousel_body_prev"><img src="./img/arrowprev.png" onclick="bodyCarouselPrev();"></a>
+	<div id="carousel_body"></div>
+	<a id="carousel_body_next"><img src="./img/arrownext.png" onclick="bodyCarouselNext();"></a>
+</div>
+<p id="carousel_body_error" class="error-message" style="display: none;"></p>
 
 <br><br>
 <center><div style="height:42px; width:165px; border: 0px solid #baaeab;
@@ -315,7 +368,7 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 background-color: transparent; overflow: auto; overflow: scroll; 
 background-image:url(./img/code.png);
 font-size:7px; font-family:Verdana; COLOR: #a58282;">
-<textarea id="widget-carousel2-text" style="height:35px; width:160px; border: 0px solid #baaeab;
+<textarea id="widget_carousel_body" style="height:35px; width:160px; border: 0px solid #baaeab;
  cursor: url(./img/cursorwrite.png), progress;
  outline:none; padding:8px; resize: none;
 background-color: transparent; overflow: auto; overflow: scroll;
@@ -323,18 +376,60 @@ font-size:7px; font-family:Verdana; COLOR: #a58282;">
 </textarea>
 <!-- populate widget text -->
 <script>
-	async function getProfileWidgetText(){
-		var req = await fetch(api_path+'/myfluffylife/widget/profile', {credentials: 'include'});
-		var res = await req.json();
-		if(res.widget){
-			var area = document.getElementById('widget-carousel2-text');
-			area.value = res.widget;
+	var bodyWidgetHeader = '';
+	var bodyWidgetLink = '';
+	var bodyWidgetFooter = '';
+	var bodyWidgetUrl = '';
+	function updateBodyWidgetText(fid){
+		var area = document.getElementById('widget_carousel_body');
+		//get link and add query params if needed
+		var link = bodyWidgetLink;
+		var full = $.parseHTML(link, document, true);
+		var div = $(full).get(0);
+		var scrip = $(full).get(1);
+		$(div).css({
+			'width': 270,
+			'height': 280,
+			'display': 'flex',
+			'align-items': 'center'
+		});
+		if(fid){
+			//change div id and width
+			var origId = $(div).attr('id');
+			var origIdPos = origId.lastIndexOf('_')+1; //find end of uid
+			var newId = origId.substring(0, origIdPos)+fid;
+			$(div).attr('id', newId);
+			$(div).css({
+				'width': 170,
+				'height': 'auto'
+			});
+			//change script src
+			var url = new URL(bodyWidgetUrl);
+			var query = url.searchParams;
+			query.delete('uid');
+			query.set('fid', fid);
+			url.search = query.toString();
+			var src = url.toString();
+			$(scrip).attr('src', src);
+		}
+		link = $(div).prop('outerHTML')+$(scrip).prop('outerHTML');
+		area.value = bodyWidgetHeader+link+bodyWidgetFooter;
+	}
+	async function getBodyWidgetText(){
+		var req = await fetch(api_path+'/shybunny/widget/fluffy/body', {credentials: 'include'});
+		if(req.status === 200){
+			var res = await req.json();
+			bodyWidgetHeader = res.header;
+			bodyWidgetLink = res.link;
+			bodyWidgetFooter = res.footer;
+			bodyWidgetUrl = res.url;
+			updateBodyWidgetText();
 		}
 	}
-	getProfileWidgetText();
+	getBodyWidgetText();
 </script>
 </div>
-<input onclick="copyTextFromArea('widget-carousel2-text');"
+<input onclick="copyTextFromArea('widget_carousel_body');"
 style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
 background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
 </center>
@@ -348,14 +443,17 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 <br><br><br><br>
 
 <div style="line-height: 15px; margin-right:15%; margin-left:15%;">
-<a id="linkbjinho" style="text-decoration: none;"><font color="#c9abb0" style="font-size:9px">
-<span id="text_display1_en">would you like to only display one card or stuffie at a time ? click here !</span>
-<span id="text_display1_pt" style="display: none;">você gostaria de exibir apenas uma carteirinha ou pelúcia por vez ? clique aqui !</span>
-<span id="text_display1_jp" style="display: none;">一度に1枚のカードまたはぬいぐるみだけを表示しますか ? ここをクリック !</span>
-</font></a>
+<a>
+<span id="text_display_single_en" style="font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;" onclick="toggleStuffieCarousel();">would you like to only display one card or stuffie at a time ? click here !</span>
+<span id="text_display_single_pt" style="display: none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;" onclick="toggleStuffieCarousel();">você gostaria de exibir apenas uma carteirinha ou pelúcia por vez ? clique aqui !</span>
+<span id="text_display_single_jp" style="display: none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;" onclick="toggleStuffieCarousel();">一度に1枚のカードまたはぬいぐるみだけを表示しますか ? ここをクリック !</span>
+<span id="text_display_carousel_en" style="display: none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;" onclick="toggleStuffieCarousel();">would you like to display a carousel of your stuffies ? click here !</span>
+<span id="text_display_carousel_pt" style="display: none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;" onclick="toggleStuffieCarousel();">você gostaria de exibir um carrossel com suas pelúcias ? clique aqui !</span>
+<span id="text_display_carousel_jp" style="display: none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;" onclick="toggleStuffieCarousel();">ぬいぐるみのカルーセルを表示しますか ? ここをクリック !</span>
+</a>
 
 <br><br>
-<span id="text_display2_en">now the widget codes above will only display one card or stuffie at a time, and that way you can add multiples to your site / blog. click the arrows to select which specific one you'd like to display.</span>
+<span id="text_display2_en" style="display: none;">now the widget codes above will only display one card or stuffie at a time, and that way you can add multiples to your site / blog. click the arrows to select which specific one you'd like to display.</span>
 <span id="text_display2_pt" style="display: none;">agora os códigos dos widgets acima exibirão apenas uma carteirinha ou pelúcia por vez, e dessa forma você poderá adicionar vários em seu site / blog. clique nas setas para selecionar qual específico gostaria de exibir.</span>
 <span id="text_display2_jp" style="display: none;">これで, 上記のウィジェットコードは,  一度に1枚のカードまたはぬいぐるみのみを表示します。 これにより, サイト / ブログに複数を追加できます。 矢印をクリックして, 表示する特定の矢印を選択します。</span>
 </div>
@@ -418,8 +516,7 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 	registerTranslatable('text_current_fluffy1');
 	registerTranslatable('text_current_fluffy2');
 	registerTranslatable('ribbonscheck1');
-	registerTranslatable('text_display1');
-	registerTranslatable('text_display2');
+	registerTranslatable('text_display_single');
 	registerTranslatable('link_myfluffylife_inventory');
 	registerTranslatable('link_shybunny_stationery');
 	registerTranslatable('link_pufcafe_inventory');
@@ -454,27 +551,103 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 
 		}
 	}
-
-	function appendDataToTable(table, data){
-		table.innerHTML += ('<td>'+data+'</td>');
+	
+	function showCardCarousel(){
+		document.getElementById('carousel_card_full').style.display = 'block';
+	}
+	function hideCardCarousel(){
+		document.getElementById('carousel_card_full').style.display = 'none';
+	}
+	function showBodyCarousel(){
+		document.getElementById('carousel_body_full').style.display = 'flex';
+	}
+	function hideBodyCarousel(){
+		document.getElementById('carousel_body_full').style.display = 'none';
+	}
+	
+	var fluffyIsCarousel = true;
+	var fluffies_data = [];
+	var fluffies_card = [];
+	var fluffies_body = [];
+	var cardCarouselIdx = 0;
+	var bodyCarouselIdx = 0;
+	var cardCarousel = $('#carousel_card');
+	var bodyCarousel = $('#carousel_body');
+	function updateCardCarousel(){
+		if(fluffies_card.length > 0 && fluffies_card.length > cardCarouselIdx){
+			cardCarousel.html(fluffies_card[cardCarouselIdx]);
+			showCardCarousel();
+			var fid = '';
+			if(!fluffyIsCarousel){
+				var el = cardCarousel.find('div[fid]');
+				if(el && el.length > 0){
+					fid = el.attr('fid');
+				}
+			}
+			updateCardWidgetText(fid);
+		}
 	}
 
-	async function getFluffies(){
-		var lang = getCurrentLanguage();
-		function showFluffyError(){
-			var err = '<p class="error-message" style="display: block; margin-left: 50px; margin-right: -50px;">the server couldn\'t find any fluffy !</p>';
-			if(lang === 'pt'){
-				err = '<p class="error-message" style="display: block; margin-left: 50px; margin-right: -50px;">o servidor não conseguiu encontrar nenhum fluffy !</p>';
+	function updateBodyCarousel(){
+		if(fluffies_body.length > 0 && fluffies_body.length > bodyCarouselIdx){
+			bodyCarousel.html(fluffies_body[bodyCarouselIdx]);
+			showBodyCarousel();
+			var fid = '';
+			if(!fluffyIsCarousel){
+				var el = bodyCarousel.find('div[fid]');
+				if(el && el.length > 0){
+					fid = el.attr('fid');
+				}
 			}
-			else if(lang === 'jp'){
-				err = '<p class="error-message" style="display: block; margin-left: 50px; margin-right: -50px;">サーバーはfluffyを見つけることができませんでした !</p>';
-			}
-			fluffies_table.innerHTML = '';
-			appendDataToTable(fluffies_table, err);
+			updateBodyWidgetText(fid);
 		}
+	}
 
-		var fluffies_table = document.getElementById('table_fluffies');
-		fluffies_table.innerHTML = '';
+	function cardCarouselNext(){
+		cardCarouselIdx += 1;
+		if(cardCarouselIdx >= fluffies_card.length)
+			cardCarouselIdx = 0;
+		updateCardCarousel();
+	}
+	function cardCarouselPrev(){
+		cardCarouselIdx -= 1;
+		if(cardCarouselIdx < 0)
+			cardCarouselIdx = ((fluffies_card.length-1 >= 0)?fluffies_card.length-1:0);
+		updateCardCarousel();
+	}
+	function bodyCarouselNext(){
+		bodyCarouselIdx += 1;
+		if(bodyCarouselIdx >= fluffies_body.length)
+			bodyCarouselIdx = 0;
+		updateBodyCarousel();
+	}
+	function bodyCarouselPrev(){
+		bodyCarouselIdx -= 1;
+		if(bodyCarouselIdx < 0)
+			bodyCarouselIdx = ((fluffies_body.length-1 >= 0)?fluffies_body.length-1:0);
+		updateBodyCarousel();
+	}
+
+	function showFluffyError(){
+		var lang = getCurrentLanguage();
+		hideCardCarousel();
+		hideBodyCarousel();
+		var err = 'the server couldn\'t find any fluffy !';
+		if(lang === 'pt'){
+			err = 'o servidor não conseguiu encontrar nenhum fluffy !';
+		}
+		else if(lang === 'jp'){
+			err = 'サーバーはfluffyを見つけることができませんでした !';
+		}
+		var errorEl = document.getElementById('carousel_card_error');
+		errorEl.style.display = 'block';
+		errorEl.innerHTML = err;
+		errorEl = document.getElementById('carousel_body_error');
+		errorEl.style.display = 'block';
+		errorEl.innerHTML = err;
+	}
+	
+	async function getFluffies(){
 		try{
 			var req = await fetch(api_path+'/shybunny/fluffy', {method: 'GET', credentials: 'include'});
 			var body = await req.json();
@@ -483,36 +656,47 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 				return;
 			}
 			//populate fluffies
-			var fluffies = body.fluffies;
-			for(var i = 0; i < fluffies.length; ++i){
-				var fluffy = fluffies[i];
-				var fluffyData = `<div style="width:300px; height:152px;">
-        <img src=${fluffy.img} style="width: 300px; position:absolute; left: 110px; z-index: 9;">
-				<input id=${fluffy.fid+'_name'} maxlength="13" style="position:relative; top:35px; left:60px;
+			fluffies_data = body.fluffies;
+			fluffies_card = [];
+			fluffies_body = [];
+			for(var i = 0; i < fluffies_data.length; ++i){
+				var fluffy = fluffies_data[i];
+				var fluffyCard = `<div style="width:300px; height:152px;" fid=${fluffy.fid}>
+        		<img src=${fluffy.card} style="width: 300px; position:absolute; left: 110px; z-index: 9;">
+				
+				<input id=${fluffy.fid+'_name'} maxlength="13" style="position:relative; top:35px; left:105px;
 				overflow: hidden; z-index: 10; width:135px; height:20px;
 				resize: none; padding:5px; outline:none;background: transparent;
 				border: 0px; cursor: url(https://i.imgur.com/4oHqWDj.png), progress; color: #9e8e8e;
 				font-family: verdana; font-size: 10px; letter-spacing:1px; line-height:15px;" value="${fluffy.name}"
 				onblur="updateFluffy('${fluffy.fid}')"></input><br>
 				
-				<input id=${fluffy.fid+'_traits'} maxlength="13" style="position:relative; top:45px; left:60px;
+				<input id=${fluffy.fid+'_traits'} maxlength="13" style="position:relative; top:45px; left:105px;
 				overflow: hidden; z-index: 10; width:135px; height:20px;
 				resize: none; padding:5px; outline:none;background: transparent;
 				border: 0px; cursor: url(https://i.imgur.com/4oHqWDj.png), progress; color: #9e8e8e;
 				font-family: verdana; font-size: 10px; letter-spacing:1px; line-height:15px;" value="${fluffy.traits}"
 				onblur="updateFluffy('${fluffy.fid}')"></input><br>
 				
-				<input id=${fluffy.fid+'_hobby'} maxlength="13" style="position:relative; top:55px; left:60px;
+				<input id=${fluffy.fid+'_hobby'} maxlength="13" style="position:relative; top:55px; left:105px;
 				overflow: hidden; z-index: 10; width:135px; height:20px;
 				resize: none; padding:5px; outline:none;background: transparent;
 				border: 0px; cursor: url(https://i.imgur.com/4oHqWDj.png), progress; color: #9e8e8e;
 				font-family: verdana; font-size: 10px; letter-spacing:1px; line-height:15px;" value="${fluffy.hobby}"
-				onblur="updateFluffy('${fluffy.fid}')"></input></div><br>`;
-				appendDataToTable(fluffies_table, fluffyData);
+				onblur="updateFluffy('${fluffy.fid}')"></input></div>`;
+
+				var fluffyBody = `<div style="width:150px; height:165px;" fid=${fluffy.fid}>
+        		<img src=${fluffy.body} style="height: 100%; width: auto; z-index: 10;"></div>`;
+
+				fluffies_card.push($.parseHTML(fluffyCard));
+				fluffies_body.push($.parseHTML(fluffyBody));
+				updateCardCarousel();
+				updateBodyCarousel();
 			}
 		}
 		catch(err){
 			showFluffyError();
+			console.log(err);
 			return;
 		}
 	}
@@ -551,6 +735,35 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 			document.getElementById('input_add_fluffy_id').value = '';
 			document.getElementById('text_add_fluffy_done_'+lang).style.display = 'block';
 			getFluffies();
+		}
+	}
+
+	function toggleStuffieCarousel(){
+		var lang = getCurrentLanguage();
+		fluffyIsCarousel = !fluffyIsCarousel; //toggle state
+		document.getElementById('text_display_carousel_en').style.display = 'none';
+		document.getElementById('text_display_carousel_pt').style.display = 'none';
+		document.getElementById('text_display_carousel_jp').style.display = 'none';
+		document.getElementById('text_display_single_en').style.display = 'none';
+		document.getElementById('text_display_single_pt').style.display = 'none';
+		document.getElementById('text_display_single_jp').style.display = 'none';
+		document.getElementById('text_display2_en').style.display = 'none';
+		document.getElementById('text_display2_pt').style.display = 'none';
+		document.getElementById('text_display2_jp').style.display = 'none';
+		if(fluffyIsCarousel){
+			document.getElementById('text_display_single_'+lang).style.display = 'block';
+			updateBodyWidgetText();
+			updateCardWidgetText();
+		}
+		else{
+			document.getElementById('text_display_carousel_'+lang).style.display = 'block';
+			document.getElementById('text_display2_'+lang).style.display = 'block';
+			if(fluffies_card.length > 0){
+				updateCardWidgetText(fluffies_card[cardCarouselIdx][0].getAttribute('fid'));
+			}
+			if(fluffies_body.length > 0){
+				updateBodyWidgetText(fluffies_body[bodyCarouselIdx][0].getAttribute('fid'));
+			}
 		}
 	}
 </script>
