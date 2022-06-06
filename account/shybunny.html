@@ -270,7 +270,7 @@ function copyTextFromArea(areaId){
 	area.setSelectionRange(0, 99999);
 	document.execCommand("copy");
 }
-</script>
+</script><br><br>
 <center><div style="height:42px; width:165px; border: 0px solid #baaeab;
  cursor: url(./img/cursorwrite.png), progress;
  outline:none;
@@ -351,8 +351,6 @@ background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-t
 <span id="text_current_fluffy2_jp" style="display: none;">これはあなたの現在のfelted fluffyぬいぐるみコレクションです :</span>
 </div>
 <br><br>
-<!-- style="position: relative; left: -100px; top: 90px;" -->
-<!-- style="position: relative; left: 100px; top: -95px;" -->
 <div id="carousel_body_full" style="display: none; flex-direction: row; justify-content: center; align-items: center;">
 	<a id="carousel_body_prev"><img src="./img/arrowprev.png" onclick="bodyCarouselPrev();"></a>
 	<div id="carousel_body"></div>
@@ -399,8 +397,8 @@ font-size:7px; font-family:Verdana; COLOR: #a58282;">
 			var newId = origId.substring(0, origIdPos)+fid;
 			$(div).attr('id', newId);
 			$(div).css({
-				'width': 170,
-				'height': 'auto'
+				'width': 'auto',
+				'height': 170
 			});
 			//change script src
 			var url = new URL(bodyWidgetUrl);
