@@ -142,6 +142,7 @@ z-index: 3;
 	font-size: 9px;
 	padding-top:8px;
 	letter-spacing: 1px;
+	margin: 0;
 	display: none;
 }
 </style>
@@ -495,11 +496,11 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			return;
 		}
 
-		//shows overlay
-		showLoadingOverlay();
-
 		//tries to login
 		try{
+			//shows overlay
+			showLoadingOverlay();
+
 			//saves last sent credentials
 			submitedEmail = email;
 			submitedPassword = password;
@@ -523,14 +524,13 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 			}
 			//if server requested TFA
 			else if(res.status === 202){
-				hideLoadingOverlay();
-				//hides every other field
-				document.getElementById('div_inputs').style.display = 'none';
-				document.getElementById('div_2fa').style.display = 'block';
+				showTFA();
+				lastRequest = deactivateTFA;
+				lastRequestArgs = [email, password];
+				lastUsedEmail = email;
 				return;
 			}
 			else if(res.status === 401 || res.status === 400){
-				hideLoadingOverlay();
 				document.getElementById('input_credentials_deactivate_2fa_error_invalid_'+lang).style.display = 'block';
 				return;
 			}
@@ -544,25 +544,11 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		}
 		catch(err){
 			console.log(err);
-			hideLoadingOverlay();
 			document.getElementById('text_deactivate_2fa_wentwrong_'+lang).style.display = 'block';
 		}
-	}
-
-	async function resendCode(to_primary){
-		showLoadingOverlay();
-		await fetch(tfa_path+'/resend', {
-			method: 'POST',
-			credentials: 'include',
-			headers:{
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify({
-				email: submitedEmail,
-				to_primary: to_primary
-			})
-		})
-		hideLoadingOverlay();
+		finally{
+			hideLoadingOverlay();
+		}
 	}
 </script>
 
@@ -591,7 +577,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	<span id="text_add_secondary_email_en">add or update secondary email :</span>
 	<span id="text_add_secondary_email_pt" style="display: none;">adicionar ou atualizar email secundário :</span>
 	<span id="text_add_secondary_email_jp" style="display: none;">2次メールを追加または更新する :</span>
-	<br>
+	<br></font>
 	<!-- </div> -->
 	<br><br>
 
@@ -640,7 +626,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	<span id="text_change_email_en">change my login email :</span>
 	<span id="text_change_email_pt" style="display: none;">mudar meu email de login :</span>
 	<span id="text_change_email_jp" style="display: none;">ログインメールを変更する :</span>
-	<br>
+	<br></font>
 	</div>
 	<br>
 	<!-- </div> -->
@@ -707,7 +693,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	<span id="text_change_password_en">change my password :</span>
 	<span id="text_change_password_pt" style="display: none;">mudar minha senha :</span>
 	<span id="text_change_password_jp" style="display: none;">パスワードを変更する :</span>
-	<br>
+	<br></font>
 	</div>
 	<br><br>
 	<!-- </div> -->
@@ -763,7 +749,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	<span id="text_deactivate_2fa_en">deactivate two-factor authentication :</span>
 	<span id="text_deactivate_2fa_pt" style="display: none;">desativar autenticação de dois fatores :</span>
 	<span id="text_deactivate_2fa_jp" style="display: none;">2要素認証を無効にします :</span>
-	<br>
+	<br></font>
 	</div>
 	<br><br>
 
@@ -794,15 +780,540 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		<p class="error-message" id="text_deactivate_2fa_wentwrong_jp">何かがうまくいかなかった !</p>	
 	</center>
 	<!-- </div> -->
+
+<style>
+	label {
+		display: inline;
+	}
+	
+	.regular-checkbox {
+		-webkit-appearance: none;
+		background-color: #faf5f5;
+		border: 1px solid #d9caca;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+		padding: 8px;
+		border-radius: 3px;
+		display: inline-block;
+		position: relative;
+		cursor: url(./img/cursorhover.png), progress;
+	}
+	
+	.regular-checkbox:active, .regular-checkbox:checked:active {
+		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+	}
+	
+	.regular-checkbox:checked {
+		background-color: #faf5f5;
+		border: 1px solid #f2e9e9;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+		color: #e0d1d1;
+	}
+	
+	.regular-checkbox:checked:after {
+		content: '♡';
+		font-size: 10px;
+		position: absolute;
+		top: 0px;
+		left: 4px;
+		color: #b5a1a4;
+	}
+</style>
+	
+	<style>
+	.custom-select {
+		position: relative;
+		font-family: verdana;
+		font-size: 8px;
+		text-align: center;
+		letter-spacing: 1px;
+		cursor: url(./img/cursorhover.png), progress;
+	}
+	
+	.custom-select select {
+		display: none;
+		cursor: url(./img/cursorhover.png), progress;
+	}
+	
+	.select-selected {
+		background-color: #faf5f5;
+		border: 1px solid #d9caca;
+		cursor: url(./img/cursorhover.png), progress;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+	}
+	
+	.select-selected:after {
+		position: absolute;
+		content: "";
+		top: 14px;
+		right: 10px;
+		width: 0;
+		height: 0;
+		border: 1px solid #ede3e3;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+		cursor: url(./img/cursorhover.png), progress;
+	}
+	
+	.select-selected.select-arrow-active:after {
+		border-color: transparent transparent #fff transparent;
+		top: 7px;
+		cursor: url(./img/cursorhover.png), progress;
+	}
+	
+	.select-items div,.select-selected {
+		color: #b5a1a4;
+		padding: 5px 16px;
+		border: 1px solid #ede3e3;
+		border-radius: 3px;
+		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+		cursor: url(./img/cursorhover.png), progress;
+		user-select: none;
+	}
+	
+	.select-items {
+		position: absolute;
+		background-color: #faf5f5;
+		top: 100%;
+		left: 0;
+		right: 0;
+		z-index: 99;
+	}
+	
+	.select-hide {
+		display: none;
+	}
+	
+	.select-items div:hover, .same-as-selected {
+		background-color: rgba(251, 249, 249.05);
+	}
+	</style>
+	
+		<br><br><br>
+		<div style="line-height: 15px;">
+		<font color="#b8a2a3" style="font-size:10px;">
+		<span id="text_delete_products_en">delete my poofties products data :</span>
+		<span id="text_delete_products_pt" style="display: none;">deletar meus dados de produtos poofties :</span>
+		<span id="text_delete_products_jp" style="display: none;">私のpoofties製品のデータを削除する :</span>
+		<br></font>
+		</div>
+		<br><br>
+		<!-- </div> -->
+	
+		<center>
+	
+	<div class="custom-select" style="width:120px;">
+		<select id="select-product-deletion">
+		<option value="0" id="select-product-deletion-default">click to select</option>
+		<option value="myfluffylife">my fluffy life</option>
+		</select>
+	</div>
+	<br>
+	
+	<script>
+	function customizeSelects(){
+		translateSelects();
+		var x, i, j, l, ll, selElmnt, a, b, c;
+		x = document.getElementsByClassName("custom-select");
+		l = x.length;
+		for (i = 0; i < l; i++) {
+			selElmnt = x[i].getElementsByTagName("select")[0];
+			ll = selElmnt.length;
+			a = document.createElement("DIV");
+			a.setAttribute("class", "select-selected");
+			a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+			x[i].appendChild(a);
+			b = document.createElement("DIV");
+			b.setAttribute("class", "select-items select-hide");
+			for (j = 1; j < ll; j++) {
+				c = document.createElement("DIV");
+				c.innerHTML = selElmnt.options[j].innerHTML;
+				c.addEventListener("click", function(e) {
+					var y, i, k, s, h, sl, yl;
+					s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+					sl = s.length;
+					h = this.parentNode.previousSibling;
+					for (i = 0; i < sl; i++) {
+					if (s.options[i].innerHTML == this.innerHTML) {
+						s.selectedIndex = i;
+						h.innerHTML = this.innerHTML;
+						y = this.parentNode.getElementsByClassName("same-as-selected");
+						yl = y.length;
+						for (k = 0; k < yl; k++) {
+							y[k].removeAttribute("class");
+						}
+						this.setAttribute("class", "same-as-selected");
+						break;
+					}
+					}
+					h.click();
+				});
+				b.appendChild(c);
+			}
+			x[i].appendChild(b);
+			a.addEventListener("click", function(e) {
+				e.stopPropagation();
+				closeAllSelect(this);
+				this.nextSibling.classList.toggle("select-hide");
+				this.classList.toggle("select-arrow-active");
+			});
+		}
+	}
+	function closeAllSelect(elmnt) {
+		var x, y, i, xl, yl, arrNo = [];
+		x = document.getElementsByClassName("select-items");
+		y = document.getElementsByClassName("select-selected");
+		xl = x.length;
+		yl = y.length;
+		for (i = 0; i < yl; i++) {
+		if (elmnt == y[i]) {
+			arrNo.push(i)
+		} else {
+			y[i].classList.remove("select-arrow-active");
+		}
+		}
+		for (i = 0; i < xl; i++) {
+		if (arrNo.indexOf(i)) {
+			x[i].classList.add("select-hide");
+		}
+		}
+	}
+	function translateSelects(){
+		var lang = getCurrentLanguage();
+		var defaultEn = 'click to select';
+		var defaultPt = 'selecione aqui';
+		var defaultJp = 'クリックで選択';
+		var defaultEl = document.getElementById('select-product-deletion-default');
+		if(lang === 'en'){
+			defaultEl.innerHTML = defaultEn;
+		}
+		else if(lang === 'pt'){
+			defaultEl.innerHTML = defaultPt;
+		}
+		else if(lang === 'jp'){
+			defaultEl.innerHTML = defaultJp;
+		}
+	}
+	document.addEventListener("click", closeAllSelect);
+	document.addEventListener("TranslationLoaded", customizeSelects);
+	</script>
+	
+		<input id="input_delete_products_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input id="input_delete_products_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input id="input_delete_products_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+			<p class="error-message" id="input_email_delete_products_error_invalid_en">invalid email !</p>
+			<p class="error-message" id="input_email_delete_products_error_invalid_pt">email inválido !</p>
+			<p class="error-message" id="input_email_delete_products_error_invalid_jp">無効なメール !</p>
+		<br><br>
+		<input type="password" id="input_delete_products_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input type="password" id="input_delete_products_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input type="password" id="input_delete_products_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+			<p class="error-message" id="input_credentials_delete_products_error_invalid_en">wrong email or password !</p>
+			<p class="error-message" id="input_credentials_delete_products_error_invalid_pt">email ou senha errados !</p>
+			<p class="error-message" id="input_credentials_delete_products_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
+		<br><br>
+		<a href="./forgot" id="linkbjinho" style="text-decoration: none;">
+			<font color="#c9abb0" style="font-size:8px" id="link_delete_products_forgot_en">forgot ?</font>
+			<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_products_forgot_pt">esqueceu ?</font>
+			<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_products_forgot_jp">忘れましたか ?</font>
+		</a>
+		<br><br>
+		<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="checkbox-product-deletion" type="checkbox" class="regular-checkbox" /><label for="checkbox-product-deletion"></label></sub></sub>
+		<font color="#c9abb0" style="font-size:8px; text-align:left;">
+			<span id="text_confirm_delete_products_en">i agree with losing permanently my data<br><br><br><br><br>from the selected poofties product.</span>
+			<span id="text_confirm_delete_products_pt" style="display: none;">concordo em perder permanentemente meu acesso<br><br><br><br><br>a todos os produtos poofties que adquiri nesta conta.</span>
+			<span id="text_confirm_delete_products_jp" style="display: none;">このアカウントで購入したすべてのpoofties製品<br><br><br><br><br>へのアクセスを永久に失うことに同意します。</span>
+		</font>
+		</div><br>
+		
+		<p class="error-message" id="text_delete_products_wentwrong_en">something went wrong !</p>
+		<p class="error-message" id="text_delete_products_wentwrong_pt">algo deu errado !</p>
+		<p class="error-message" id="text_delete_products_wentwrong_jp">何かがうまくいかなかった !</p>
+		<p class="error-message" id="input_delete_products_done_en">done !</p>
+		<p class="error-message" id="input_delete_products_done_pt">pronto !</p>
+		<p class="error-message" id="input_delete_products_done_jp">かんりょう !</p>
+		<p class="error-message" id="text_delete_products_notfound_en">account not found !</p>
+		<p class="error-message" id="text_delete_products_notfound_pt">conta não encontrada !</p>
+		<p class="error-message" id="text_delete_products_notfound_jp">アカウントが見つからない !</p>
+		<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="deleteProductData();"/>
+	
+	<script>
+		function clearProductDataDeletionMessage(){
+			document.getElementById('input_email_delete_products_error_invalid_en').style.display = 'none';
+			document.getElementById('input_email_delete_products_error_invalid_pt').style.display = 'none';
+			document.getElementById('input_email_delete_products_error_invalid_jp').style.display = 'none';
+			document.getElementById('input_credentials_delete_products_error_invalid_en').style.display = 'none';
+			document.getElementById('input_credentials_delete_products_error_invalid_pt').style.display = 'none';
+			document.getElementById('input_credentials_delete_products_error_invalid_jp').style.display = 'none';
+			document.getElementById('input_delete_products_done_en').style.display = 'none';
+			document.getElementById('input_delete_products_done_pt').style.display = 'none';
+			document.getElementById('input_delete_products_done_jp').style.display = 'none';
+			document.getElementById('text_delete_products_wentwrong_en').style.display = 'none';
+			document.getElementById('text_delete_products_wentwrong_pt').style.display = 'none';
+			document.getElementById('text_delete_products_wentwrong_jp').style.display = 'none';
+			document.getElementById('text_delete_products_notfound_en').style.display = 'none';
+			document.getElementById('text_delete_products_notfound_pt').style.display = 'none';
+			document.getElementById('text_delete_products_notfound_jp').style.display = 'none';
+		}
+		function showProductDataDeletionWrongCredentials(){
+			clearProductDataDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('input_credentials_delete_products_error_invalid_'+lang).style.display = 'block';
+		}
+		function showProductDataDeletionInvalidEmail(){
+			clearProductDataDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('input_email_delete_products_error_invalid_'+lang).style.display = 'block';
+		}
+		function showProductDataDeletionWentWrong(){
+			clearProductDataDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('text_delete_products_wentwrong_'+lang).style.display = 'block';
+		}
+		function showProductDataDeletionNotFound(){
+			clearProductDataDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('text_delete_products_notfound_'+lang).style.display = 'block';
+		}
+	
+		async function deleteProductData(){
+			var lang = getCurrentLanguage();
+			var emailEl = document.getElementById('input_delete_products_email_'+lang);
+			var passEl = document.getElementById('input_delete_products_password_'+lang);
+			var prodEl = document.getElementById('select-product-deletion');
+			var confirmEl = document.getElementById('checkbox-product-deletion');
+			var email = emailEl.value;
+			var password = passEl.value;
+			var product = prodEl.value;
+			var confirmed = confirmEl.checked;
+			if(!confirmed || product === '0'){
+				return;
+			}
+			if(!validateEmail(email)){
+				showProductDataDeletionInvalidEmail();
+				return;
+			}
+			if(!password || password.length < 8 || password.length > 32){
+				showProductDataDeletionWrongCredentials();
+				return;
+			}
+	
+			//shows overlay
+			showLoadingOverlay();
+	
+			//tries to login
+			try{
+				var passB64 = btoa(password);
+				var res = await fetch(api_path+'/settings/account/product/'+product+'/delete',{
+					'method': 'POST',
+					credentials: 'include',
+					headers:{
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						email: email,
+						password: passB64
+					})
+				})
+				if(!res.status || res.status === 400 || res.status >= 500){
+					throw new Error('something went wrong');
+				}
+				else if(res.status === 404){
+					showProductDataDeletionNotFound();
+					return;
+				}
+				else if(res.status === 401){
+					showProductDataDeletionWrongCredentials();
+					return;
+				}
+				//if server requested TFA
+				else if(res.status === 202){
+					showTFA();
+					lastRequest = deleteProductData;
+					lastRequestArgs = [];
+					lastUsedEmail = email;
+					return;
+				}
+				else if(res.status !== 200 && res.status !== 204){
+					throw new Error('something went wrong');
+				}
+				//all ok, clear fields
+				clearProductDataDeletionMessage();
+				emailEl.value = '';
+				passEl.value = '';
+				confirmEl.checked = false;
+				document.getElementById('input_delete_products_done_'+lang).style.display = 'block';
+			}
+			catch(err){
+				console.log(err);
+				showProductDataDeletionWentWrong();
+			}
+			finally{
+				hideLoadingOverlay();
+			}
+		}
+	</script>
+	
+	
+	<br><br><br><br><br>
+		<div style="line-height: 15px;">
+		<font color="#b8a2a3" style="font-size:10px;">
+		<span id="text_delete_account_en">request poofties account deletion :</span>
+		<span id="text_delete_account_pt" style="display: none;">solicitar exclusão da conta poofties :</span>
+		<span id="text_delete_account_jp" style="display: none;">pooftiesアカウント削除を依頼する :</span>
+		<br></font>
+		</div>
+		<br><br></center>
+		<!-- </div> -->
+	
+		<center>
+		<input id="input_delete_account_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input id="input_delete_account_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input id="input_delete_account_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+			<p class="error-message" id="input_email_delete_account_error_invalid_en">invalid email !</p>
+			<p class="error-message" id="input_email_delete_account_error_invalid_pt">email inválido !</p>
+			<p class="error-message" id="input_email_delete_account_error_invalid_jp">無効なメール !</p>
+		<br><br>
+		<input type="password" id="input_delete_account_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input type="password" id="input_delete_account_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+		<input type="password" id="input_delete_account_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
+			<p class="error-message" id="input_credentials_delete_account_error_invalid_en">wrong email or password !</p>
+			<p class="error-message" id="input_credentials_delete_account_error_invalid_pt">email ou senha errados !</p>
+			<p class="error-message" id="input_credentials_delete_account_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
+		<br><br>
+		<a href="./forgot" id="linkbjinho" style="text-decoration: none;">
+			<font color="#c9abb0" style="font-size:8px" id="link_delete_account_forgot_en">forgot ?</font>
+			<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_account_forgot_pt">esqueceu ?</font>
+			<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_account_forgot_jp">忘れましたか ?</font>
+		</a>
+		<br><br>
+	<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="checkbox-account-deletion" type="checkbox" class="regular-checkbox" /><label for="checkbox-account-deletion"></label></sub></sub>
+		<font color="#c9abb0" style="font-size:8px; text-align:left;">
+			<span id="text_confirm_delete_account_en">i agree with losing permanently my access<br><br><br><br><br>and data from all the poofties products acquired.</span>
+			<span id="text_confirm_delete_account_pt" style="display: none;">concordo em perder permanentemente meu acesso<br><br><br><br><br>e dados de todos os produtos poofties adquiridos.</span>
+			<span id="text_confirm_delete_account_jp" style="display: none;">買収したすべてのpoofties製品のアクセス<br><br><br><br><br>権とデータを永久に失うことに同意します。</span></div><br><br>
+		</font>
+		<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="deletePooftiesAccount();"/>
+		<p class="error-message" id="text_delete_account_wentwrong_en">something went wrong !</p>
+		<p class="error-message" id="text_delete_account_wentwrong_pt">algo deu errado !</p>
+		<p class="error-message" id="text_delete_account_wentwrong_jp">何かがうまくいかなかった !</p>
+		<p class="error-message" id="input_delete_account_done_en">an email has been sent to you !</p>
+		<p class="error-message" id="input_delete_account_done_pt">um email foi enviado para você !</p>
+		<p class="error-message" id="input_delete_account_done_jp">電子メールが送信されました !</p>
+		</center>
+	
+	<br><br><br>
+	
+	<script>
+		function clearPooftiesAccountDeletionMessage(){
+			document.getElementById('input_email_delete_account_error_invalid_en').style.display = 'none';
+			document.getElementById('input_email_delete_account_error_invalid_pt').style.display = 'none';
+			document.getElementById('input_email_delete_account_error_invalid_jp').style.display = 'none';
+			document.getElementById('input_credentials_delete_account_error_invalid_en').style.display = 'none';
+			document.getElementById('input_credentials_delete_account_error_invalid_pt').style.display = 'none';
+			document.getElementById('input_credentials_delete_account_error_invalid_jp').style.display = 'none';
+			document.getElementById('input_delete_account_done_en').style.display = 'none';
+			document.getElementById('input_delete_account_done_pt').style.display = 'none';
+			document.getElementById('input_delete_account_done_jp').style.display = 'none';
+			document.getElementById('text_delete_account_wentwrong_en').style.display = 'none';
+			document.getElementById('text_delete_account_wentwrong_pt').style.display = 'none';
+			document.getElementById('text_delete_account_wentwrong_jp').style.display = 'none';
+		}
+		function showPooftiesAccountDeletionWrongCredentials(){
+			clearPooftiesAccountDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('input_credentials_delete_account_error_invalid_'+lang).style.display = 'block';
+		}
+		function showPooftiesAccountDeletionInvalidEmail(){
+			clearPooftiesAccountDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('input_email_delete_account_error_invalid_'+lang).style.display = 'block';
+		}
+		function showPooftiesAccountDeletionWentWrong(){
+			clearPooftiesAccountDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('text_delete_account_wentwrong_'+lang).style.display = 'block';
+		}
+		function showPooftiesAccountDeletionNotFound(){
+			clearPooftiesAccountDeletionMessage();
+			var lang = getCurrentLanguage();
+			document.getElementById('text_delete_account_notfound_'+lang).style.display = 'block';
+		}
+	
+		async function deletePooftiesAccount(){
+			var lang = getCurrentLanguage();
+			var emailEl = document.getElementById('input_delete_account_email_'+lang);
+			var passEl = document.getElementById('input_delete_account_password_'+lang);
+			var confirmEl = document.getElementById('checkbox-account-deletion');
+			var email = emailEl.value;
+			var password = passEl.value;
+			var confirmed = confirmEl.checked;
+			if(!confirmed){
+				return;
+			}
+			if(!validateEmail(email)){
+				showPooftiesAccountDeletionInvalidEmail();
+				return;
+			}
+			if(!password || password.length < 8 || password.length > 32){
+				showPooftiesAccountDeletionWrongCredentials();
+				return;
+			}
+	
+			//shows overlay
+			showLoadingOverlay();
+	
+			//tries to login
+			try{
+				var passB64 = btoa(password);
+				var res = await fetch(api_path+'/settings/account/delete',{
+					'method': 'POST',
+					credentials: 'include',
+					headers:{
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						email: email,
+						password: passB64
+					})
+				})
+				if(res.status === 401){
+					showPooftiesAccountDeletionWrongCredentials();
+					return;
+				}
+				//if server requested TFA
+				else if(res.status === 202){
+					showTFA();
+					lastRequest = deletePooftiesAccount;
+					lastRequestArgs = [];
+					lastUsedEmail = email;
+					return;
+				}
+				else if(res.status !== 200){
+					throw new Error('something went wrong');
+				}
+				//all ok, clear fields
+				clearPooftiesAccountDeletionMessage();
+				emailEl.value = '';
+				passEl.value = '';
+				confirmEl.checked = false;
+				document.getElementById('input_delete_account_done_'+lang).style.display = 'block';
+			}
+			catch(err){
+				console.log(err);
+				showPooftiesAccountDeletionWentWrong();
+			}
+			finally{
+				hideLoadingOverlay();
+			}
+		}
+	</script>
 </div>
 
-<!-- 2fa -->
 <center>
 <div id="div_2fa" style="display: none;">
 	<font color="#b8a2a3" style="font-size:10px;">
-	<span id="text_2fa_sent_en">a 2FA code has been sent to your email !</span>
-	<span id="text_2fa_sent_pt" style="display: none;">um código 2FA foi enviado para seu email !</span>
-	<span id="text_2fa_sent_jp" style="display: none;">2FAコードがあなたのメールアドレスに送信されました !</span>
+	<span id="text_2fa_sent_en">a 2fa code has been sent to your email !</span>
+	<span id="text_2fa_sent_pt" style="display: none;">um código 2fa foi enviado para seu email !</span>
+	<span id="text_2fa_sent_jp" style="display: none;">2faコードがあなたのメールアドレスに送信されました !</span>
 	<br><br>
 	<input id="input_2fa_code_en" oninput="this.value = this.value.toUpperCase();" placeholder="type your code" maxlength="6" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 	<input id="input_2fa_code_pt" oninput="this.value = this.value.toUpperCase();" placeholder="digite seu código" maxlength="6" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center; display: none;" />
@@ -825,293 +1336,82 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		<p class="error-message" id="input_2fa_error_invalid_en">invalid code !</p>
 		<p class="error-message" id="input_2fa_error_invalid_pt">código inválido !</p>
 		<p class="error-message" id="input_2fa_error_invalid_jp">無効なコード !</p>
+	</font>
 </div>
-</center>
-
-
-
-
-<style>
-label {
-	display: inline;
-}
-
-.regular-checkbox {
-	-webkit-appearance: none;
-	background-color: #faf5f5;
-	border: 1px solid #d9caca;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
-	padding: 8px;
-	border-radius: 3px;
-	display: inline-block;
-	position: relative;
-  cursor: url(./img/cursorhover.png), progress;
-}
-
-.regular-checkbox:active, .regular-checkbox:checked:active {
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
-}
-
-.regular-checkbox:checked {
-	background-color: #faf5f5;
-	border: 1px solid #f2e9e9;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
-	color: #e0d1d1;
-}
-
-.regular-checkbox:checked:after {
-	content: '♡';
-	font-size: 10px;
-	position: absolute;
-	top: 0px;
-	left: 4px;
-	color: #b5a1a4;
-}
-</style>
-
-<style>
-.custom-select {
-  position: relative;
-  font-family: verdana;
-  font-size: 8px;
-  text-align: center;
-  letter-spacing: 1px;
-  cursor: url(./img/cursorhover.png), progress;
-}
-
-.custom-select select {
-  display: none;
-  cursor: url(./img/cursorhover.png), progress;
-}
-
-.select-selected {
-  background-color: #faf5f5;
-	border: 1px solid #d9caca;
-  cursor: url(./img/cursorhover.png), progress;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
-}
-
-.select-selected:after {
-  position: absolute;
-  content: "";
-  top: 14px;
-  right: 10px;
-  width: 0;
-  height: 0;
-	border: 1px solid #ede3e3;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
-  cursor: url(./img/cursorhover.png), progress;
-}
-
-.select-selected.select-arrow-active:after {
-  border-color: transparent transparent #fff transparent;
-  top: 7px;
-  cursor: url(./img/cursorhover.png), progress;
-}
-
-.select-items div,.select-selected {
-  color: #b5a1a4;
-  padding: 5px 16px;
-	border: 1px solid #ede3e3;
-  border-radius: 3px;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
-  cursor: url(./img/cursorhover.png), progress;
-  user-select: none;
-}
-
-.select-items {
-  position: absolute;
-  background-color: #faf5f5;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 99;
-}
-
-.select-hide {
-  display: none;
-}
-
-.select-items div:hover, .same-as-selected {
-  background-color: rgba(251, 249, 249.05);
-}
-</style>
-
-
-	<br><br><br>
-	<div style="line-height: 15px;">
-	<font color="#b8a2a3" style="font-size:10px;">
-	<span id="text_delete_products_en">delete my poofties products data :</span>
-	<span id="text_delete_products_pt" style="display: none;">deletar meus dados de produtos poofties :</span>
-	<span id="text_delete_products_jp" style="display: none;">私のpoofties製品のデータを削除する :</span>
-	<br>
-	</div>
-	<br><br>
-	<!-- </div> -->
-
-	<center>
-
-<div class="custom-select" style="width:120px;">
-  <select>
-    <option value="0">click to select</option>
-    <option value="1">my fluffy life</option>
-    <option value="2">???</option>
-  </select>
-</div>
-<br>
-
 <script>
-var x, i, j, l, ll, selElmnt, a, b, c;
-x = document.getElementsByClassName("custom-select");
-l = x.length;
-for (i = 0; i < l; i++) {
-  selElmnt = x[i].getElementsByTagName("select")[0];
-  ll = selElmnt.length;
-  a = document.createElement("DIV");
-  a.setAttribute("class", "select-selected");
-  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-  x[i].appendChild(a);
-  b = document.createElement("DIV");
-  b.setAttribute("class", "select-items select-hide");
-  for (j = 1; j < ll; j++) {
-    c = document.createElement("DIV");
-    c.innerHTML = selElmnt.options[j].innerHTML;
-    c.addEventListener("click", function(e) {
-        var y, i, k, s, h, sl, yl;
-        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-        sl = s.length;
-        h = this.parentNode.previousSibling;
-        for (i = 0; i < sl; i++) {
-          if (s.options[i].innerHTML == this.innerHTML) {
-            s.selectedIndex = i;
-            h.innerHTML = this.innerHTML;
-            y = this.parentNode.getElementsByClassName("same-as-selected");
-            yl = y.length;
-            for (k = 0; k < yl; k++) {
-              y[k].removeAttribute("class");
-            }
-            this.setAttribute("class", "same-as-selected");
-            break;
-          }
-        }
-        h.click();
-    });
-    b.appendChild(c);
-  }
-  x[i].appendChild(b);
-  a.addEventListener("click", function(e) {
-      e.stopPropagation();
-      closeAllSelect(this);
-      this.nextSibling.classList.toggle("select-hide");
-      this.classList.toggle("select-arrow-active");
-    });
-}
-function closeAllSelect(elmnt) {
-  var x, y, i, xl, yl, arrNo = [];
-  x = document.getElementsByClassName("select-items");
-  y = document.getElementsByClassName("select-selected");
-  xl = x.length;
-  yl = y.length;
-  for (i = 0; i < yl; i++) {
-    if (elmnt == y[i]) {
-      arrNo.push(i)
-    } else {
-      y[i].classList.remove("select-arrow-active");
-    }
-  }
-  for (i = 0; i < xl; i++) {
-    if (arrNo.indexOf(i)) {
-      x[i].classList.add("select-hide");
-    }
-  }
-}
-document.addEventListener("click", closeAllSelect);
+	var lastRequest;
+	var lastRequestArgs = [];
+	var lastUsedEmail = '';
+	async function submitTFA(){
+		var lang = getCurrentLanguage();
+		var code = document.getElementById('input_2fa_code_'+lang).value;
+		if(code){
+			if(code.length !== 6){
+				//invalid code
+				document.getElementById('input_2fa_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+			//show loading overlay
+			showLoadingOverlay();
+
+			//submit to validation
+			var req = await fetch(tfa_path+'/verify', {
+				method: 'POST',
+				credentials: 'include',
+				headers:{
+					'content-type': 'application/json'
+				},
+				body: JSON.stringify({
+					code: code,
+					email: lastUsedEmail
+				})
+			});
+			//hides overlay
+			hideLoadingOverlay();
+
+			//code is correct
+			if(req.status === 200){
+				//remake request with provided arguments
+				if(lastRequest)
+					lastRequest(...lastRequestArgs);
+				hideTFA();
+			}
+			else{
+				//invalid code
+				document.getElementById('input_2fa_error_invalid_'+lang).style.display = 'block';
+				return;
+			}
+		}
+	}
+	async function resendCode(to_primary){
+		showLoadingOverlay();
+		await fetch(tfa_path+'/resend', {
+			method: 'POST',
+			credentials: 'include',
+			headers:{
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				email: lastUsedEmail,
+				to_primary: to_primary
+			})
+		})
+		hideLoadingOverlay();
+	}
+	
+	function showTFA(){
+		document.getElementById('div_2fa').style.display = 'block';
+		document.getElementById('div_inputs').style.display = 'none';
+	}
+	function hideTFA(){
+		document.getElementById('div_2fa').style.display = 'none';
+		document.getElementById('input_2fa_code_en').value = '';
+		document.getElementById('input_2fa_code_pt').value = '';
+		document.getElementById('input_2fa_code_jp').value = '';
+		document.getElementById('div_inputs').style.display = 'block';
+	}
 </script>
-
-	<input id="input_delete_products_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input id="input_delete_products_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input id="input_delete_products_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-		<p class="error-message" id="input_email_delete_products_error_invalid_en">invalid email !</p>
-		<p class="error-message" id="input_email_delete_products_error_invalid_pt">email inválido !</p>
-		<p class="error-message" id="input_email_delete_products_error_invalid_jp">無効なメール !</p>
-	<br><br>
-	<input type="password" id="input_delete_products_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input type="password" id="input_delete_products_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input type="password" id="input_delete_products_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-		<p class="error-message" id="input_credentials_delete_products_error_invalid_en">wrong email or password !</p>
-		<p class="error-message" id="input_credentials_delete_products_error_invalid_pt">email ou senha errados !</p>
-		<p class="error-message" id="input_credentials_delete_products_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
-	<br><br>
-	<a href="./forgot" id="linkbjinho" style="text-decoration: none;">
-		<font color="#c9abb0" style="font-size:8px" id="link_delete_products_forgot_en">forgot ?</font>
-		<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_products_forgot_pt">esqueceu ?</font>
-		<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_products_forgot_jp">忘れましたか ?</font>
-	</a>
-	<br><br>
-<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="agree1" type="checkbox" id="checkbox-1-1" class="regular-checkbox" /><label for="checkbox-1-1"></label></sub></sub>
-	<font color="#c9abb0" style="font-size:8px">
-		<span id="text_confirm_delete_products_en">i agree with losing permanently my data<br><br><br><br>from the selected poofties product.</span>
-		<span id="text_confirm_delete_products_pt" style="display: none;">concordo em perder permanentemente meu acesso<br><br><br><br>a todos os produtos poofties que adquiri nesta conta.</span>
-		<span id="text_confirm_delete_products_jp" style="display: none;">このアカウントで購入したすべてのpoofties製品<br><br><br><br>へのアクセスを永久に失うことに同意します。</span></div><br><br>
-		<p class="error-message" id="input_delete_products_done_en">done !</p>
-		<p class="error-message" id="input_delete_products_done_pt">pronto !</p>
-		<p class="error-message" id="input_delete_products_done_jp">かんりょう !</p>
-	<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="changePassword();"/>
-		<p class="error-message" id="text_delete_products_wentwrong_en">something went wrong !</p>
-		<p class="error-message" id="text_delete_products_wentwrong_pt">algo deu errado !</p>
-		<p class="error-message" id="text_delete_products_wentwrong_jp">何かがうまくいかなかった !</p>
-	</center>
-
-
-
-
-	<br><br><br>
-	<div style="line-height: 15px;">
-	<font color="#b8a2a3" style="font-size:10px;">
-	<span id="text_delete_account_en">request poofties account deletion :</span>
-	<span id="text_delete_account_pt" style="display: none;">solicitar exclusão da conta poofties :</span>
-	<span id="text_delete_account_jp" style="display: none;">pooftiesアカウント削除を依頼する :</span>
-	<br>
-	</div>
-	<br><br>
-	<!-- </div> -->
-
-	<center>
-	<input id="input_delete_account_email_en" placeholder="type your email" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input id="input_delete_account_email_pt" placeholder="digite seu email" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input id="input_delete_account_email_jp" placeholder="メールを入力してください" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-		<p class="error-message" id="input_email_delete_account_error_invalid_en">invalid email !</p>
-		<p class="error-message" id="input_email_delete_account_error_invalid_pt">email inválido !</p>
-		<p class="error-message" id="input_email_delete_account_error_invalid_jp">無効なメール !</p>
-	<br><br>
-	<input type="password" id="input_delete_account_password_en" placeholder="type your password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input type="password" id="input_delete_account_password_pt" placeholder="digite sua senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-	<input type="password" id="input_delete_account_password_jp" placeholder="パスワードを入力" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-		<p class="error-message" id="input_credentials_delete_account_error_invalid_en">wrong email or password !</p>
-		<p class="error-message" id="input_credentials_delete_account_error_invalid_pt">email ou senha errados !</p>
-		<p class="error-message" id="input_credentials_delete_account_error_invalid_jp">メールアドレスまたはパスワードが間違っています !</p>
-	<br><br>
-	<a href="./forgot" id="linkbjinho" style="text-decoration: none;">
-		<font color="#c9abb0" style="font-size:8px" id="link_delete_account_forgot_en">forgot ?</font>
-		<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_account_forgot_pt">esqueceu ?</font>
-		<font color="#c9abb0" style="font-size:8px; display: none;" id="link_delete_account_forgot_jp">忘れましたか ?</font>
-	</a>
-	<br><br>
-<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="agree2" type="checkbox" id="checkbox-1-2" class="regular-checkbox" /><label for="checkbox-1-2"></label></sub></sub>
-	<font color="#c9abb0" style="font-size:8px">
-		<span id="text_confirm_delete_account_en">i agree with losing permanently my access<br><br><br><br>and data from all the poofties products acquired.</span>
-		<span id="text_confirm_delete_account_pt" style="display: none;">concordo em perder permanentemente meu acesso<br><br><br><br>e dados de todos os produtos poofties adquiridos.</span>
-		<span id="text_confirm_delete_account_jp" style="display: none;">買収したすべてのpoofties製品のアクセス<br><br><br><br>権とデータを永久に失うことに同意します。</span></div><br><br>
-		<p class="error-message" id="input_delete_account_done_en">done !</p>
-		<p class="error-message" id="input_delete_account_done_pt">pronto !</p>
-		<p class="error-message" id="input_delete_account_done_jp">かんりょう !</p>
-	<input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="deleteAccount();"/>
-		<p class="error-message" id="text_delete_account_wentwrong_en">something went wrong !</p>
-		<p class="error-message" id="text_delete_account_wentwrong_pt">algo deu errado !</p>
-		<p class="error-message" id="text_delete_account_wentwrong_jp">何かがうまくいかなかった !</p>
-	</center>
-
-<br><br><br>
+</center>
 
 </div>
 </div>
