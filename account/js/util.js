@@ -11,7 +11,7 @@ function validateEmail(email) {
 var langCookie = "lang";
 var translatable_elements = [];
 var currentLang = 'en';
-
+var langEvent = new Event('TranslationLoaded');
 function changeTranslation(e){
 	if(!e.id){ //if not autotranslating
 		e = e || window.event;
@@ -34,6 +34,7 @@ function changeTranslation(e){
 	//updates language
 	currentLang = lang;
 	setCookie(langCookie, currentLang);
+	document.dispatchEvent(langEvent); //signifies translation has loaded
 }
 
 function getCurrentLanguage(){
@@ -47,7 +48,7 @@ function registerTranslatable(t){
 function autoTranslate(){
     var cookieLang = getCookie(langCookie);
 	window.onload = function(){
-		if(cookieLang && cookieLang !== 'en'){
+		if(cookieLang){
 			var e = document.getElementById(cookieLang);
 			if(e){
 				changeTranslation(e);
