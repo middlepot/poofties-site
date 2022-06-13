@@ -4,7 +4,8 @@
         <script src="./js/util.js"></script>
         <script>
             fetch(api_path+'/auth/logout', {
-                method: 'POST'
+                method: 'POST',
+                credentials: 'include'
             })
             .then(() =>{
                 window.location = '/account/login';
