@@ -47,14 +47,14 @@ function registerTranslatable(t){
 
 function autoTranslate(){
     var cookieLang = getCookie(langCookie);
-	window.onload = function(){
+	document.addEventListener('DOMContentLoaded', function(){
 		if(cookieLang){
 			var e = document.getElementById(cookieLang);
 			if(e){
 				changeTranslation(e);
 			}
 		}
-	}
+	});
 }
 
 //loading overlay
