@@ -4,7 +4,14 @@ var tfa_path = 'https://api.poofties.club/v1/tfa';
 //email validation
 function validateEmail(email) {
 	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return re.test(String(email).toLowerCase());
+	return re.test(sanitizeEmail(String(email).toLowerCase()));
+}
+function sanitizeEmail(val){
+	if(val){
+		//replace similar unicode characters with ascii ones
+		val = val.replace(/＠|﹫/g, '@');
+	}
+	return val;
 }
 
 //translation
