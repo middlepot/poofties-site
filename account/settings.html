@@ -571,7 +571,46 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 <img id="img_login_settings_jp" style="display: none;" src="./img/loginsettings_jp.png"/>
 <br><br><br>
 
-<div id="div_inputs">
+		<div style="line-height: 15px;">
+		<font color="#b8a2a3" style="font-size:10px;">
+		<span id="text_monthly_updates_en">poofties club monthly updates :</span>
+		<span id="text_monthly_updates_pt" style="display: none;">updates mensais do poofties club :</span>
+		<span id="text_monthly_updates_jp" style="display: none;">poofties club月間アップデート :</span>
+		</font>
+		</div>
+		<br></center>
+		<!-- </div> -->
+	
+		<center>
+	<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="checkbox-account-deletion" type="checkbox" class="regular-checkbox" /><label for="checkbox-account-deletion"></label></sub></sub>
+		<font color="#c9abb0" style="font-size:9px; text-align:left;">
+			<span id="text_confirm_monthly_updates_en">i want to receive the emails.</span>
+			<span id="text_confirm_monthly_updates_pt" style="display: none;">eu quero receber os emails.</span>
+			<span id="text_confirm_monthly_updates_jp" style="display: none;">メール配信を希望する。</span></div><br><br>
+		</font>
+		<p class="error-message" id="input_activated_monthly_done_en">activated !</p>
+		<p class="error-message" id="input_activated_monthly_done_pt">ativado !</p>
+		<p class="error-message" id="input_activated_monthly_done_jp">アクティベート !</p>
+		<p class="error-message" id="input_deactivated_monthly_done_en">deactivated !</p>
+		<p class="error-message" id="input_deactivated_monthly_done_pt">desativado !</p>
+		<p class="error-message" id="input_deactivated_monthly_done_jp">非アクティブ化 !</p>
+<div style="line-height:2px; margin-left:-10px;">
+		<font color="#c9abb0" style="font-size:9px; text-align:left;">
+<a href="./updates" id="linkbjinho" style="text-decoration: none; color:#c9abb0;">
+			<span id="text_archive_monthly_updates_en">read the past months' archive</span>
+			<span id="text_archive_monthly_updates_pt" style="display: none;">ler o arquivo dos últimos meses</span>
+			<span id="text_archive_monthly_updates_jp" style="display: none;">過去数ヶ月のアーカイブを読む</span></div><br><br>
+		</font>
+</a>
+
+		<p class="error-message" id="text_monthly_updates_wentwrong_en">something went wrong !</p>
+		<p class="error-message" id="text_monthly_updates_wentwrong_pt">algo deu errado !</p>
+		<p class="error-message" id="text_monthly_updates_wentwrong_jp">何かがうまくいかなかった !</p>
+		</center>
+	
+	<br><br>
+
+<div id="div_inputs"><center>
 	<!-- <div style="line-height: 15px;"> -->
 	<font color="#b8a2a3" style="font-size:10px;">
 	<span id="text_add_secondary_email_en">add or update secondary email :</span>
@@ -1461,6 +1500,12 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	registerTranslatable('input_delete_account_password');
 	registerTranslatable('link_delete_account_forgot');
 	registerTranslatable('text_confirm_delete_account');
+	registerTranslatable('text_monthly_updates');
+	registerTranslatable('text_confirm_monthly_updates');
+	registerTranslatable('text_archive_monthly_updates');
+	registerTranslatable('text_monthly_updates_wentwrong');
+	registerTranslatable('input_activated_monthly_done');
+	registerTranslatable('input_deactivated_monthly_done');
 	autoTranslate();
 </script>
 
