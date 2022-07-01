@@ -187,6 +187,46 @@ src="./img/series.png" onMouseOver="this.src='./img/serieshover.png'"
 onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <script>
+	pooftiesPageRequiresAuthentication = true;
+	async function toggleUpdates(){
+		var lang = getCurrentLanguage();
+		var activated = document.getElementById('checkbox-updates').checked;
+
+		//shows overlay
+		showLoadingOverlay();
+
+		//tries to login
+		try{
+			document.getElementById('input_activated_monthly_done_'+lang).style.display = 'none';
+			document.getElementById('input_deactivated_monthly_done_'+lang).style.display = 'none';
+			document.getElementById('text_monthly_updates_wentwrong_'+lang).style.display = 'none';
+			var res = await fetch(api_path+'/settings/newsletter/update',{
+				'method': 'POST',
+				credentials: 'include',
+				headers:{
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					activated: activated
+				})
+			})
+			if(res.status < 200 || res.status >= 300){
+				throw new Error('something went wrong');
+			}
+			//all ok
+			if(activated)
+				document.getElementById('input_activated_monthly_done_'+lang).style.display = 'block';
+			else
+				document.getElementById('input_deactivated_monthly_done_'+lang).style.display = 'block';
+		}
+		catch(err){
+			document.getElementById('text_monthly_updates_wentwrong_'+lang).style.display = 'block';
+		}
+		finally{
+			hideLoadingOverlay();
+		}
+	}
+
 	async function changeSecondaryEmail(){
 		var lang = getCurrentLanguage();
 		var email = document.getElementById('input_email_'+lang).value;
@@ -582,7 +622,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 		<!-- </div> -->
 	
 		<center>
-	<div style="line-height:2px; margin-left:-10px;"><sub><sub><input id="checkbox-account-deletion" type="checkbox" class="regular-checkbox" /><label for="checkbox-account-deletion"></label></sub></sub>
+	<div style="line-height:2px; margin-left:-10px;"><sub><sub><input onchange="toggleUpdates();" id="checkbox-updates" type="checkbox" class="regular-checkbox" /><label for="checkbox-updates"></label></sub></sub>
 		<font color="#c9abb0" style="font-size:9px; text-align:left;">
 			<span id="text_confirm_monthly_updates_en">i want to receive the emails.</span>
 			<span id="text_confirm_monthly_updates_pt" style="display: none;">eu quero receber os emails.</span>
@@ -1503,10 +1543,28 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	registerTranslatable('text_monthly_updates');
 	registerTranslatable('text_confirm_monthly_updates');
 	registerTranslatable('text_archive_monthly_updates');
-	registerTranslatable('text_monthly_updates_wentwrong');
-	registerTranslatable('input_activated_monthly_done');
-	registerTranslatable('input_deactivated_monthly_done');
 	autoTranslate();
+</script>
+
+<script>
+	async function getAccountSettings(){
+		try{
+			showLoadingOverlay();
+			var req = await fetch(api_path+'/settings', {
+				method: 'GET',
+				credentials: 'include'
+			});
+			if(req.status === 200){
+				var res = await req.json();
+				console.log(res);
+				document.getElementById('checkbox-updates').checked = res.newsletter;
+			}
+		}
+		finally{
+			hideLoadingOverlay();
+		}
+	}
+	getAccountSettings();
 </script>
 
 </body>
