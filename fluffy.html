@@ -107,6 +107,7 @@ height: 100px;
 overflow-x:hidden;
 z-index: 3;
  }
+#frame { height:425px; width:540px; }
 @media screen and (max-width: 1000px) and (orientation: portrait){
 #everything { position: absolute; zoom: 145%;
 	left:590px;
@@ -118,7 +119,7 @@ z-index: 3;
     transform: rotate(90deg); }
 #stuff { overflow: hidden; }
 #frame { -webkit-transform: scale(1.45);
-    transform: scale(1.45); margin-left:130px; margin-top: 100px;}
+    transform: scale(1.45); margin-left:130px; margin-top: 100px; height:425px; width:540px;}
 }
 @media screen and (min-width: 1700px) and (orientation: landscape){
 #everything { position: absolute; zoom: 120%;
@@ -126,11 +127,13 @@ z-index: 3;
 	top:35px; }
 #stuff { overflow: hidden; }
 #frame { -webkit-transform: scale(1.2);
-    transform: scale(1.2); margin-left:50px; margin-top: 45px;}
+    transform: scale(1.2); margin-left:50px; margin-top: 45px; height:425px; width:540px;}
 }
 @media screen and (min-width: 2000px) and (orientation: landscape){
 #everything { position: absolute; zoom: 100%; left:-80px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
+#frame { height:425px; width:540px; }
+}
 }
 @media screen and (min-width: 3000px) and (orientation: landscape){
 #everything { position: absolute; zoom: 240%;
@@ -138,11 +141,13 @@ z-index: 3;
 	top:35px; }
 #stuff { overflow: hidden; }
 #frame { -webkit-transform: scale(2.4);
-    transform: scale(2.4); margin-left:375px; margin-top: 300px;}
+    transform: scale(2.4); margin-left:375px; margin-top: 300px; height:425px; width:540px;}
 }
 @media screen and (max-width: 1000px) and (orientation: landscape){
-#everything { position: absolute; zoom: 80%; left:-50px; top:0px;}
+#everything { position: absolute; zoom: 87%; left:-120px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
+#frame { -webkit-transform: scale(0.9);
+    transform: scale(0.9); margin-left:-37px; margin-top:-28px; height:483px; width:610px;}
 }
 </style>
 
@@ -319,7 +324,7 @@ function getPosition(el) {
 </script>
 </div>
 
-<iframe id="frame" src="/fluffy/0" style="position:absolute; z-index:8; height:430px; width:540px; border:none; overflow:hidden; top:5px; left:27px;" scrolling="no"></iframe>
+<iframe id="frame" src="/fluffy/0" style="position:absolute; z-index:8; border:none; overflow:hidden; top:5px; left:27px;" scrolling="no"></iframe>
 
 
 </div>
