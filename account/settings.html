@@ -458,6 +458,11 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 				document.getElementById('input_credentials_change_password_error_invalid_'+lang).style.display = 'block';
 				return;
 			}
+			else if(res.status === 406){
+				hideLoadingOverlay();
+				document.getElementById('input_password_error_length_'+lang).style.display = 'block';
+				return;
+			}
 			else if(res.status < 200 || res.status >= 300){
 				throw new Error('something went wrong');
 			}
@@ -801,9 +806,9 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	<input type="password" id="input_change_password_new_en" placeholder="type new password" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 	<input type="password" id="input_change_password_new_pt" placeholder="digite nova senha" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 	<input type="password" id="input_change_password_new_jp" placeholder="新しいパスワードを入力します" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-		<p class="error-message" id="input_password_error_length_en">the password must have between 8 and 32 characters !</p>
-		<p class="error-message" id="input_password_error_length_pt">a senha deve ter entre 8 e 32 caracteres !</p>
-		<p class="error-message" id="input_password_error_length_jp">パスワードは8~32もじであるひつようがあります。</p>
+		<p class="error-message" id="input_password_error_length_en">the password must have between 8 and 32 characters and use ASCII characters only !</p>
+		<p class="error-message" id="input_password_error_length_pt">a senha deve ter entre 8 e 32 caracteres e usar apenas caracteres ASCII !</p>
+		<p class="error-message" id="input_password_error_length_jp">パスワードは8〜32文字で、ASCII文字のみを使用する必要があります !</p>
 	<br><br>
 	<input type="password" id="input_change_password_new_confirm_en" placeholder="type new password again" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
 	<input type="password" id="input_change_password_new_confirm_pt" placeholder="digite nova senha de novo" maxlength="50" style="display: none; height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursorwrite.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
