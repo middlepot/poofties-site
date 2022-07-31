@@ -152,9 +152,18 @@ label{margin-right: 10px;}
 						
 						<input type="checkbox" name="letter_sub" id="letter_sub">
 						<label for="letter_sub">include subscribe button</label><br><br>
-						
-						<input type="checkbox" name="letter_everybody" id="letter_everybody">
-						<label for="letter_everybody">to everybody everybody</label><br><br>
+
+						<fieldset>
+							<input type="checkbox" name="letter_subs" id="letter_subs">
+							<label for="letter_subs">to subscribers</label><br><br>
+
+							<input type="checkbox" name="letter_unsubs" id="letter_unsubs" style="margin-top: -15px;">
+							<label for="letter_unsubs">to not subscribers</label><br><br>
+
+							<p style="font-size: 10px; margin-top: -10px;">*checking both boxes will send the message to everyone
+								<br>*checking no boxes won't send to anyone</p>
+						</fieldset>
+						<br>
 						
 						<input type="datetime-local" name="letter_dispatch" id="letter_dispatch">
 						<label for="letter_dispatch">scheduled date</label><br><br>
@@ -381,9 +390,15 @@ label{margin-right: 10px;}
 		if(confirm('Are you sure you want to schedule this letter?')){
 			try{
 				showLoadingOverlay();
-				var everybody = document.getElementById('letter_everybody').checked;
-				if(everybody){
+				var unsubs = document.getElementById('letter_unsubs').checked;
+				var subs = document.getElementById('letter_subs').checked;
+				if(subs && unsubs){
 					if(!confirm('This letter will be sent to EVERYONE. Are you sure?')){
+						return;
+					}
+				}
+				else if(unsubs){
+					if(!confirm('This letter will be sent to people who are not subscribed. Are you sure?')){
 						return;
 					}
 				}
@@ -395,7 +410,8 @@ label{margin-right: 10px;}
 				letter_form.append('email', loginEmail);
 				letter_form.append('password', loginPass);
 				letter_form.append('dispatch', new Date(dispatch).getTime());
-				letter_form.append('everybody', everybody);
+				letter_form.append('to_unsubs', unsubs);
+				letter_form.append('to_subs', subs);
 				letter_form.append('subject', subject);
 				letter_form.append('button_sub', button_sub);
 				letter_form.append('button_unsub', button_unsub);
@@ -416,7 +432,8 @@ label{margin-right: 10px;}
 					document.getElementById('letter_dispatch').value = '';
 					document.getElementById('letter_subject').value = '';
 					document.getElementById('letter_preview').innerHTML = '';
-					document.getElementById('letter_everybody').checked = false;
+					document.getElementById('letter_subs').checked = false;
+					document.getElementById('letter_unsubs').checked = false;
 				}
 				else{
 					throw new Error(req.status);
