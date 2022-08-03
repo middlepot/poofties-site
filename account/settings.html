@@ -89,6 +89,16 @@ position: absolute;
 overflow-y:hidden;
 overflow-x:hidden;
  }
+#base2 {
+position: absolute;
+	left: 350px;
+	top: 90px;
+width: 635px;
+height: 540px;
+overflow-y:hidden;
+overflow-x:hidden;
+z-index: 5;
+ }
 #stuff {
 position: absolute;
 	left: 15px;
@@ -105,7 +115,7 @@ position: absolute;
 width: 100px;
 height: 100px;
 overflow-x:hidden;
-z-index: 3;
+z-index: 11;
  }
 @media screen and (max-width: 1000px) and (orientation: portrait){
 #everything { position: absolute; zoom: 145%;
@@ -604,7 +614,8 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 </div>
 
 <img src="./img/base.png"/>
-
+</div>
+<div id="base2">
 <div id="stuff">
 <br>
 　　<a href="./home" id="linkbjinho" style="text-decoration: none;"><font color="#cfb4b8">home</a></font>
@@ -971,7 +982,7 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 	}
 	</style>
 	
-		<br><br><br>
+		<br><a title="delete-product" id="delete-product"></a><br><br>
 		<div style="line-height: 15px;">
 		<font color="#b8a2a3" style="font-size:10px;">
 		<span id="text_delete_products_en">delete my poofties products data :</span>
