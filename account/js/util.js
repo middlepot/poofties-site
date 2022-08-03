@@ -103,7 +103,7 @@ async function checkAuthentication(){
 			});
 			if(!res.status || res.status !== 200){
 				//set return cookie
-				window.location = '/account/login.html?url_ret='+encodeURI(window.location.href);
+				window.location = '/account/login.html?url_ret='+encodeURIComponent(window.location.href);
 				return;
 			}
 			//all ok
