@@ -93,7 +93,24 @@ style="position:absolute; z-index:10; left:180px; top:100px;"/>
             setInterval(volgendefoto, 500);
         </script>
 
+<script>
+function showcode(){
+document.getElementById("code").style.display = "block";
+document.getElementById("itempreview").style.display = "block";
+}
+function hidecode(){
+document.getElementById("code").style.display = "none";
+document.getElementById("itempreview").style.display = "none";
+}
+</script>
 
+<img width="60px" height="60px" src="https://i.imgur.com/IQdCDvD.png"
+style="position:absolute; z-index:20; left:300px; top:245px;" onclick="showcode();">
+
+<a><img id="code" src="https://i.imgur.com/7GR4zn5.png"
+style="display:none; position:absolute; z-index:99; left:260px; top:120px;" onclick="hidecode();"></a>
+<a href="../account/minigames" target="_blank"><img id="itempreview" src="https://i.imgur.com/xaulPTS.png"
+style="display:none; position:absolute; z-index:98; left:230px; top:165px;"></a>
 
 <div style="position:absolute; overflow:hidden; z-index:12; left:160px; top:75px; line-height:10px; width:120px; height:10px;color:#ab8e97; font-size:9px; font-family:verdana; text-align:center;
 border:0px;

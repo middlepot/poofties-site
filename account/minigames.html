@@ -216,161 +216,178 @@ onMouseOut="this.src='./img/series.png'"></a><br><br>
 
 <div style="position:absolute; left:5%; right:5%; line-height: 10px;">
 <center>
-<img id="img_my_profile_en" src="./img/myfluffylifeprofile_en.png"/>
-<img id="img_my_profile_pt" style="display: none;" src="./img/myfluffylifeprofile_pt.png"/>
-<img id="img_my_profile_jp" style="display: none;" src="./img/myfluffylifeprofile_jp.png"/>
+<img id="img_minigames_en" src="./img/minigames_en.png"/>
+<img id="img_minigames_pt" style="display: none;" src="./img/minigames_pt.png"/>
+<img id="img_minigames_jp" style="display: none;" src="./img/minigames_jp.png"/>
 
 <br><br><br>
-<div style="line-height: 15px; margin-right:25%; margin-left:25%;">
+<div style="line-height: 15px; margin-right:20%; margin-left:20%;">
 <font color="#b8a2a3" style="font-size:10px;">
-<span id="text_current_profile1_en">add your profile or character widget code to your site / blog for getting teddycoins per view !</span>
-<span id="text_current_profile1_pt" style="display: none;">adicione o código do widget do seu perfil ou personagem em seu site / blog para ganhar teddycoins por visualização !</span>
-<span id="text_current_profile1_jp" style="display: none;">ビューごとにteddycoinを取得するには, プロファイルまたはキャラクターウィジェットコードをサイト / ブログに追加してください !</span>
+<span id="text_current_minigames1_en">there are secret codes hidden inside the milky woods mini games. play them & click where the following hints indicate to get these exclusive items and teddycoin prizes !</span>
+<span id="text_current_minigames1_pt" style="display: none;">existem códigos secretos escondidos dentro dos joguinhos do milky woods. jogue-os e clique onde as dicas a seguir indicam para obter estes itens exclusivos e prêmios em teddycoin !</span>
+<span id="text_current_minigames1_jp" style="display: none;">milky woodsのミニゲームには秘密のコードが隠されています。それらをプレイして, 次のヒントが示す場所をクリックして, これらの限定アイテムやteddycoinを手に入れましょう !</span>
 <br><br></div>
-<div style="line-height: 15px;">
-<span id="text_current_profile_en">this is your current my fluffy life profile :</span>
-<span id="text_current_profile_pt" style="display: none;">este é o seu perfil my fluffy life no momento :</span>
-<span id="text_current_profile_jp" style="display: none;">これはあなたの現在のmy fluffy lifeプロフィールです : </span>
-</div>
-<br><br>
-
-<img id="img_current_profile" style="display: none; width: 320px; height: auto;">
-
-<script>
-function copyTextFromArea(areaId){
-	var area = document.getElementById(areaId);
-	area.focus();
-	area.select();
-	area.setSelectionRange(0, 99999);
-	document.execCommand("copy");
-}
-</script><br><br>
-<center><div style="height:42px; width:165px; border: 0px solid #baaeab;
- cursor: url(./img/cursorwrite.png), progress;
- outline:none;
-background-color: transparent; overflow: auto; overflow: scroll; 
-background-image:url(./img/code.png);
-font-size:7px; font-family:Verdana; COLOR: #a58282;">
-<textarea id="widget-profile-text" style="height:35px; width:160px; border: 0px solid #baaeab;
- cursor: url(./img/cursorwrite.png), progress;
- outline:none; padding:8px; resize: none;
-background-color: transparent; overflow: auto; overflow: scroll;
-font-size:7px; font-family:Verdana; COLOR: #a58282;">
-</textarea>
-<!-- populate widget text -->
-<script>
-	async function getProfileWidgetText(){
-		var req = await fetch(api_path+'/myfluffylife/widget/profile', {credentials: 'include'});
-		var res = await req.json();
-		if(res.widget){
-			var area = document.getElementById('widget-profile-text');
-			area.value = res.widget;
-		}
-	}
-	getProfileWidgetText();
-</script>
-</div>
-<input onclick="copyTextFromArea('widget-profile-text');"
-style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
-background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
-</center>
-
-<span id="text_no_profile_en" style="display: none;">profile not found !</span>
-<span id="text_no_profile_pt" style="display: none;">perfil não encontrado !</span>
-<span id="text_no_profile_jp" style="display: none;">プロファイルが見つかりません !</span>
-
-<br><br>
 
 <div style="line-height: 15px;">
-<span id="text_current_character_en">this is your current my fluffy life character :</span>
-<span id="text_current_character_pt" style="display: none;">este é o seu personagem my fluffy life no momento :</span>
-<span id="text_current_character_jp" style="display: none;">これはあなたの現在のmy fluffy lifeキャラクターです : </span>
+<span id="text_current_minigames_en">redeem the codes on the "teddy bank" in your <a href="https://myfluffy.life" target="_blank" style="text-decoration:none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;">my fluffy life</a> laptop.</span>
+<span id="text_current_minigames_pt" style="display: none;">ative os códigos no "teddy bank" em seu notebook do <a href="https://myfluffy.life" target="_blank" style="text-decoration:none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;">my fluffy life</a>.</span>
+<span id="text_current_minigames_jp" style="display: none;"><a href="https://myfluffy.life" target="_blank" style="text-decoration:none; font-size:9px; color: #bca7a7; padding-bottom: 2px; border-bottom:1px dotted #c6a799;">my fluffy life</a>のノートパソコンにある「teddy bank」でコードを引き換える。</span>
 </div>
 <br><br>
 
-<img id="img_current_profile_front" style="display: none; height: 150px; width: auto;" onclick="toggleProfileBody();">
-<img id="img_current_profile_back" style="display: none; height: 150px; width: auto;" onclick="toggleProfileBody();">
 
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_lost2_en">hint :　petals that flow with the river</span>
+<span id="text_minigames_lost2_pt" style="display: none;">dica :　petals that flow with the river</span>
+<span id="text_minigames_lost2_jp" style="display: none;">ヒント :　川と一緒に流れる花びら</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_lost2get_en">get ↓</span>
+<span id="text_minigames_lost2get_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_lost2get_jp" style="display: none;">ゲット ↓</span>
+</font>
 <br><br>
-<center><div style="height:42px; width:165px; border: 0px solid #baaeab;
- cursor: url(./img/cursorwrite.png), progress;
- outline:none;
-background-color: transparent; overflow: auto; overflow: scroll; 
-background-image:url(./img/code.png);
-font-size:7px; font-family:Verdana; COLOR: #a58282;">
-<textarea id="widget-profile-text-body" style="height:35px; width:160px; border: 0px solid #baaeab;
- cursor: url(./img/cursorwrite.png), progress;
- outline:none; padding:8px; resize: none;
-background-color: transparent; overflow: auto; overflow: scroll;
-font-size:7px; font-family:Verdana; COLOR: #a58282;"></textarea></div>
-<!-- populate widget text -->
-<script>
-	async function getProfileBodyWidgetText(){
-		var req = await fetch(api_path+'/myfluffylife/widget/profile/body', {credentials: 'include'});
-		var res = await req.json();
-		if(res.widget){
-			var area = document.getElementById('widget-profile-text-body');
-			area.value = res.widget;
-		}
-	}
-	getProfileBodyWidgetText();
-</script>
-<input onclick="copyTextFromArea('widget-profile-text-body');"
-style="width:73px; height:20px; overflow-x:hidden; cursor: url(./img/cursorhover.png), progress; outline:none; background-color: transparent;
-background-image:url(./img/copybutton.png); border: 0px solid #baaeab; -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none; -ms-user-select: none;user-select: none;" type="button"></input>
-</center>
-
-<span id="text_no_character_en" style="display: none;">character not found !</span>
-<span id="text_no_character_pt" style="display: none;">personagem não encontrado !</span>
-<span id="text_no_character_jp" style="display: none;">キャラクターが見つかりません !</span>
+<img src="./img/lost2_preview.png">
+<br><br>
 
 <br><br>
 
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_angel_en">hint :　something angelic</span>
+<span id="text_minigames_angel_pt" style="display: none;">dica :　algo angelical</span>
+<span id="text_minigames_angel_jp" style="display: none;">ヒント :　天使のような何か</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_angelget_en">get ↓</span>
+<span id="text_minigames_angelget_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_angelget_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/angel_preview.png">
+<br><br>
 
-<div style="line-height: 15px;">
-<span id="text_current_teddycoins1_en">teddycoins available for withdrawal :</span>
-<span id="text_current_teddycoins1_pt" style="display: none;">teddycoins disponíveis para retirada :</span>
-<span id="text_current_teddycoins1_jp" style="display: none;">引き出し可能なteddycoin : </span>
-</div>
-<br>
+<br><br>
 
-<center>
-<style>
-::placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
-::-ms-input-placeholder { color:#bda4a4; opacity: 1; font-size: 8px; }
-label {
-	display: inline;
-}
-tr { padding: 3px; text-align:center; }
-td { padding: 0px; text-align:center; max-width:200px; }
-th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; padding:10px; }
-</style>
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_pick_en">hint :　shiny & noisy little thing</span>
+<span id="text_minigames_pick_pt" style="display: none;">dica :　coisinha brilhante e barulhenta</span>
+<span id="text_minigames_pick_jp" style="display: none;">ヒント :　ピカピカでうるさい小さなもの</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_pickget_en">get ↓</span>
+<span id="text_minigames_pickget_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_pickget_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/2kteddycoins_preview.png">
+<br><br>
 
-<table>
-<tr>
-<td><input id="teddycoins" readonly="readonly" placeholder="0" maxlength="50" style="height:31px; width:140px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/textbox.png); outline:none; padding-left:5px; padding-right:5px; cursor: url(./img/cursor.png), progress; font-family: Verdana; font-size: 10px; letter-spacing:1px; color:#b8a0a3; text-align:center;" />
-</td>
-<td><input style="width:50px; height:31px; border: none; border-width: 0px !important; background-color: transparent; background-image:url(./img/okbutton.png); cursor: url(./img/cursorhover.png), progress; outline: none;" type="button" onclick="claimTeddycoins();"/></td>
-</tr>
-</table><br>
-<div style="line-height: 15px;">
-<span id="text_current_teddycoins_en" style="display: none;">coupon code generated :</span>
-<span id="text_current_teddycoins_pt" style="display: none;">código do cupom gerado :</span>
-<span id="text_current_teddycoins_jp" style="display: none;">生成されたクーポンコード :</span>
-<span id="text_teddycoins_coupon" style="display: none;"></span>
-</div>
-	<p class="error-message" id="text_wentwrong_en">something went wrong !</p>
-	<p class="error-message" id="text_wentwrong_pt">algo deu errado !</p>
-	<p class="error-message" id="text_wentwrong_jp">何かがうまくいかなかった !</p>
-</center>
+<br><br>
 
-<br><br><br>
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_cake_en">hint :　how many times have you won ?</span>
+<span id="text_minigames_cake_pt" style="display: none;">dica :　quantas vezes você ganhou ?</span>
+<span id="text_minigames_cake_jp" style="display: none;">ヒント :　何回優勝したんですか ?</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_cakeget_en">get ↓</span>
+<span id="text_minigames_cakeget_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_cakeget_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/cake_preview.png">
+<br><br>
+
+<br><br>
+
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_fluffy1_en">hint :　a sleepy bunny face</span>
+<span id="text_minigames_fluffy1_pt" style="display: none;">dica :　um rostinho de coelho sonolento</span>
+<span id="text_minigames_fluffy1_jp" style="display: none;">ヒント :　眠そうなウサギの顔</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_fluffy1get_en">get ↓</span>
+<span id="text_minigames_fluffy1get_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_fluffy1get_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/1kteddycoins_preview.png">
+<br><br>
+
+<br><br>
+
+
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_thinking_en">hint :　white ribbons are precious</span>
+<span id="text_minigames_thinking_pt" style="display: none;">dica :　laços brancos são preciosos</span>
+<span id="text_minigames_thinking_jp" style="display: none;">ヒント :　白いリボンは貴重です</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_thinkingget_en">get ↓</span>
+<span id="text_minigames_thinkingget_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_thinkingget_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/thinking_preview.png">
+<br><br>
+
+<br><br>
+
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_fluffy2_en">hint :　the end of the rainbow</span>
+<span id="text_minigames_fluffy2_pt" style="display: none;">dica :　o final do arco-íris</span>
+<span id="text_minigames_fluffy2_jp" style="display: none;">ヒント :　虹の終わり</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_fluffy2get_en">get ↓</span>
+<span id="text_minigames_fluffy2get_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_fluffy2get_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/1kteddycoins_preview.png">
+<br><br>
+
+<br><br>
+
+
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_lost_en">hint :　picking strawberries</span>
+<span id="text_minigames_lost_pt" style="display: none;">dica :　colhendo morangos</span>
+<span id="text_minigames_lost_jp" style="display: none;">ヒント :　いちご狩り</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_lostget_en">get ↓</span>
+<span id="text_minigames_lostget_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_lostget_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/lost_preview.png">
+<br><br>
+
+<br><br>
+
+<font color="#a89495" style="font-size:10px;">
+<span id="text_minigames_fluffy3_en">hint :　the moon shines beautifully</span>
+<span id="text_minigames_fluffy3_pt" style="display: none;">dica :　a lua brilha lindamente</span>
+<span id="text_minigames_fluffy3_jp" style="display: none;">ヒント :　月が美しく輝く</span>
+</font><br><br>
+<font color="#b8a2a3" style="font-size:10px;">
+<span id="text_minigames_fluffy3get_en">get ↓</span>
+<span id="text_minigames_fluffy3get_pt" style="display: none;">ganhe ↓</span>
+<span id="text_minigames_fluffy3get_jp" style="display: none;">ゲット ↓</span>
+</font>
+<br><br>
+<img src="./img/1kteddycoins_preview.png">
+<br><br>
+
+<br><br>
+
 
 <div style="line-height: 10px;">
 <font color="#a89495" style="font-size:10px;">
-<span id="text_inventory_en">my fluffy life profile is integrated with :</span>
-<span id="text_inventory_pt" style="display: none;">perfil my fluffy life é integrados com :</span>
-<span id="text_inventory_jp" style="display: none;">my fluffy lifeプロファイルは以下と統合されています :</span>
+<span id="text_inventory_en">milky woods mini games are integrated with :</span>
+<span id="text_inventory_pt" style="display: none;">joguinhos do milky woods são integrados com :</span>
+<span id="text_inventory_jp" style="display: none;">milky woodsミニゲームは以下と統合されています :</span>
 <br><br><br>
 <sub><sub><sub><img src="./img/fluffylife+.png"/></sub></sub></sub>
 <a href="https://myfluffy.life" target="_blank" id="linkbjinho" style="text-decoration: none;">
@@ -414,121 +431,33 @@ th { padding: 3px; text-align:center; max-width:200px; font-weight:normal; paddi
 </div>
 
 <script>
-	registerTranslatable('img_my_profile');
-	registerTranslatable('text_current_profile1');
-	registerTranslatable('text_current_profile');
-	registerTranslatable('text_current_character');
-	registerTranslatable('text_current_teddycoins1');
+	registerTranslatable('img_minigames');
+	registerTranslatable('text_current_minigames1');
+	registerTranslatable('text_current_minigames');
+	registerTranslatable('text_minigames_lost2');
+	registerTranslatable('text_minigames_angel');
+	registerTranslatable('text_minigames_pick');
+	registerTranslatable('text_minigames_cake');
+	registerTranslatable('text_minigames_fluffy1');
+	registerTranslatable('text_minigames_thinking');
+	registerTranslatable('text_minigames_fluffy2');
+	registerTranslatable('text_minigames_lost');
+	registerTranslatable('text_minigames_fluffy3');
+	registerTranslatable('text_minigames_lost2get');
+	registerTranslatable('text_minigames_angelget');
+	registerTranslatable('text_minigames_pickget');
+	registerTranslatable('text_minigames_cakeget');
+	registerTranslatable('text_minigames_fluffy1get');
+	registerTranslatable('text_minigames_thinkingget');
+	registerTranslatable('text_minigames_fluffy2get');
+	registerTranslatable('text_minigames_lostget');
+	registerTranslatable('text_minigames_fluffy3get');
 	registerTranslatable('text_inventory');
 	registerTranslatable('link_myfluffylife_inventory');
 	registerTranslatable('link_shybunny_stationery');
 	registerTranslatable('link_pufcafe_inventory');
 	registerTranslatable('link_pufbot_inventory');
 	autoTranslate();
-</script>
-
-<script>
-	//check authentication
-	pooftiesPageRequiresAuthentication = true;
-	//get profile
-	async function getProfile(){
-		var res = await fetch(api_path+'/myfluffylife/profile', {credentials: 'include'});
-		if(res.status === 200){
-			var body = await res.json();
-			if(body.profile){
-				var ime = document.getElementById('img_current_profile');
-				ime.src = body.profile;
-				ime.style.display = 'block';
-			}
-		}
-		//if user don't has a my fluffy life account
-		else if(res.status < 200 || res.status >= 300){
-			var lang = getCurrentLanguage();
-			document.getElementById('text_no_profile_'+lang).style.display = 'block';
-			document.getElementById('text_no_character_'+lang).style.display = 'block';
-			return;
-		}
-	}
-	getProfile();
-
-	//get player body
-	async function getProfileBody(){
-		var res = await fetch(api_path+'/myfluffylife/profile/body', {credentials: 'include'});
-		if(res.status === 200){
-			var body = await res.json();
-			if(body.profile){
-				var front = document.getElementById('img_current_profile_front');
-				front.src = body.profile.image_front;
-				front.style.display = 'block';
-				var back = document.getElementById('img_current_profile_back');
-				back.src = body.profile.image_back;
-			}
-		}
-		//if user don't has a my fluffy life account
-		else if(res.status < 200 || res.status >= 300){
-			var lang = getCurrentLanguage();
-			document.getElementById('text_no_profile_'+lang).style.display = 'block';
-			document.getElementById('text_no_character_'+lang).style.display = 'block';
-			return;
-		}
-	}
-	function toggleProfileBody(){
-		var front = document.getElementById('img_current_profile_front');
-		var back = document.getElementById('img_current_profile_back');
-		if(front.style.display === 'block'){
-			front.style.display = 'none';
-			back.style.display = 'block';
-		}
-		else if(front.style.display === 'none'){
-			front.style.display = 'block';
-			back.style.display = 'none';
-		}
-	}
-	getProfileBody();
-
-	//get total coins
-	async function getWidgetCoins(){
-		var res = await fetch(api_path+'/myfluffylife/widget/prize', {credentials: 'include'});
-		if(res.status === 200){
-			var body = await res.json();
-			if(body.prize >= 0){
-				var total = document.getElementById('teddycoins');
-				total.value = body.prize;
-			}
-			if(body.coupon_last){
-				var coupon = document.getElementById('text_teddycoins_coupon');
-				coupon.innerHTML = '<b>'+body.coupon_last+'</b>';
-				coupon.style.display = 'block';
-				var lang = getCurrentLanguage();
-				document.getElementById('text_current_teddycoins_'+lang).style.display = 'block';
-			}
-		}
-	}
-	getWidgetCoins();
-
-	async function claimTeddycoins(){
-		var totalCoins = document.getElementById('teddycoins');
-		if(totalCoins.value){
-			showLoadingOverlay();
-			var res = await fetch(api_path+'/myfluffylife/widget/prize/claim', {
-				method: 'POST',
-				credentials: 'include'
-			});
-			var lang = getCurrentLanguage();
-			if(res.status === 200){
-				var body = await res.json();
-				var coupon = document.getElementById('text_teddycoins_coupon');
-				coupon.innerHTML = '<b>'+body.coupon+'</b>';
-				coupon.style.display = 'block';
-				document.getElementById('text_current_teddycoins_'+lang).style.display = 'block';
-				document.getElementById('teddycoins').value = 0;
-			}
-			else if(res.status >= 300){
-				document.getElementById('text_wentwrong_'+lang).style.display = 'block';
-			}
-			hideLoadingOverlay();
-		}
-	}
 </script>
 
 </body>

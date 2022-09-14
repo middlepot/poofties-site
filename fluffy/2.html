@@ -65,6 +65,27 @@ border: 1px dotted #e2d5d0;
 
 
 
+<script>
+function showcode(){
+document.getElementById("code").style.display = "block";
+document.getElementById("itempreview").style.display = "block";
+}
+function hidecode(){
+document.getElementById("code").style.display = "none";
+document.getElementById("itempreview").style.display = "none";
+}
+</script>
+
+<img width="70px" height="72px" src="https://i.imgur.com/IQdCDvD.png"
+style="position:absolute; z-index:20; left:155px; top:55px;" onclick="showcode();">
+
+<a><img id="code" src="https://i.imgur.com/I0nXqVe.png"
+style="display:none; position:absolute; z-index:99; left:180px; top:55px;" onclick="hidecode();"></a>
+<a href="../account/minigames" target="_blank"><img id="itempreview" src="https://i.imgur.com/HFfxr0Q.png"
+style="display:none; position:absolute; z-index:98; left:150px; top:100px;"></a>
+
+
+
 <img src="https://i.imgur.com/ZT0JPJx.png"
 style="position:absolute; z-index:8; left:145px; top:5px;"/>
 

@@ -337,6 +337,25 @@ function getPosition(el) {
 
 </div>
 
+<script>
+function showcode(){
+document.getElementById("code").style.display = "block";
+document.getElementById("itempreview").style.display = "block";
+}
+function hidecode(){
+document.getElementById("code").style.display = "none";
+document.getElementById("itempreview").style.display = "none";
+}
+</script>
+
+<img width="80px" height="40px" src="https://i.imgur.com/IQdCDvD.png"
+style="position:absolute; z-index:10; left:250px; top:95px;" onclick="showcode();">
+
+<a><img id="code" src="https://i.imgur.com/gdudfkc.png"
+style="display:none; position:absolute; z-index:99; left:230px; top:40px;" onclick="hidecode();"></a>
+<a href="../account/minigames" target="_blank"><img id="itempreview" src="https://i.imgur.com/Kc94nvs.png"
+style="display:none; position:absolute; z-index:98; left:200px; top:85px;"></a>
+
 
 <img id="angel" src="https://i.imgur.com/vekG2zQ.png"
 style="position:absolute; z-index:8; left:125px; top:85px;"/>
