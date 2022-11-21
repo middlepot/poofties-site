@@ -139,21 +139,12 @@ z-index: 3;
 html{-webkit-text-size-adjust: 140%; text-size-adjust: 140%;}
 }}
 
-@supports not (-webkit-touch-callout: none) {
 @media screen and (min-width: 1700px) and (orientation: landscape){
 #everything { position: absolute; zoom: 120%;
 	left:90px;
 	top:35px; }
 #stuff { overflow: auto; overflow: scroll; }
-}}
-@supports (-webkit-touch-callout: none) {
-@media screen and (min-width: 1700px) and (orientation: landscape){
-#everything { position: absolute; zoom: 120%;
-	left:90px;
-	top:35px; }
-#stuff { overflow: auto; overflow: scroll; }
-.anjinhoface{margin-left:-15px; margin-top:-10px;}
-}}
+}
 
 @media screen and (min-width: 2000px) and (orientation: landscape){
 #everything { position: absolute; zoom: 100%; left:-80px; top:0px;}
