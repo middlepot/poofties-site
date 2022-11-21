@@ -134,8 +134,9 @@ z-index: 3;
     -o-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     transform: rotate(90deg); }
-#stuff { overflow: auto; overflow: scroll; line-height: 8px !important; }
-html{-webkit-text-size-adjust: 140%; text-size-adjust: 140%; line-height: 8px !important;}
+#stuff { overflow: auto; overflow: scroll; }
+html{-webkit-text-size-adjust: 140%; text-size-adjust: 140%;}
+.toptext{ line-height: 8px !important;}
 #frame { -webkit-transform: scale(1.45);
     transform: scale(1.45); margin-left:130px; margin-top: 100px; height:425px; width:540px;}
 }}
@@ -470,7 +471,7 @@ style="position:absolute; z-index:10; left:278px; top:4px;"/>
 
 <img src="https://i.imgur.com/odBtEfg.png" width="165px" height="95px"
 style="position:absolute; z-index:9; left:225px; top:10px;"/>
-<div style="position:absolute; overflow:hidden; z-index:10; left:223px; top:35px; line-height:10px; width:170px; height:80px;">
+<div class="toptext" style="position:absolute; overflow:hidden; z-index:10; left:223px; top:35px; line-height:10px; width:170px; height:80px;">
 <font style="font-size:9px; color:#b0999b; text-shadow: 1px 1px #fff;">
 <center>together we clean faster,<br>so let's work together ..<br><br>
 whoever finishes first<br>gets ice cream !!</center>
@@ -498,7 +499,7 @@ style="position:absolute; z-index:9; left:370px; top:315px;"/>
 </font></div>
 </div>
 
-<div id="divwinner" style="display:none; position:absolute; overflow:hidden; z-index:10; left:378px; top:320px; line-height:14px; width:70px; height:100px;">
+<div class="toptext" id="divwinner" style="display:none; position:absolute; overflow:hidden; z-index:10; left:378px; top:320px; line-height:14px; width:70px; height:100px;">
 <span id="winner" style="user-select: none; -webkit-user-select: none; display:none; font-size:10px; color:#b0999b; text-shadow: 1px 1px #fff; -webkit-tap-highlight-color: transparent;"></span>
 <font id="restarttext" onclick="gamerestart();" style="cursor: url(https://i.imgur.com/IJhQJq5.png), progress; user-select: none; -webkit-user-select: none; display:none; font-size:11px; color:#b0999b; text-shadow: 1px 1px #fff; height:15px; -webkit-tap-highlight-color: transparent;">
 restart ?
