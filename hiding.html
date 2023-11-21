@@ -155,7 +155,7 @@ z-index: 3;
 #frame { height:425px; width:540px; }
 
 @supports not (-webkit-touch-callout: none) {
-@media screen and (max-width: 1000px) and (orientation: portrait){
+@media screen and (min-width: 1px) and (orientation: portrait){
 #everything { position: absolute; zoom: 145%;
 	left:590px;
 	top:-150px;
@@ -169,7 +169,7 @@ z-index: 3;
     transform: scale(1.45); margin-left:130px; margin-top: 100px; height:425px; width:540px;}
 }}
 @supports (-webkit-touch-callout: none) {
-@media screen and (max-width: 1000px) and (orientation: portrait){
+@media screen and (min-width: 1px) and (orientation: portrait){
 #everything { position: absolute; zoom: 145%;
 	left:590px;
 	top:-150px;
@@ -194,7 +194,7 @@ html{-webkit-text-size-adjust: 140%; text-size-adjust: 140%;}
     transform: scale(1.2); margin-left:50px; margin-top: 45px; height:425px; width:540px;}
 }
 @media screen and (min-width: 2000px) and (orientation: landscape){
-#everything { position: absolute; zoom: 100%; left:-80px; top:0px;}
+#everything { position: absolute; zoom: 170%; left:-80px; top:0px;}
 #stuff { overflow: auto; overflow: scroll; }
 #frame { height:425px; width:540px; }
 }
