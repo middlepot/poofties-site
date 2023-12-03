@@ -506,7 +506,6 @@ letter-spacing:1px;
 -webkit-box-shadow: 0px 0px 5px 9px #fff;
 box-shadow: 0px 0px 5px 9px #fff;" type="button" id="restart" onclick="newgame();">try again ?</span>
 
-
 <script>
 var gameField = new Array();
 var board = document.getElementById("game-table");
@@ -517,6 +516,10 @@ var currentPlayer;
 var id = 1;
 var offset = 40;
 var gameEnded = true;
+var zoom = parseFloat(window.getComputedStyle(document.getElementById('everything')).zoom) || 1;
+var boardOffset = getOffset(board).left;
+var minCol = 0;
+var maxCol = 6;
 
 newgame();
 
@@ -649,11 +652,11 @@ function Disc(player){
   var $this = this;
   document.onload = function(evt){
     if(currentPlayer == 1){
-      currentCol = Math.floor((evt.clientX - board.offsetLeft)/offset);
-      if(currentCol<0){currentCol=0;}
-      if(currentCol>6){currentCol=6;}
+      var clientX = (evt.clientX || evt.touches[0].clientX)/zoom;
+      currentCol = Math.floor((clientX - boardOffset)/offset);
+      if(currentCol<minCol){currentCol=minCol;}
+      if(currentCol>maxCol){currentCol=maxCol;}
       document.getElementById('d'+$this.id).style.left = (offset*currentCol)+"px";
-      console.log('d'+$this.id)
     }
   }
 
@@ -663,12 +666,8 @@ function Disc(player){
     }
     //movement
     if(currentPlayer == 1){
-      var boardOffset = getOffset(board).left
-      var clientX = evt.clientX || evt.touches[0].clientX
+      var clientX = (evt.clientX || evt.touches[0].clientX)/zoom;
       currentCol = Math.floor((clientX - boardOffset)/offset);
-      var minCol = 0
-      var maxCol = 6
-      console.log(clientX, boardOffset, currentCol)
       if(currentCol<minCol){currentCol=minCol;}
       if(currentCol>maxCol){currentCol=maxCol;}
       document.getElementById('d'+$this.id).style.left = (offset*currentCol)+"px";
