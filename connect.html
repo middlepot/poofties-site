@@ -518,6 +518,10 @@ var offset = 40;
 var gameEnded = true;
 var zoom = parseFloat(window.getComputedStyle(document.getElementById('everything')).zoom) || 1;
 var boardOffset = getOffset(board).left;
+if(screen.availHeight > screen.availWidth){
+	boardOffset = getOffset(board).top;
+}
+console.log(boardOffset);
 var minCol = 0;
 var maxCol = 6;
 
@@ -652,7 +656,11 @@ function Disc(player){
   var $this = this;
   document.onload = function(evt){
     if(currentPlayer == 1){
-      var clientX = (evt.clientX || evt.touches[0].clientX)/zoom;
+	  var touchPos = evt.clientX || evt.touches[0].clientX;
+	  if(screen.availHeight > screen.availWidth){
+		  touchPos = evt.clientY || evt.touches[0].clientY;
+	  }
+      var clientX = touchPos/zoom;
       currentCol = Math.floor((clientX - boardOffset)/offset);
       if(currentCol<minCol){currentCol=minCol;}
       if(currentCol>maxCol){currentCol=maxCol;}
@@ -666,7 +674,11 @@ function Disc(player){
     }
     //movement
     if(currentPlayer == 1){
-      var clientX = (evt.clientX || evt.touches[0].clientX)/zoom;
+      var touchPos = evt.clientX || evt.touches[0].clientX;
+	  if(screen.availHeight > screen.availWidth){
+		  touchPos = evt.clientY || evt.touches[0].clientY;
+	  }
+      var clientX = touchPos/zoom;
       currentCol = Math.floor((clientX - boardOffset)/offset);
       if(currentCol<minCol){currentCol=minCol;}
       if(currentCol>maxCol){currentCol=maxCol;}
